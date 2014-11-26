@@ -1,0 +1,143 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest
+END
+ASIHTTPRequest.m
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIHTTPRequest.m
+END
+ASICacheDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASICacheDelegate.h
+END
+ASINetworkQueue.h
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASINetworkQueue.h
+END
+ASIDataDecompressor.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIDataDecompressor.h
+END
+ASIAuthenticationDialog.h
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIAuthenticationDialog.h
+END
+ASIProgressDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIProgressDelegate.h
+END
+ASIDownloadCache.m
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIDownloadCache.m
+END
+ASINetworkQueue.m
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASINetworkQueue.m
+END
+Reachability.h
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/Reachability.h
+END
+ASIDataDecompressor.m
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIDataDecompressor.m
+END
+ASIAuthenticationDialog.m
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIAuthenticationDialog.m
+END
+ASIFormDataRequest.h
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIFormDataRequest.h
+END
+Reachability.m
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/Reachability.m
+END
+ASIInputStream.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIInputStream.h
+END
+ASIFormDataRequest.m
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIFormDataRequest.m
+END
+ASIHTTPRequestConfig.h
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIHTTPRequestConfig.h
+END
+ASIInputStream.m
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIInputStream.m
+END
+ASIHTTPRequestDelegate.h
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIHTTPRequestDelegate.h
+END
+ASIDataCompressor.h
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIDataCompressor.h
+END
+ASIHTTPRequest.h
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIHTTPRequest.h
+END
+Readme.txt
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/Readme.txt
+END
+ASIDownloadCache.h
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIDownloadCache.h
+END
+ASIDataCompressor.m
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/tgj/!svn/ver/7425/code/ios/TGQ2/TGQ2/TGQ2/ASIHTTPRequest/ASIDataCompressor.m
+END

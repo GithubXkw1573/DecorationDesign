@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/tgj/!svn/ver/10856/code/ios/TGQ2/TGQ2/TGQ2/YXSharedApi
+END
+YXApi.h
+K 25
+svn:wc:ra_dav:version-url
+V 66
+/svn/tgj/!svn/ver/9039/code/ios/TGQ2/TGQ2/TGQ2/YXSharedApi/YXApi.h
+END
+YXShareApi.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tgj/!svn/ver/10856/code/ios/TGQ2/TGQ2/TGQ2/YXSharedApi/YXShareApi.h
+END
+YXApiObject.h
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tgj/!svn/ver/9039/code/ios/TGQ2/TGQ2/TGQ2/YXSharedApi/YXApiObject.h
+END
+YXShareApi.m
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tgj/!svn/ver/10733/code/ios/TGQ2/TGQ2/TGQ2/YXSharedApi/YXShareApi.m
+END
+libYixinSDK.a
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/svn/tgj/!svn/ver/9041/code/ios/TGQ2/TGQ2/TGQ2/YXSharedApi/libYixinSDK.a
+END
