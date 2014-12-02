@@ -218,6 +218,17 @@
 		D2ED0BCC1A1C34400026EB4F /* 首页切换图2.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ED0BC11A1C34400026EB4F /* 首页切换图2.png */; };
 		D2ED0BCD1A1C34400026EB4F /* 首页切换图3.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ED0BC21A1C34400026EB4F /* 首页切换图3.png */; };
 		D2ED0BCE1A1C34400026EB4F /* 首页切换图4.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ED0BC31A1C34400026EB4F /* 首页切换图4.png */; };
+		D2F222801A270AD7008295D3 /* CWDistantHessianObject+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2226C1A270AD7008295D3 /* CWDistantHessianObject+Private.m */; };
+		D2F222811A270AD7008295D3 /* CWDistantHessianObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2226E1A270AD7008295D3 /* CWDistantHessianObject.m */; };
+		D2F222821A270AD7008295D3 /* CWHessianArchiver+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F222701A270AD7008295D3 /* CWHessianArchiver+Private.m */; };
+		D2F222831A270AD7008295D3 /* CWHessianArchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F222721A270AD7008295D3 /* CWHessianArchiver.m */; };
+		D2F222841A270AD7008295D3 /* CWHessianCoder.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F222741A270AD7008295D3 /* CWHessianCoder.m */; };
+		D2F222851A270AD7008295D3 /* CWHessianConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F222761A270AD7008295D3 /* CWHessianConnection.m */; };
+		D2F222861A270AD7008295D3 /* CWHessianUnarchiver+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F222771A270AD7008295D3 /* CWHessianUnarchiver+Private.m */; };
+		D2F222871A270AD7008295D3 /* CWHessianUnarchiver.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F222781A270AD7008295D3 /* CWHessianUnarchiver.m */; };
+		D2F222881A270AD7008295D3 /* CWValueObject+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2227A1A270AD7008295D3 /* CWValueObject+Private.m */; };
+		D2F222891A270AD7008295D3 /* CWValueObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2227C1A270AD7008295D3 /* CWValueObject.m */; };
+		D2F2228A1A270AD7008295D3 /* NSData+ReadableDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2227F1A270AD7008295D3 /* NSData+ReadableDescription.m */; };
 		D2FB6E3B1A198CD0008DBDBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FB6E3A1A198CD0008DBDBC /* Foundation.framework */; };
 		D2FB6E3D1A198CD0008DBDBC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FB6E3C1A198CD0008DBDBC /* CoreGraphics.framework */; };
 		D2FB6E3F1A198CD0008DBDBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FB6E3E1A198CD0008DBDBC /* UIKit.framework */; };
@@ -507,6 +518,27 @@
 		D2ED0BC11A1C34400026EB4F /* 首页切换图2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "首页切换图2.png"; sourceTree = "<group>"; };
 		D2ED0BC21A1C34400026EB4F /* 首页切换图3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "首页切换图3.png"; sourceTree = "<group>"; };
 		D2ED0BC31A1C34400026EB4F /* 首页切换图4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "首页切换图4.png"; sourceTree = "<group>"; };
+		D2F2226B1A270AD7008295D3 /* CWDistantHessianObject+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CWDistantHessianObject+Private.h"; sourceTree = "<group>"; };
+		D2F2226C1A270AD7008295D3 /* CWDistantHessianObject+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CWDistantHessianObject+Private.m"; sourceTree = "<group>"; };
+		D2F2226D1A270AD7008295D3 /* CWDistantHessianObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWDistantHessianObject.h; sourceTree = "<group>"; };
+		D2F2226E1A270AD7008295D3 /* CWDistantHessianObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWDistantHessianObject.m; sourceTree = "<group>"; };
+		D2F2226F1A270AD7008295D3 /* CWHessianArchiver+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CWHessianArchiver+Private.h"; sourceTree = "<group>"; };
+		D2F222701A270AD7008295D3 /* CWHessianArchiver+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CWHessianArchiver+Private.m"; sourceTree = "<group>"; };
+		D2F222711A270AD7008295D3 /* CWHessianArchiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWHessianArchiver.h; sourceTree = "<group>"; };
+		D2F222721A270AD7008295D3 /* CWHessianArchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWHessianArchiver.m; sourceTree = "<group>"; };
+		D2F222731A270AD7008295D3 /* CWHessianCoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWHessianCoder.h; sourceTree = "<group>"; };
+		D2F222741A270AD7008295D3 /* CWHessianCoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWHessianCoder.m; sourceTree = "<group>"; };
+		D2F222751A270AD7008295D3 /* CWHessianConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWHessianConnection.h; sourceTree = "<group>"; };
+		D2F222761A270AD7008295D3 /* CWHessianConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWHessianConnection.m; sourceTree = "<group>"; };
+		D2F222771A270AD7008295D3 /* CWHessianUnarchiver+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CWHessianUnarchiver+Private.m"; sourceTree = "<group>"; };
+		D2F222781A270AD7008295D3 /* CWHessianUnarchiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWHessianUnarchiver.m; sourceTree = "<group>"; };
+		D2F222791A270AD7008295D3 /* CWValueObject+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CWValueObject+Private.h"; sourceTree = "<group>"; };
+		D2F2227A1A270AD7008295D3 /* CWValueObject+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CWValueObject+Private.m"; sourceTree = "<group>"; };
+		D2F2227B1A270AD7008295D3 /* CWValueObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CWValueObject.h; sourceTree = "<group>"; };
+		D2F2227C1A270AD7008295D3 /* CWValueObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CWValueObject.m; sourceTree = "<group>"; };
+		D2F2227D1A270AD7008295D3 /* HessianKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HessianKit.h; sourceTree = "<group>"; };
+		D2F2227E1A270AD7008295D3 /* NSData+ReadableDescription.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ReadableDescription.h"; sourceTree = "<group>"; };
+		D2F2227F1A270AD7008295D3 /* NSData+ReadableDescription.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+ReadableDescription.m"; sourceTree = "<group>"; };
 		D2FB6E371A198CD0008DBDBC /* 设计圈.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "设计圈.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2FB6E3A1A198CD0008DBDBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2FB6E3C1A198CD0008DBDBC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -979,6 +1011,34 @@
 			name = "组件";
 			sourceTree = "<group>";
 		};
+		D2F2226A1A270AD7008295D3 /* HessianKit */ = {
+			isa = PBXGroup;
+			children = (
+				D2F2226B1A270AD7008295D3 /* CWDistantHessianObject+Private.h */,
+				D2F2226C1A270AD7008295D3 /* CWDistantHessianObject+Private.m */,
+				D2F2226D1A270AD7008295D3 /* CWDistantHessianObject.h */,
+				D2F2226E1A270AD7008295D3 /* CWDistantHessianObject.m */,
+				D2F2226F1A270AD7008295D3 /* CWHessianArchiver+Private.h */,
+				D2F222701A270AD7008295D3 /* CWHessianArchiver+Private.m */,
+				D2F222711A270AD7008295D3 /* CWHessianArchiver.h */,
+				D2F222721A270AD7008295D3 /* CWHessianArchiver.m */,
+				D2F222731A270AD7008295D3 /* CWHessianCoder.h */,
+				D2F222741A270AD7008295D3 /* CWHessianCoder.m */,
+				D2F222751A270AD7008295D3 /* CWHessianConnection.h */,
+				D2F222761A270AD7008295D3 /* CWHessianConnection.m */,
+				D2F222771A270AD7008295D3 /* CWHessianUnarchiver+Private.m */,
+				D2F222781A270AD7008295D3 /* CWHessianUnarchiver.m */,
+				D2F222791A270AD7008295D3 /* CWValueObject+Private.h */,
+				D2F2227A1A270AD7008295D3 /* CWValueObject+Private.m */,
+				D2F2227B1A270AD7008295D3 /* CWValueObject.h */,
+				D2F2227C1A270AD7008295D3 /* CWValueObject.m */,
+				D2F2227D1A270AD7008295D3 /* HessianKit.h */,
+				D2F2227E1A270AD7008295D3 /* NSData+ReadableDescription.h */,
+				D2F2227F1A270AD7008295D3 /* NSData+ReadableDescription.m */,
+			);
+			path = HessianKit;
+			sourceTree = "<group>";
+		};
 		D2FB6E2E1A198CCF008DBDBC = {
 			isa = PBXGroup;
 			children = (
@@ -1058,6 +1118,7 @@
 		D2FB6E411A198CD0008DBDBC /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				D2F2226A1A270AD7008295D3 /* HessianKit */,
 				D2FB6E421A198CD0008DBDBC /* DecorationDesign-Info.plist */,
 				D2FB6E431A198CD0008DBDBC /* InfoPlist.strings */,
 				D2FB6E461A198CD0008DBDBC /* main.m */,
@@ -1263,6 +1324,7 @@
 				D2A48C421A19A87600E37852 /* MyNetWork.m in Sources */,
 				D26021B41A19E1760072A021 /* CoverViewController.m in Sources */,
 				D2A48C491A19A87600E37852 /* SDWebImageManager.m in Sources */,
+				D2F222891A270AD7008295D3 /* CWValueObject.m in Sources */,
 				D250447B1A1D8425006DC4A0 /* ArticleView.m in Sources */,
 				D21EC4BA1A19F77900317D0C /* NewsTableView.m in Sources */,
 				D2A48C281A19A87600E37852 /* ASIFormDataRequest.m in Sources */,
@@ -1273,6 +1335,7 @@
 				D2A48C341A19A87600E37852 /* EGORefreshTableFooterView.m in Sources */,
 				D2A48C4B1A19A87600E37852 /* ShowMessaege.m in Sources */,
 				50880B681A1B72E200BE5FDF /* PicTextButton.m in Sources */,
+				D2F222811A270AD7008295D3 /* CWDistantHessianObject.m in Sources */,
 				D285BA971A19FB2100434DD9 /* BannerTableCell.m in Sources */,
 				D29AC2DF1A1DE810003A3163 /* ZiliaoDetaillViewController.m in Sources */,
 				D2FB6E4B1A198CD0008DBDBC /* DDAppDelegate.m in Sources */,
@@ -1280,7 +1343,9 @@
 				D25044711A1D760F006DC4A0 /* DesignerViewController.m in Sources */,
 				D2A48C241A19A87600E37852 /* ASIAuthenticationDialog.m in Sources */,
 				D2A48C651A19AA0800E37852 /* pinyin.c in Sources */,
+				D2F222821A270AD7008295D3 /* CWHessianArchiver+Private.m in Sources */,
 				D2A48C2B1A19A87600E37852 /* ASINetworkQueue.m in Sources */,
+				D2F222841A270AD7008295D3 /* CWHessianCoder.m in Sources */,
 				D2A48C3F1A19A87600E37852 /* SBJsonParser.m in Sources */,
 				D279070F1A1F1D9F0094971D /* DesignerListCell.m in Sources */,
 				D2A48C481A19A87600E37852 /* SDWebImageDownloader.m in Sources */,
@@ -1293,15 +1358,20 @@
 				D2A48C3E1A19A87600E37852 /* SBJsonBase.m in Sources */,
 				D29AC2DC1A1DD588003A3163 /* ImageLooker.m in Sources */,
 				D21EC4761A19E2B500317D0C /* Tab4ViewController.m in Sources */,
+				D2F222831A270AD7008295D3 /* CWHessianArchiver.m in Sources */,
 				D21EC4B91A19F77900317D0C /* NewsScrollView.m in Sources */,
+				D2F222861A270AD7008295D3 /* CWHessianUnarchiver+Private.m in Sources */,
 				D2A48C271A19A87600E37852 /* ASIDownloadCache.m in Sources */,
+				D2F2228A1A270AD7008295D3 /* NSData+ReadableDescription.m in Sources */,
 				D2125FF01A19FA44001D6A22 /* ActivityCell.m in Sources */,
 				D2A48C2A1A19A87600E37852 /* ASIInputStream.m in Sources */,
 				D2A48C251A19A87600E37852 /* ASIDataCompressor.m in Sources */,
 				D2501DB81A1AF98300B18DD7 /* CityItem.m in Sources */,
 				D2A48C3B1A19A87600E37852 /* NSObject+SBJSON.m in Sources */,
 				D2A48C661A19AA0800E37852 /* TabbarView.m in Sources */,
+				D2F222871A270AD7008295D3 /* CWHessianUnarchiver.m in Sources */,
 				D25044781A1D840E006DC4A0 /* ZuopingView.m in Sources */,
+				D2F222881A270AD7008295D3 /* CWValueObject+Private.m in Sources */,
 				D2A48C451A19A87600E37852 /* NJKWebViewProgress.m in Sources */,
 				D21EC4B81A19F77900317D0C /* FaxianViewController.m in Sources */,
 				D24A77281A1DC9AD00CAFCC1 /* ZuopingLookViewController.m in Sources */,
@@ -1316,10 +1386,12 @@
 				D2B6A6CB1A22C4970009C4F0 /* DistributeController.m in Sources */,
 				50880B7A1A20348B00BE5FDF /* WodeViewController.m in Sources */,
 				D2A48C471A19A87600E37852 /* SDImageCache.m in Sources */,
+				D2F222801A270AD7008295D3 /* CWDistantHessianObject+Private.m in Sources */,
 				D2A48C4A1A19A87600E37852 /* UIImageView+WebCache.m in Sources */,
 				D2A48C411A19A87600E37852 /* MyASIHTTPRequest.m in Sources */,
 				D26021B51A19E1760072A021 /* IntroduceView.m in Sources */,
 				D2A48C261A19A87600E37852 /* ASIDataDecompressor.m in Sources */,
+				D2F222851A270AD7008295D3 /* CWHessianConnection.m in Sources */,
 				D26021B81A19E20A0072A021 /* HomeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1419,6 +1491,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DecorationDesign/开放平台",
+					"$(PROJECT_DIR)/DecorationDesign",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DecorationDesign/DecorationDesign-Prefix.pch";
@@ -1433,6 +1506,7 @@
 					"$(PROJECT_DIR)/DecorationDesign/开放平台/XLSharedApi",
 					"$(PROJECT_DIR)/DecorationDesign/开放平台/YXSharedApi",
 					"$(PROJECT_DIR)/DecorationDesign/开放平台/TXSharedApi/腾讯微博",
+					"$(PROJECT_DIR)/DecorationDesign",
 				);
 				PRODUCT_NAME = "设计圈";
 				PROVISIONING_PROFILE = "b25f511e-9c8d-48ba-a071-6c30bb86018d";
@@ -1450,6 +1524,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/DecorationDesign/开放平台",
+					"$(PROJECT_DIR)/DecorationDesign",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DecorationDesign/DecorationDesign-Prefix.pch";
@@ -1464,6 +1539,7 @@
 					"$(PROJECT_DIR)/DecorationDesign/开放平台/XLSharedApi",
 					"$(PROJECT_DIR)/DecorationDesign/开放平台/YXSharedApi",
 					"$(PROJECT_DIR)/DecorationDesign/开放平台/TXSharedApi/腾讯微博",
+					"$(PROJECT_DIR)/DecorationDesign",
 				);
 				PRODUCT_NAME = "设计圈";
 				PROVISIONING_PROFILE = "b25f511e-9c8d-48ba-a071-6c30bb86018d";
