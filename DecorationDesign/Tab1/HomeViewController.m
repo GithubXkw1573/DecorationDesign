@@ -560,9 +560,21 @@
 -(void)buttonClicked3:(UIButton*)btn
 {
     //图片浏览点击事件
-    ZuopingLookViewController *zuopingLookViewController = [[ZuopingLookViewController alloc] init];
-    [self.navigationController pushViewController:zuopingLookViewController animated:YES];
-    [ZuopingLookViewController release];
+//    ZuopingLookViewController *zuopingLookViewController = [[ZuopingLookViewController alloc] init];
+//    [self.navigationController pushViewController:zuopingLookViewController animated:YES];
+//    [ZuopingLookViewController release];
+    
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    
+    ImageLooker *looker = [[ImageLooker alloc] initWithFrame:window.frame withImage:[UIImage imageNamed:[[guanggaoArray objectAtIndex:pageControl.currentPage] objectForKey:@"imagename"]]];
+    [window addSubview:looker];
+    looker.backgroundColor = [UIColor blackColor];
+    
+    looker.transform = CGAffineTransformMakeScale(0, 0);
+    [UIView animateWithDuration:0.35f animations:^{
+        looker.transform = CGAffineTransformMakeScale(1, 1);
+    }];
+    [looker release];
 }
 
 -(void)buttonClicked2:(UIButton*)btn

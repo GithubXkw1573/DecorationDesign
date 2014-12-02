@@ -35,7 +35,7 @@
     }
     self.zuopingList = [[NSMutableArray alloc] init];
     
-    self.view.backgroundColor=[UIColor blackColor];
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"背景"]];
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"标题栏%i.png",[[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0?7:6]] forBarMetrics:UIBarMetricsDefault];
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 80*widthRate, 44)];
@@ -93,6 +93,8 @@
     
     UIPageControl *pageCon=[[UIPageControl alloc]initWithFrame:CGRectMake(130, 300, 60, 20)];
     pageCon.backgroundColor = [UIColor clearColor];
+    pageCon.currentPageIndicatorTintColor = [UIColor redColor];
+    pageCon.pageIndicatorTintColor = [UIColor grayColor];
     pageCon.alpha=0.5;
     [pageCon addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
     self.pageControl=pageCon;
@@ -126,7 +128,7 @@
     UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(10, applicationheight-44-49-50, 200, 30)];
     desc.text = @"温暖舒适，给你家的感觉.";
     desc.backgroundColor = [UIColor clearColor];
-    desc.textColor = [UIColor whiteColor];
+    desc.textColor = [UIColor blackColor];
     desc.font = font(13);
     descLabel = desc;
     [self.view addSubview:desc];
@@ -135,7 +137,7 @@
     UILabel *author = [[UILabel alloc] initWithFrame:CGRectMake(210, applicationheight-44-49-50, 100, 30)];
     author.text = @"许开伟";
     author.backgroundColor = [UIColor clearColor];
-    author.textColor = [UIColor whiteColor];
+    author.textColor = [UIColor blackColor];
     author.font = font(14);
     authorLabel = author;
     [self.view addSubview:author];
@@ -162,11 +164,16 @@
     UIView *controller = [viewControllers objectAtIndex:page2];
     if ((NSNull *)controller == [NSNull null]) {
         controller = [[UIView alloc] init];
-        ImageLooker *looker = [[ImageLooker alloc] initWithFrame:CGRectMake(0, 0, myscrollView.frame.size.width, 160*widthRate) withImage:[UIImage imageNamed:[[zuopingList objectAtIndex:page2] objectForKey:@"imagename"]]];
+//        ImageLooker *looker = [[ImageLooker alloc] initWithFrame:CGRectMake(0, 0, myscrollView.frame.size.width, 160*widthRate) withImage:[UIImage imageNamed:[[zuopingList objectAtIndex:page2] objectForKey:@"imagename"]]];
         
         //[mypageview setImageWithURL:[NSURL URLWithString:[[guanggaoArray objectAtIndex:page2] objectForKey:@"imageUrl"]] placeholderImage:[UIImage imageNamed:@"默认大.png"]];
-        [controller addSubview:looker];
-        [looker release];
+        
+        UIButton *mypageview=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, myscrollView.frame.size.width, 160*widthRate)];
+        NSLog(@"image:%@",[[zuopingList objectAtIndex:page2] objectForKey:@"imagename"]);
+        [mypageview setImage:[UIImage imageNamed:[[zuopingList objectAtIndex:page2] objectForKey:@"imagename"]] forState:UIControlStateNormal];
+        [mypageview addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [controller addSubview:mypageview];
+        [mypageview release];
         
         
         
@@ -221,5 +228,18 @@
     }
 }
 
+-(void)buttonClicked:(UIButton*)btn
+{
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    
+    ImageLooker *looker = [[ImageLooker alloc] initWithFrame:window.frame withImage:[UIImage imageNamed:[[zuopingList objectAtIndex:pageControl.currentPage] objectForKey:@"imagename"]]];
+    [window addSubview:looker];
+    looker.backgroundColor = [UIColor blackColor];
+    looker.transform = CGAffineTransformMakeScale(0, 0);
+    [UIView animateWithDuration:0.35f animations:^{
+        looker.transform = CGAffineTransformMakeScale(1, 1);
+    }];
+    [looker release];
+}
 
 @end

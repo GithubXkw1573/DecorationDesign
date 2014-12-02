@@ -20,7 +20,16 @@
     [super viewDidLoad];
     [self initNaviWithTitle:@"发布需求"];
     [self initComponents];
+    
+//    NSURL * url = [NSURL URLWithString:@"http://180.96.38.219/XuanR_YogAppProject/InfoSelectServer"];
+//    BBSHessianProxy * proxy = [[[BBSHessianProxy alloc] initWithUrl:url] autorelease];
+//    NSArray * paramters = [NSArray arrayWithObjects:@"000000",@"CHI",nil];
+//    id result = [proxy callSynchronous:@"SelectAllCepActive" withParameters:paramters];
+//    [self setOutput:result];
+
 }
+
+
 
 - (void)didReceiveMemoryWarning
 {

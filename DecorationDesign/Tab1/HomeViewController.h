@@ -12,6 +12,9 @@
 #import "PicTextButton.h"
 #import "DesignerViewController.h"
 #import "ZuopingLookViewController.h"
+#import "ImageLooker.h"
+@class DDAppDelegate;
+
 
 @interface HomeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {

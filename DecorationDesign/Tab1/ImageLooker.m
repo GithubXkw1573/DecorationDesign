@@ -20,6 +20,10 @@
         self.multipleTouchEnabled=YES;
         self.minimumZoomScale=1.0;
         self.maximumZoomScale=10.0;
+        self.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mytap:)];
+        [self addGestureRecognizer:tap];
+        [tap release];
         
         CGFloat imageView_X = (_image.size.width > self.frame.size.width) ? self.frame.size.width : _image.size.width;
         CGFloat imageView_Y;
@@ -61,6 +65,18 @@
     CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?(scrollView.bounds.size.width - scrollView.contentSize.width)/2 : 0.0;
     CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?(scrollView.bounds.size.height - scrollView.contentSize.height)/2 : 0.0;
     self.myImageView.center = CGPointMake(scrollView.contentSize.width/2 + offsetX,scrollView.contentSize.height/2 + offsetY);
+}
+
+-(void)mytap:(id)sender
+{
+    [UIView animateWithDuration:0.35f animations:^{
+        self.transform = CGAffineTransformMakeScale(0, 0);
+    } completion:^(BOOL flag){
+        for(UIView *v in self.subviews)
+            [v removeFromSuperview];
+        [self removeFromSuperview];
+    }];
+    
 }
 
 @end

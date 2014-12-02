@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "common.h"
+#import "HessianKit.h"
 
 @interface DistributeController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
@@ -23,5 +24,5 @@
 @property (nonatomic,retain) UITextField *telField;
 @property (nonatomic,retain) UITextField *bugetField;
 @property (nonatomic,retain) UITextField *areaField;
-@property (nonatomic,retain) UITextField *typeField;
+@property (nonatomic,retain) UITextField *typeField;  
 @end
