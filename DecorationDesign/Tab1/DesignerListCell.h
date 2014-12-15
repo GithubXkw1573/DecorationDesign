@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIImageView+WebCache.h"
 
 @interface DesignerListCell : UITableViewCell
 {
@@ -15,10 +16,13 @@
     UILabel *boutiqueLabel;
     UILabel *bookingLabel;
     UILabel *signedLabel;
+    UILabel *titleLabel;
 }
 @property (nonatomic,retain) UIImageView *designerPicView;
 @property (nonatomic,retain) UILabel *worksLabel;
 @property (nonatomic,retain) UILabel *boutiqueLabel;
 @property (nonatomic,retain) UILabel *bookingLabel;
 @property (nonatomic,retain) UILabel *signedLabel;
+@property (nonatomic,retain) UILabel *titleLabel;
+-(void)setCellData:(NSArray*)item;
 @end

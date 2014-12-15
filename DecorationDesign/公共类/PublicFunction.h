@@ -12,6 +12,9 @@
 @interface PublicFunction : NSObject{
     
 }
+
++(NSString *)isNetworkReachable;
++ (void)showAlterView:(NSString*)titele msg:(NSString*)msg cancelname:(NSString*)canclename;
 +(BOOL)validateUserPasswd:(NSString *) str;
 +(BOOL)validateUserName:(NSString *) str;
 +(BOOL)validateUserBornDate:(NSString *) str;

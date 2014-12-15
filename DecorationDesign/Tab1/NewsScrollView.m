@@ -84,13 +84,12 @@
     UIView *controller = [viewControllers objectAtIndex:page];
     if ((NSNull *)controller == [NSNull null]) {
         controller = [[UIView alloc] init];
-        
         NewsTableView *newsTableView = [[NewsTableView alloc] initWithFrame:CGRectMake(0,0, applicationwidth, applicationheight-44-44-49)];
         newsTableView.tag=99;
         [controller addSubview:newsTableView];
         newsTableView.delegate=self;
         newsTableView.shaixuan = 99;
-        newsTableView.Dictionary = [zixunleibieused objectAtIndex:page];
+        newsTableView.m_array = [zixunleibieused objectAtIndex:page];
         //        [newsTableView informationrequest];
         [newsTableView ViewFrashData];
         [newsTableView release];
@@ -109,7 +108,7 @@
     }
 }
 
--(void)NewsTableViewBtnPressed:(NSDictionary *)dic
+-(void)NewsTableViewBtnPressed:(NSArray *)dic
 {
     [t_delegate NewsTableViewBtnPressed:dic];
 }

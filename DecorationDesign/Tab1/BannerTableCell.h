@@ -9,7 +9,23 @@
 #import <UIKit/UIKit.h>
 #import "common.h"
 
-@interface BannerTableCell : UITableViewCell
+@interface BannerTableCell : UITableViewCell<UIScrollViewDelegate>
+{
+    NSUInteger kNumberOfPages;
+    BOOL pageControlUsed;
+    NSMutableArray *guanggaoArray;
+    UIScrollView *imagescrollView;
+    UIPageControl *pageControl;
+    NSMutableArray *viewControllers;
+    
+}
+@property(nonatomic, retain)NSMutableArray *viewControllers;
 @property (nonatomic,retain) NSDictionary  *m_dictionary;
+@property(nonatomic, retain)NSMutableArray *guanggaoArray;
+@property(nonatomic, retain)UIScrollView *imagescrollView;
+@property(nonatomic, retain)UIPageControl *pageControl;
+@property(nonatomic, retain)NSString *plateType;
+@property(nonatomic, retain)NSString *plateCode;
 - (void)setCell:(NSDictionary *)dic row:(int)row;
+-(void)loadContent;
 @end

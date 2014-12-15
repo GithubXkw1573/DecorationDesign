@@ -13,6 +13,9 @@
 #import "DesignerViewController.h"
 #import "ZuopingLookViewController.h"
 #import "ImageLooker.h"
+#import "LoginViewController.h"
+#import "ShareView.h"
+
 @class DDAppDelegate;
 
 
@@ -27,7 +30,10 @@
     NSUInteger kNumberOfPages;
     UIScrollView *designerscrollView;
     NSMutableArray *designerArray;
+    MBProgressHUD *homeMBProgress;
+    ShareView *myshareView;
 }
+@property(nonatomic, retain)MBProgressHUD *homeMBProgress;
 @property(nonatomic, retain)NSMutableArray *viewControllers;
 @property(nonatomic, retain)UIScrollView *imagescrollView;
 @property(nonatomic, retain)UIScrollView *designerscrollView;

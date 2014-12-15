@@ -36,5 +36,6 @@
 +(QQkongjianApi *)shared;
 -(void)QQlogin;
 -(void)kongjianLinkContent:(NSString *)url imageContent:(UIImage *)image title:(NSString *)title detail:(NSString *)detail;
+-(void)sessionLinkContent:(NSString *)url imageContent:(UIImage *)image title:(NSString *)title detail:(NSString *)detail;
 -(BOOL)handleOpen:(NSURL *)url;
 @end

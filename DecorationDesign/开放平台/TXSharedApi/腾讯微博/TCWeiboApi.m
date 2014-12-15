@@ -49,7 +49,9 @@ static TCWeiboApi *tcweibo;
     [wbapi  cancelAuth];
     
     NSString *resStr = [[NSString alloc]initWithFormat:@"取消授权成功！"];
-    
+    UIAlertView * alert =[[UIAlertView alloc] initWithTitle:@"提示" message:resStr delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+    [alert show];
+    [alert release];
     [self showMsg:resStr];
     [resStr release];
 }

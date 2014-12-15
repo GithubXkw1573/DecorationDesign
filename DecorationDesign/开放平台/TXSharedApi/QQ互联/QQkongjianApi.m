@@ -59,6 +59,16 @@ static QQkongjianApi *QQkongjian;
     [self handleSendResult:sent];
 }
 
+-(void)sessionLinkContent:(NSString *)url imageContent:(UIImage *)image title:(NSString *)title detail:(NSString *)detail
+{
+    //QQ好友分享
+    QQApiNewsObject *newsObj = [QQApiNewsObject objectWithURL:[NSURL URLWithString:url] title:title description:detail previewImageData:UIImagePNGRepresentation(image)];
+    
+    SendMessageToQQReq *req = [SendMessageToQQReq reqWithContent:newsObj];
+    QQApiSendResultCode sent = [QQApiInterface sendReq:req];
+    [self handleSendResult:sent];
+}
+
 -(BOOL)handleOpen:(NSURL *)url
 {
     [QQApiInterface handleOpenURL:url delegate:self];//用于QQ分享指定页面的回调触发

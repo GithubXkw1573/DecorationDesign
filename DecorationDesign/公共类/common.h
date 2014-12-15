@@ -10,6 +10,8 @@
 #import "ShowMessaege.h"
 //#import "CHKeychain.h"
 #import "pinyin.h"
+#import "UserInfo.h"
+#import "HessianFormDataRequest.h"
 
 
 #define UIVIEW_ANIMATION_BEGIN3(animationid, time, sel)\
@@ -38,7 +40,7 @@ object.layer.masksToBounds = YES;\
 //#define MineURL @"http://10.0.1.72:8080/tx/"   //刘军   13951637983 q123456
 //#define MineURL @"http://10.0.1.71/tx/"   //推送测试
 //#define MineURL @"http://10.0.1.242:8080/tx_personal/"   //测试
-#define MineURL @"http://www.tuixiang.com:9090/" //正式
+#define MineURL @"http://42.121.112.185/XuanR_DecorationApp_Server/InfoSelectServer" //正式
 #define MineURL2 @"http://www.tuixiang.com:8080/"   //第三方登陆和绑定新浪微博
 #define ktimeOutSeconds 30
 

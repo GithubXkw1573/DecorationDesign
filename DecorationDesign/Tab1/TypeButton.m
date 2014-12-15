@@ -20,7 +20,7 @@
         self.typeId = @"-1";
         titleLabel.tag = 10;
         titleLabel.textColor = [UIColor blackColor];
-        titleLabel.font = font(16);
+        titleLabel.font = font(14);
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -47,7 +47,7 @@
         self.typeId = typeId;
         titleLabel.tag = 10;
         titleLabel.textColor = [UIColor blackColor];
-        titleLabel.font = font(16);
+        titleLabel.font = font(14);
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.adjustsFontSizeToFitWidth = YES;
@@ -77,11 +77,11 @@
     if (selected) {
         imge.hidden = NO;
         typeLabel.textColor = [UIColor myorangecolor];
-        typeLabel.font = bold_font(20);
+        typeLabel.font = bold_font(18);
     }else{
         imge.hidden = YES;
         typeLabel.textColor = [UIColor blackColor];
-        typeLabel.font = font(16);
+        typeLabel.font = font(14);
     }
 }
 

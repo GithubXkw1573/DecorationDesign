@@ -10,7 +10,7 @@
 
 @protocol NewsTableViewDelegate <NSObject>
 
--(void)NewsTableViewBtnPressed:(NSDictionary *)dic;
+-(void)NewsTableViewBtnPressed:(NSArray *)dic;
 
 @end
 
@@ -25,7 +25,7 @@
     UITableView *m_tableView;
     NSMutableArray *m_newsArray;
     //UITableView *m_tableview;
-    ASIFormDataRequest *myrequest;
+    HessianFormDataRequest *myrequest;
     EGORefreshTableFooterView *_refreshFooterView;
     EGORefreshTableHeaderView *_refreshHeaderView;
     BOOL _Headerreloading;
@@ -41,7 +41,7 @@
 @property(nonatomic, retain)NSMutableArray *m_recommdArray;
 @property (nonatomic,assign) id<NewsTableViewDelegate> delegate;
 @property (nonatomic,assign) int shaixuan;
-@property (nonatomic,retain) NSDictionary *Dictionary;
+@property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSDictionary *m_Dictionary;
 -(void)ViewFrashData;
 @end

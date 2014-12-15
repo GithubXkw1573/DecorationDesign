@@ -34,10 +34,10 @@
     
     for(int i=0; i<itemList.count;i++)
     {
-        NSDictionary *dic =[PublicFunction fixDictionary:[itemList objectAtIndex:i]] ;
+        NSArray *itemarr = [itemList objectAtIndex:i];
         TypeButton *tBtn = [[TypeButton alloc] initWithFrame:CGRectMake(i*64, 4, 64, 44)];
-        tBtn.title = [dic objectForKey:@"name"];
-        tBtn.typeId = [NSString stringWithFormat:@"%@",[dic objectForKey:@"id"]];
+        tBtn.title = [NSString stringWithFormat:@"%@",[itemarr objectAtIndex:1]];
+        tBtn.typeId = [NSString stringWithFormat:@"%@",[itemarr objectAtIndex:0]];
         tBtn.tag = 100+i;
         if (i == 0) {
             currIndex = i;

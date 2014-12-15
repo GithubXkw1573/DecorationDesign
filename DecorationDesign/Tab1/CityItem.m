@@ -17,12 +17,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor myorangecolor];
-        UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 25)];
+        UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 25)];
         cityLabel.text = @"城市";
         self.mycityLabel = cityLabel;
         self.cityId = @"-1";
         cityLabel.textColor = [UIColor whiteColor];
-        cityLabel.font = font(14);
+        cityLabel.font = font(13);
         cityLabel.textAlignment = NSTextAlignmentCenter;
         cityLabel.backgroundColor = [UIColor clearColor];
         cityLabel.adjustsFontSizeToFitWidth = YES;
@@ -37,12 +37,12 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.backgroundColor = [UIColor myorangecolor];
-        UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 25)];
+        UILabel *cityLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 25)];
         cityLabel.text = cityName;
         self.mycityLabel = cityLabel;
         self.cityId = cityId;
         cityLabel.textColor = [UIColor whiteColor];
-        cityLabel.font = font(14);
+        cityLabel.font = font(13);
         cityLabel.textAlignment = NSTextAlignmentCenter;
         cityLabel.backgroundColor = [UIColor clearColor];
         cityLabel.adjustsFontSizeToFitWidth = YES;

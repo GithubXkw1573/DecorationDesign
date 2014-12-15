@@ -13,18 +13,21 @@
 #import "NewsTableView.h"
 #import "CityItem.h"
 #import "DesignerViewController.h"
+#import "CompanyViewController.h"
+#import "CailiaoViewController.h"
+#import "LoupanViewController.h"
 
 @interface FaxianViewController : UIViewController<NewsTableViewDelegate>
 {
     NewsScrollView *newsScrollView;
-    ASIFormDataRequest *queryMenuListRequest;
-    ASIFormDataRequest *queryNewsListRequest;
+    HessianFormDataRequest *queryMenuListRequest;
+    HessianFormDataRequest *queryNewsListRequest;
     ScrollMenu *scrollMenu;
     MBProgressHUD *MBProgress;
     UIButton *moreButton;
     UIView *moreView;
 }
-@property (nonatomic,assign) NSInteger *contentType;
+@property (nonatomic,assign) NSInteger contentType;
 @property (nonatomic,copy) NSMutableArray *menuList;
 @property (nonatomic,copy) NSMutableArray *activityList;
 @property (nonatomic,copy) NSDictionary *m_dictionary;

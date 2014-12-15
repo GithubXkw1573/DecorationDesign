@@ -9,8 +9,52 @@
 #import "PublicFunction.h"
 #import "DDAppDelegate.h"
 #import "common.h"
+#import <netinet/in.h>
+#import <CFNetwork/CFNetwork.h>
+#import <SystemConfiguration/SCNetworkReachability.h>
 
 @implementation PublicFunction
+
+//判断用户的联网状态
++(NSString *)isNetworkReachable{
+    // Create zero addy
+    struct sockaddr_in zeroAddress;
+    bzero(&zeroAddress, sizeof(zeroAddress));
+    zeroAddress.sin_len = sizeof(zeroAddress);
+    zeroAddress.sin_family = AF_INET;
+    
+    // Recover reachability flags
+    SCNetworkReachabilityRef defaultRouteReachability = SCNetworkReachabilityCreateWithAddress(NULL, (struct sockaddr *)&zeroAddress);
+    SCNetworkReachabilityFlags flags;
+    
+    BOOL didRetrieveFlags = SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags);
+    CFRelease(defaultRouteReachability);
+    
+    if (!didRetrieveFlags)
+    {
+        return NO;
+    }
+    BOOL is3g = flags & kSCNetworkReachabilityFlagsIsWWAN;
+    BOOL isReachable = flags & kSCNetworkFlagsReachable;
+    BOOL needsConnection = flags & kSCNetworkFlagsConnectionRequired;
+    //    return (isReachable && !needsConnection) ? YES : NO;
+    if (isReachable && !needsConnection) {
+        if (is3g == YES) {
+            return NSLocalizedString(@"You are using Unicom WIFI network.", nil);
+        }
+        else
+            return NSLocalizedString(@"You are using Unicom 3G network.", nil);
+    }
+    else
+        return nil;
+}
+
++ (void)showAlterView:(NSString*)titele msg:(NSString*)msg cancelname:(NSString*)canclename
+{
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:titele message:msg delegate:self cancelButtonTitle:canclename otherButtonTitles: nil];
+    [alert show];
+    [alert release];
+}
 
 //校验用户名
 + (BOOL) validateUserName : (NSString *) str

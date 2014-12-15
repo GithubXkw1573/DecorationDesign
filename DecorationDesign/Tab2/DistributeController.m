@@ -21,14 +21,30 @@
     [self initNaviWithTitle:@"发布需求"];
     [self initComponents];
     
-//    NSURL * url = [NSURL URLWithString:@"http://180.96.38.219/XuanR_YogAppProject/InfoSelectServer"];
-//    BBSHessianProxy * proxy = [[[BBSHessianProxy alloc] initWithUrl:url] autorelease];
-//    NSArray * paramters = [NSArray arrayWithObjects:@"000000",@"CHI",nil];
-//    id result = [proxy callSynchronous:@"SelectAllCepActive" withParameters:paramters];
-//    [self setOutput:result];
-
+    
 }
 
+-(void)loadRequest
+{
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"USER-REGIST",@"JUDGEMETHOD",@"18576440013",@"USERID",@"123456",@"PASSWORD",@"1236",@"YZM", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+        }else if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0001"]){
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+        }else if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0002"]){
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+    }];
+    [request startRequest];
+}
 
 
 - (void)didReceiveMemoryWarning

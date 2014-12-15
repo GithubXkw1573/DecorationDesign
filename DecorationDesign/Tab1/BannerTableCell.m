@@ -7,8 +7,11 @@
 //
 
 #import "BannerTableCell.h"
+#import "ImageLooker.h"
+#import "UIImageView+WebCache.h"
 
 @implementation BannerTableCell
+@synthesize m_dictionary,guanggaoArray,imagescrollView,pageControl,viewControllers,plateType,plateCode;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -21,26 +24,166 @@
     return self;
 }
 
+-(void)loadContent
+{
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"PLATE-COLUMN-AD",@"JUDGEMETHOD",self.plateType,@"PLATETYPE",self.plateCode,@"PLATECODE", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            NSArray *list = [result objectForKey:@"PLATEADLISTINFO"];
+            self.guanggaoArray = [[NSMutableArray alloc] initWithArray:list];
+            [self reloadComponent];
+        }else {
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+    }];
+    [request startRequest];
+}
+
 -(void)initComponent
 {
-    [PublicFunction addImageTo:self.contentView Rect:CGRectMake(0, 0, applicationwidth, 125) Image:@"" SEL:nil Responsder:self Tag:301];
-    UIImageView *bigPic = (UIImageView*)[self.contentView viewWithTag:301];
+    kNumberOfPages = 0;
+    UIImageView *mypageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
+    mypageview.image=[UIImage imageNamed:@"首页切换图1.png"];
+    [self.contentView addSubview:mypageview];
+    [mypageview release];
     
-    [PublicFunction addImageTo:bigPic Rect:CGRectMake(0, 0, applicationwidth, 125) Image:@"黑色半透明" SEL:nil Responsder:nil Tag:402];
-    UIImageView *zhezhao = (UIImageView*)[bigPic viewWithTag:402];
+    UIScrollView *guanggaoscrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
+    guanggaoscrollView.backgroundColor=[UIColor clearColor];
+    guanggaoscrollView.tag=1;
+    self.imagescrollView=guanggaoscrollView;
+    [self.contentView addSubview:guanggaoscrollView];
+    [guanggaoscrollView release];
     
-    [PublicFunction addLabelTo:zhezhao Rect:CGRectMake(15, 50, 290*widthRate, 20) Title:@"分享立减30元" TitleColor:[UIColor whiteColor] Font:[UIFont fontWithName:@"Helvetica-Bold" size:15] Alignment:NSTextAlignmentLeft Tag:302 MutiRow:NO];
+    guanggaoscrollView.bounces=NO;
+    guanggaoscrollView.pagingEnabled = YES;
+    guanggaoscrollView.showsHorizontalScrollIndicator = NO;
+    guanggaoscrollView.showsVerticalScrollIndicator = NO;
+    guanggaoscrollView.scrollsToTop = NO;
+    guanggaoscrollView.delegate = self;
     
-    [PublicFunction addLabelTo:zhezhao Rect:CGRectMake(15, 70, 290*widthRate, 40) Title:@"三倍金币又回来啦，立减30元，只需要分享1篇文章即可" TitleColor:[UIColor whiteColor] Font:font(13) Alignment:NSTextAlignmentLeft Tag:303 MutiRow:YES];
-    
-    [PublicFunction addLabelTo:zhezhao Rect:CGRectMake(15, 105, 100*widthRate, 20) Title:@"07/07截止" TitleColor:[UIColor whiteColor] Font:bold_font(12) Alignment:NSTextAlignmentLeft Tag:304 MutiRow:NO];
-    
-    [PublicFunction addLabelTo:zhezhao Rect:CGRectMake(200*widthRate, 105, 100, 20) Title:@"0.0km" TitleColor:[UIColor whiteColor] Font:bold_font(12) Alignment:NSTextAlignmentRight Tag:305 MutiRow:NO];
-    
-    [PublicFunction addImageTo:zhezhao Rect:CGRectMake(300*widthRate, 50, 8, 10) Image:@"小箭头" SEL:nil Responsder:nil Tag:0];
-    
-    [PublicFunction addImageTo:self.contentView Rect:CGRectMake(0, 124, applicationwidth, 1) Image:@"线" SEL:nil Responsder:nil Tag:0];
+    UIPageControl *pageCon=[[UIPageControl alloc]initWithFrame:CGRectMake(135*widthRate, 140, 50, 20)];
+    pageCon.backgroundColor = [UIColor clearColor];
+    pageCon.currentPageIndicatorTintColor = [UIColor redColor];
+    pageCon.pageIndicatorTintColor = [UIColor colorWithRed:150/255.f green:152/255.f blue:155/255.f alpha:1.f];
+    pageCon.alpha=0.6;
+    [pageCon addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
+    self.pageControl=pageCon;
+    [self.contentView addSubview:pageCon];
+    [pageCon release];
 }
+
+-(void)reloadComponent
+{
+    kNumberOfPages=[guanggaoArray count];
+    
+    NSMutableArray *controllers = [[NSMutableArray alloc] init];
+    for (int i = 0; i < kNumberOfPages; i++) {
+        [controllers addObject:[NSNull null]];
+    }
+    self.viewControllers = controllers;
+    [controllers release];
+    
+    for (int i=0; i<[viewControllers count]; i++) {
+        UIView *controller = [viewControllers objectAtIndex:i];
+        if ((NSNull *)controller == [NSNull null]) {
+            
+        }
+        else
+        {
+            [controller removeFromSuperview];
+            controller=nil;
+        }
+    }
+
+    imagescrollView.contentSize = CGSizeMake(imagescrollView.frame.size.width * kNumberOfPages, imagescrollView.frame.size.height);
+    
+    pageControl.numberOfPages = kNumberOfPages;
+    pageControl.currentPage = 0;
+    
+    if (kNumberOfPages>=2) {
+        [imagescrollView scrollRectToVisible:CGRectMake(0, 0, applicationwidth, imagescrollView.frame.size.height) animated:YES];
+        [self loadScrollViewWithPage:0];
+        [self loadScrollViewWithPage:1];
+    }
+    else if(kNumberOfPages==1){
+        [imagescrollView scrollRectToVisible:CGRectMake(0, 0, applicationwidth, imagescrollView.frame.size.height) animated:YES];
+        [self loadScrollViewWithPage:0];
+    }
+}
+
+- (void)loadScrollViewWithPage:(int)page2 {
+    if (page2 < 0) return;
+    if (page2 >= kNumberOfPages) return;
+    
+    // replace the placeholder if necessary
+    UIView *controller = [viewControllers objectAtIndex:page2];
+    if ((NSNull *)controller == [NSNull null]) {
+        controller = [[UIView alloc] init];
+        
+        UIImageView *mypageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
+        mypageview.tag = 33;
+        [mypageview setImageWithURL:[NSURL URLWithString:[[guanggaoArray objectAtIndex:page2] objectAtIndex:1]] placeholderImage:[UIImage imageNamed:@"首页切换图1.png"]];
+        [controller addSubview:mypageview];
+        [mypageview release];
+        
+        [viewControllers replaceObjectAtIndex:page2 withObject:controller];
+        [controller release];
+    }
+    
+    // add the controller's view to the scroll view
+    if (nil == controller.superview) {
+        CGRect frame = imagescrollView.frame;
+        frame.origin.x = frame.size.width * page2;
+        frame.origin.y = 0;
+        controller.frame = frame;
+        [imagescrollView addSubview:controller];
+    }
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (scrollView.tag==1) {
+        if (pageControlUsed) {
+            return;
+        }
+        
+        CGFloat pageWidth = imagescrollView.frame.size.width;
+        int page2 = floor((imagescrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+        pageControl.currentPage = page2;
+        
+        [self loadScrollViewWithPage:page2 - 1];
+        [self loadScrollViewWithPage:page2];
+        [self loadScrollViewWithPage:page2 + 1];
+    }
+}
+
+// At the end of scroll animation, reset the boolean used when scrolls originate from the UIPageControl
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    pageControlUsed = NO;
+}
+
+- (void)changePage:(id)sender {
+    int page2 = pageControl.currentPage;
+    // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
+    [self loadScrollViewWithPage:page2 - 1];
+    [self loadScrollViewWithPage:page2];
+    [self loadScrollViewWithPage:page2 + 1];
+    // update the scroll view to the appropriate page
+    CGRect frame = imagescrollView.frame;
+    frame.origin.x = frame.size.width * page2;
+    frame.origin.y = 0;
+    [imagescrollView scrollRectToVisible:frame animated:YES];
+    // Set the boolean used when scrolls originate from the UIPageControl. See scrollViewDidScroll: above.
+    pageControlUsed = YES;
+}
+
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {

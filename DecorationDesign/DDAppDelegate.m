@@ -168,4 +168,30 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+-(BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    NSLog(@"sourceApplication:%@",sourceApplication);
+    if ([sourceApplication isEqualToString:@"com.yixin.yixin"])
+    {
+        return  [[YXShareApi shared] handleOpen:url];
+    }
+    else if([sourceApplication isEqualToString:@"com.tencent.xin"])
+    {
+        return [[WXShareApi shared] handleOpen:url];
+    }
+    else if([sourceApplication isEqualToString:@"com.sina.weibo"])
+    {
+        return [[XLWeiboApi shared] handleOpen:url];
+    }
+    else if([sourceApplication isEqualToString:@"com.tencent.mqq"])
+    {
+        return [[QQkongjianApi shared] handleOpen:url];
+    }
+    else if([sourceApplication isEqualToString:@"com.tencent.WeiBo"])
+    {
+        return [[TCWeiboApi shared].wbapi handleOpenURL:url];
+    }
+    return YES;
+}
+
 @end

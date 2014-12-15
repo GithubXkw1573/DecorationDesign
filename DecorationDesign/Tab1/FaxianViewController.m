@@ -17,10 +17,7 @@
 
 -(void)dealloc
 {
-    [queryMenuListRequest clearDelegatesAndCancel];
-    [queryMenuListRequest release];
-    [queryNewsListRequest clearDelegatesAndCancel];
-    [queryNewsListRequest release];
+    
     [super dealloc];
 }
 
@@ -39,7 +36,7 @@
     }
     
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
-    
+    [self.navigationController.navigationBar setHidden:NO];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"标题栏%i.png",[[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0?7:6]] forBarMetrics:UIBarMetricsDefault];
     
     UIImage *shadowimage=[[UIImage alloc]init];
@@ -49,7 +46,16 @@
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
     titlelabel.backgroundColor=[UIColor clearColor];
     titlelabel.textColor=[UIColor whiteColor];
-    titlelabel.text=@"设计师";
+    if (self.contentType ==1) {
+        titlelabel.text=@"设计师";
+    }else if (self.contentType ==2){
+        titlelabel.text=@"我家楼盘";
+    }else if (self.contentType==3){
+        titlelabel.text=@"装修材料";
+    }else if (self.contentType ==4){
+        titlelabel.text=@"家装公司";
+    }
+    
     titlelabel.textAlignment=UITextAlignmentCenter;
     titlelabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:19];
     self.navigationItem.titleView=titlelabel;
@@ -152,44 +158,51 @@
 {
     [MBProgress show:YES];
     [MBProgress setLabelText:@"刷新中"];
-    NSString *url_str=[NSString stringWithFormat:@"%@foundActivity/getFoundTrade",MineURL];
-    NSURL *url=[NSURL URLWithString:[url_str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    ASIFormDataRequest *asiReq=[[ASIFormDataRequest alloc] initWithURL:url];
-    [queryMenuListRequest cancel];
-    queryMenuListRequest = asiReq;
-    [asiReq setCompletionBlock:^{
-        NSDictionary *dic=[[asiReq responseString] JSONValue];
-        NSLog(@"已完成：%@",dic);
-        if (dic) {
-            _menuList = [dic objectForKey:@"result"];
-            NSDictionary *first = [NSDictionary dictionaryWithObjectsAndKeys:@"全部",@"name",@"0",@"id", nil];
-            [_menuList insertObject:first atIndex:0];
+    NSURL *url=[NSURL URLWithString:[MineURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    HessianFormDataRequest *hessianrequest=[[HessianFormDataRequest alloc] initWithURL:url];
+    queryMenuListRequest = hessianrequest;
+    NSMutableDictionary *params= [NSMutableDictionary dictionary];
+    NSLog(@"@%@",[UserInfo shared].m_plateType);
+    [params setValue:[UserInfo shared].m_plateType forKey:@"PLATETYPE"];
+    [params setValue:@"PLATE-COLUMN" forKey:@"JUDGEMETHOD"];
+    hessianrequest.postData =  params;
+    
+    [hessianrequest setCompletionBlock:^(NSDictionary *result){
+        MBProgressHUD *mb = (MBProgressHUD*)[[UIApplication sharedApplication].keyWindow viewWithTag:5666];
+        [mb hide:YES];
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            NSLog(@"%@",[result objectForKey:@"PLATELISTINFO"]);
+            _menuList = [result objectForKey:@"PLATELISTINFO"];
+//            NSDictionary *first = [NSDictionary dictionaryWithObjectsAndKeys:@"全部",@"name",@"0",@"id", nil];
+//            [_menuList insertObject:first atIndex:0];
             [scrollMenu updateListItem:_menuList];
             //更多按钮设置
             [self addMoreButton:_menuList];
             //更新newsscroll
             [newsScrollView reloadscrollview:_menuList];
             if ([_menuList count] > 0) {
+                
                 [MBProgress hide:YES];
             }
-            else if([_menuList count] == 0){
+            else{
                 [MBProgress settext:@"暂无数据!" aftertime:1.0];
                 [_menuList removeAllObjects];
             }
         }else{
-            NSLog(@"json解析错误!");
-            [MBProgress settext:@"网络异常！" aftertime:1.0];
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            [MBProgress settext:errrDesc aftertime:1.0];
         }
     }];
-    [asiReq setFailedBlock:^{
-        //[MBProgress settext:@"网络错误，请检查网络连接！" aftertime:1.0];
-        [MBProgress setHidden:YES];
-        NSLog(@"informationrequestFailed");
-        
+    [hessianrequest setFailedBlock:^{
+        NSLog(@"网络错误");
+        MBProgressHUD *mb = (MBProgressHUD*)[[UIApplication sharedApplication].keyWindow viewWithTag:5666];
+        [mb hide:YES];
+        [MBProgress settext:@"网络异常！" aftertime:1.0];
     }];
-    asiReq.timeOutSeconds = ktimeOutSeconds;
-    [asiReq startAsynchronous];
-    [asiReq release];
+    [hessianrequest startRequest];
+    [hessianrequest release];
 }
 
 -(void)addMoreButton:(NSMutableArray*)array
@@ -219,13 +232,13 @@
     for (int i=0; i<3; i++) {
         for (int j=0; j<4; j++) {
             if (i*4+j+1<=array.count) {
-                CityItem *item = [[CityItem alloc] initWithFrame:CGRectMake(20+72*j*widthRate, 20+35*i, 50*widthRate, 25)];
+                CityItem *item = [[CityItem alloc] initWithFrame:CGRectMake(20+72*j*widthRate, 20+35*i, 60*widthRate, 25)];
                 item.tag = 200+ i*4+j;
                 item.layer.cornerRadius = 12.5;
                 item.layer.masksToBounds = YES;
-                NSDictionary *dic =[PublicFunction fixDictionary:[array objectAtIndex:(i*4+j)]] ;
-                item.city = [dic objectForKey:@"name"];
-                item.cityId = [NSString stringWithFormat:@"%@",[dic objectForKey:@"id"]];
+                NSArray *dic =[array objectAtIndex:(i*4+j)] ;
+                item.city = [dic objectAtIndex:1];
+                item.cityId = [NSString stringWithFormat:@"%@",[dic objectAtIndex:0]];
                 [item addTarget:self action:@selector(ItemClicked:) forControlEvents:UIControlEventTouchUpInside];
                 [moreView addSubview:item];
                 [item release];
@@ -267,11 +280,30 @@
     }
 }
 
--(void)NewsTableViewBtnPressed:(NSDictionary *)dic
+-(void)NewsTableViewBtnPressed:(NSArray *)dic
 {
-    DesignerViewController *designer = [[DesignerViewController alloc] init];
-    [self.navigationController pushViewController:designer animated:YES];
-    [designer release];
+    if ([[UserInfo shared].m_plateType isEqualToString:@"S"]) {
+        DesignerViewController *designer = [[DesignerViewController alloc] init];
+        designer.m_array = dic;
+        [self.navigationController pushViewController:designer animated:YES];
+        [designer release];
+    }else if ([[UserInfo shared].m_plateType isEqualToString:@"J"]){
+        CompanyViewController *company = [[CompanyViewController alloc] init];
+        company.m_array = dic;
+        [self.navigationController pushViewController:company animated:YES];
+        [company release];
+    }else if ([[UserInfo shared].m_plateType isEqualToString:@"C"]){
+        CailiaoViewController *cailiao = [[CailiaoViewController alloc] init];
+        cailiao.m_array = dic;
+        [self.navigationController pushViewController:cailiao animated:YES];
+        [cailiao release];
+    }else if ([[UserInfo shared].m_plateType isEqualToString:@"L"]){
+        LoupanViewController *loupan = [[LoupanViewController alloc]init];
+        loupan.m_array = dic;
+        [self.navigationController pushViewController:loupan animated:YES];
+        [loupan release];
+    }
+    
 }
 
 -(void)selectItemButton:(UIButton *)btn withData:(NSDictionary *)dic

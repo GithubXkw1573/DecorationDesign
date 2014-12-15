@@ -12,7 +12,7 @@
 @synthesize m_newsArray;
 @synthesize delegate;
 @synthesize shaixuan;
-@synthesize Dictionary;
+@synthesize m_array;
 @synthesize m_tableView;
 @synthesize m_Dictionary;
 @synthesize m_recommdArray;
@@ -22,6 +22,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         m_newsArray = [[NSMutableArray alloc] initWithCapacity:1];
+        m_array = [[NSArray alloc] init];
         m_recommdArray = [[NSMutableArray alloc] initWithCapacity:0];
         m_Dictionary = [[NSDictionary alloc] init];
         m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, self.frame.size.height) style:UITableViewStylePlain];
@@ -87,27 +88,18 @@
 
 -(void)reloadrequest
 {
-    NSString *url_str=[NSString stringWithFormat:@"%@foundActivity/getFoundJson",MineURL];
-    NSURL *url=[NSURL URLWithString:[url_str stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    ASIFormDataRequest *asiReq=[[ASIFormDataRequest alloc] initWithURL:url];
-    NSLog(@"HHH:%@",[Dictionary objectForKey:@"id"]);
-    [asiReq setPostValue:[Dictionary objectForKey:@"id"] forKey:@"tradeId"];
-    [asiReq setPostValue:@"99" forKey:@"uid"];
-    [asiReq setPostValue:[NSString stringWithFormat:@"%i",++page] forKey:@"page"];
-    [myrequest cancel];
-    myrequest = asiReq;
-    [asiReq setCompletionBlock:^{
-        NSDictionary *dic=[[asiReq responseString] JSONValue];
-        NSLog(@"%d",page);
-        NSLog(@"已完成：%@",dic);
-        if (dic) {
-            newList = [dic objectForKey:@"result"];
-//            if (page==1) {
-//                self.m_recommdArray = [dic objectForKey:@"recommend"];
-//                if (self.m_recommdArray.count >0) {
-//                    self.m_Dictionary = [[dic objectForKey:@"recommend"] objectAtIndex:0];
-//                }
-//            }
+    NSURL *url=[NSURL URLWithString:[MineURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    HessianFormDataRequest *hessianrequest=[[HessianFormDataRequest alloc] initWithURL:url];
+//    NSLog(@"HHH:%@",[Dictionary objectForKey:@"id"]);
+    NSMutableDictionary *params= [NSMutableDictionary dictionary];
+    [params setValue:[NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:0]] forKey:@"USERTYPE"];
+    [params setValue:@"USER-LIST" forKey:@"JUDGEMETHOD"];
+    hessianrequest.postData =  params;
+    myrequest = hessianrequest;
+    [hessianrequest setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            newList = [result objectForKey:@"USERLISTINFO"];
             
             if ([newList count] > 0) {
                 [MBProgress hide:YES];
@@ -135,11 +127,8 @@
                 }
                 page --;
             }
-        }else{
-            NSLog(@"json解析错误!");
-            page --;
-            [MBProgress settext:@"网络异常！" aftertime:1.0];
         }
+        
         if (reloadormore) {
             [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
             reloadormore=NO;
@@ -150,9 +139,9 @@
             reloadormore=NO;
         }
     }];
-    [asiReq setFailedBlock:^{
-        //[MBProgress settext:@"网络错误，请检查网络连接！" aftertime:1.0];
-        [MBProgress setHidden:YES];
+    [hessianrequest setFailedBlock:^{
+        
+        [MBProgress settext:@"网络错误，请检查网络连接！" aftertime:1.0];
         page--;
         NSLog(@"informationrequestFailed");
         
@@ -166,9 +155,8 @@
             reloadormore=NO;
         }
     }];
-    asiReq.timeOutSeconds = ktimeOutSeconds;
-    [asiReq startAsynchronous];
-    [asiReq release];
+    [hessianrequest startRequest];
+    [hessianrequest release];
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -177,57 +165,73 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return m_newsArray.count*2;
+    return m_newsArray.count*2+1;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int row = indexPath.row;
-    //NSDictionary *dic=[m_newsArray objectAtIndex:row];
-    if (row%2==0) {
-        static NSString *CellIdentifier3 = @"Cell0";
+    if (row==0) {
+        static NSString *CellIdentifier3 = @"Cell2";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
         if (cell == nil) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3] autorelease];
+            cell = [[[BannerTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3] autorelease];
         }
+        [(BannerTableCell*)cell setPlateType:[UserInfo shared].m_plateType];
+        [(BannerTableCell*)cell setPlateCode:[self.m_array objectAtIndex:0]];
+        [(BannerTableCell*)cell loadContent];
         cell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
-        //[(DesignerListCell*)cell setCell:dic row:row];
         return cell;
-    }
-    else{
-        static NSString *CellIdentifier1 = @"Cell1";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
-        if (cell == nil) {
-            cell = [[[DesignerListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
+    }else{
+        if (row%2==0) {
+            static NSString *CellIdentifier3 = @"Cell0";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
+            if (cell == nil) {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3] autorelease];
+            }
+            cell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
+            //[(DesignerListCell*)cell setCell:dic row:row];
+            return cell;
         }
-        
-        return cell;
+        else{
+            static NSString *CellIdentifier1 = @"Cell1";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
+            if (cell == nil) {
+                cell = [[[DesignerListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
+            }
+            [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+            return cell;
+        }
     }
-    
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row%2==0) {
-       return  10;
-    }else{
-        return 80;
+    if (indexPath.row==0) {
+        return 160;
+    }
+    else{
+        if (indexPath.row%2==0) {
+            return  10;
+        }else{
+            return 80;
+        }
     }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [m_tableView deselectRowAtIndexPath:indexPath animated:NO];
-    [delegate NewsTableViewBtnPressed:0];
-    //[delegate NewsTableViewBtnPressed:[m_newsArray objectAtIndex:indexPath.row]];
+    //[delegate NewsTableViewBtnPressed:0];
+    [delegate NewsTableViewBtnPressed:[m_newsArray objectAtIndex:indexPath.row/2]];
 }
 
 -(int)tablewheight
 {
     if (m_newsArray.count>0) {
-        return 105*(m_newsArray.count-1)+125;
+        return 105*(m_newsArray.count-1)+125+160;
     }else{
-        return 125;
+        return 125+160;
     }
     
 }

@@ -13,18 +13,24 @@
 @end
 
 @implementation HomeViewController
-@synthesize imagescrollView,pageControl,guanggaoArray,viewControllers,designerArray,designerscrollView;
+@synthesize imagescrollView,pageControl,guanggaoArray,viewControllers,designerArray,designerscrollView,homeMBProgress;
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self initNaviWithTitle:@"设计圈"];
+
     [self initComponents];
+    
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController.navigationBar setHidden:YES];
 }
 
 -(void)initNaviWithTitle:(NSString*)title
@@ -64,6 +70,8 @@
 
 -(void)initComponents
 {
+    self.view.backgroundColor=[UIColor colorWithRed:35/255.f green:11/255.f blue:114/255.f alpha:1.0f];
+    
     NSDictionary *dic1 = [NSDictionary dictionaryWithObjectsAndKeys:@"家装样图1",@"imagename",@"高端大气，舒适，温馨",@"desc",@"许开伟",@"author", nil];
     NSDictionary *dic4 = [NSDictionary dictionaryWithObjectsAndKeys:@"首页切换图1",@"imagename",@"低调奢华，有内涵",@"desc",@"周星星",@"author", nil];
     NSDictionary *dic2 = [NSDictionary dictionaryWithObjectsAndKeys:@"首页切换图2",@"imagename",@"活泼乱动，真可爱",@"desc",@"余文乐",@"author", nil];
@@ -77,18 +85,28 @@
         [self.designerArray addObject:dic];
     }
     
-    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-49-44) style:UITableViewStylePlain];
+    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-29) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
-    m_tableView.backgroundColor=[UIColor colorWithRed:240/255.f green:240/255.f blue:240/255.f alpha:1.0f];
+    m_tableView.backgroundColor=[UIColor clearColor];
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
+    
+    
+    
+    MBProgressHUD *mbprogress = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
+    mbprogress.tag = 5666;
+    self.homeMBProgress = mbprogress;
+    [mbprogress setCenter:CGPointMake(applicationwidth/2.0, applicationheight/2)];
+    [[UIApplication sharedApplication].keyWindow addSubview:mbprogress];
+    [mbprogress hide:YES];
+    [mbprogress setLabelText:@"加载中"];
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 8;
+    return 4;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -104,17 +122,12 @@
             
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
-            UIImageView *backimage=[[UIImageView alloc]init];
-            backimage.backgroundColor=[UIColor whiteColor];
-            cell.backgroundView=backimage;
-            [backimage release];
-            
-            UIImageView *mypageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
-            mypageview.image=[UIImage imageNamed:@"模块大.png"];
+            UIImageView *mypageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 80*widthRate)];
+            mypageview.image=[UIImage imageNamed:@"首页横幅1.png"];
             [cell.contentView addSubview:mypageview];
             [mypageview release];
             
-            UIScrollView *guanggaoscrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
+            UIScrollView *guanggaoscrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 80*widthRate)];
             guanggaoscrollView.backgroundColor=[UIColor clearColor];
             guanggaoscrollView.tag=1;
             self.imagescrollView=guanggaoscrollView;
@@ -128,9 +141,10 @@
             guanggaoscrollView.scrollsToTop = NO;
             guanggaoscrollView.delegate = self;
             
-            UIPageControl *pageCon=[[UIPageControl alloc]initWithFrame:CGRectMake(265*widthRate, 135, 50, 20)];
+            UIPageControl *pageCon=[[UIPageControl alloc]initWithFrame:CGRectMake(135*widthRate, 60, 50, 20)];
             pageCon.backgroundColor = [UIColor clearColor];
             pageCon.currentPageIndicatorTintColor = [UIColor redColor];
+            pageCon.pageIndicatorTintColor = [UIColor colorWithRed:150/255.f green:152/255.f blue:155/255.f alpha:1.f];
             pageCon.alpha=0.6;
             [pageCon addTarget:self action:@selector(changePage:) forControlEvents:UIControlEventValueChanged];
             self.pageControl=pageCon;
@@ -183,37 +197,25 @@
             
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
-//            UIImageView *backimage=[[UIImageView alloc]init];
-//            backimage.backgroundColor=[UIColor clearColor];
-//            cell.backgroundView=backimage;
-//            [backimage release];
-            
             cell.backgroundColor = [UIColor clearColor];
             
+            UIButton *guanggaoBtn = [[UIButton alloc] initWithFrame:CGRectMake(9*widthRate, 10*widthRate, 135*widthRate, 132.5*widthRate)];
+            guanggaoBtn.backgroundColor = [UIColor clearColor];
+            [guanggaoBtn setImage:[UIImage imageNamed:@"suning"] forState:UIControlStateNormal];
+            guanggaoBtn.tag = 11;
+            [guanggaoBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:guanggaoBtn];
+            [guanggaoBtn release];
             
-            PicTextButton *shejishibtn = [[PicTextButton alloc] initWithFrame:CGRectMake(9*widthRate, 7*widthRate, 70*widthRate, 75*widthRate) withIamge:@"shejishi" withText:@"设计师"];
-            shejishibtn.tag = 11;
+            UIButton *shejishibtn = [[UIButton alloc] initWithFrame:CGRectMake(149*widthRate, 10*widthRate, 162*widthRate, 132.5*widthRate)];
+            shejishibtn.backgroundColor = [UIColor clearColor];
+            [shejishibtn setImage:[UIImage imageNamed:@"shejishi"] forState:UIControlStateNormal];
+            shejishibtn.tag = 12;
             [shejishibtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:shejishibtn];
             [shejishibtn release];
             
-            PicTextButton *jiazhuanggongsibtn = [[PicTextButton alloc] initWithFrame:CGRectMake(86*widthRate, 7*widthRate, 70*widthRate, 75*widthRate) withIamge:@"jiazhuang" withText:@"家装公司"];
-            jiazhuanggongsibtn.tag = 12;
-            [jiazhuanggongsibtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:jiazhuanggongsibtn];
-            [jiazhuanggongsibtn release];
             
-            PicTextButton *zhushicailiaobtn = [[PicTextButton alloc] initWithFrame:CGRectMake(163*widthRate, 7*widthRate, 70*widthRate, 75*widthRate) withIamge:@"cailiao" withText:@"装饰材料"];
-            zhushicailiaobtn.tag = 13;
-            [zhushicailiaobtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:zhushicailiaobtn];
-            [zhushicailiaobtn release];
-            
-            PicTextButton *loupanbtn = [[PicTextButton alloc] initWithFrame:CGRectMake(240*widthRate, 7*widthRate, 70*widthRate, 75*widthRate) withIamge:@"loupan" withText:@"我家楼盘"];
-            loupanbtn.tag = 14;
-            [loupanbtn addTarget:self action:@selector(buttonClicked2:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:loupanbtn];
-            [loupanbtn release];
         }
         
         return cell;
@@ -227,45 +229,41 @@
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
             
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = [UIColor clearColor];
+            UIButton *loupanBtn = [[UIButton alloc] initWithFrame:CGRectMake(9*widthRate, 5*widthRate, 135*widthRate, 132.5*widthRate)];
+            loupanBtn.backgroundColor = [UIColor clearColor];
+            [loupanBtn setImage:[UIImage imageNamed:@"loupan"] forState:UIControlStateNormal];
+            loupanBtn.tag = 13;
+            [loupanBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:loupanBtn];
+            [loupanBtn release];
             
-            UIImageView *backimage=[[UIImageView alloc]init];
-            backimage.backgroundColor=[UIColor whiteColor];
-            cell.backgroundView=backimage;
-            [backimage release];
+            UIButton *baomingBtn = [[UIButton alloc] initWithFrame:CGRectMake(149*widthRate, 5*widthRate, 79*widthRate, 62*widthRate)];
+            baomingBtn.backgroundColor = [UIColor clearColor];
+            [baomingBtn setImage:[UIImage imageNamed:@"baoming"] forState:UIControlStateNormal];
+            baomingBtn.tag = 14;
+            [baomingBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:baomingBtn];
+            [baomingBtn release];
+            
+            UIButton *searchBtn = [[UIButton alloc] initWithFrame:CGRectMake(232*widthRate, 5*widthRate, 79*widthRate, 62*widthRate)];
+            searchBtn.backgroundColor = [UIColor clearColor];
+            [searchBtn setImage:[UIImage imageNamed:@"search"] forState:UIControlStateNormal];
+            searchBtn.tag = 15;
+            [searchBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:searchBtn];
+            [searchBtn release];
+            
+            UIButton *jiajuBtn = [[UIButton alloc] initWithFrame:CGRectMake(149*widthRate, 72*widthRate, 164*widthRate, 65.5*widthRate)];
+            jiajuBtn.backgroundColor = [UIColor clearColor];
+            [jiajuBtn setImage:[UIImage imageNamed:@"hongxing"] forState:UIControlStateNormal];
+            jiajuBtn.tag = 16;
+            [jiajuBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:jiajuBtn];
+            [jiajuBtn release];
             
             
-            
-            UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(10, 10, 150*widthRate, 30)];
-            titlelabel.text = @"知名设计师推荐";
-            titlelabel.font=font(16);
-            titlelabel.textAlignment=UITextAlignmentLeft;
-            titlelabel.backgroundColor=[UIColor clearColor];
-            [cell.contentView addSubview:titlelabel];
-            [titlelabel release];
-            
-            UILabel *numLabel=[[UILabel alloc]initWithFrame:CGRectMake(applicationwidth-120, 10, 70, 30)];
-            numLabel.tag = 15;
-            numLabel.text = @"123456";
-            numLabel.textColor = [UIColor redColor];
-            numLabel.font=font(12);
-            numLabel.textAlignment=UITextAlignmentRight;
-            numLabel.backgroundColor=[UIColor clearColor];
-            [cell.contentView addSubview:numLabel];
-            [numLabel release];
-            
-            UILabel *gudinglabel=[[UILabel alloc]initWithFrame:CGRectMake(applicationwidth-50, 10, 50, 30)];
-            gudinglabel.text = @" 人在线";
-            gudinglabel.textColor = [UIColor lightGrayColor];
-            gudinglabel.font=font(12);
-            gudinglabel.textAlignment=UITextAlignmentLeft;
-            gudinglabel.backgroundColor=[UIColor clearColor];
-            [cell.contentView addSubview:gudinglabel];
-            [gudinglabel release];
         }
-        
-        UILabel *numlabel =(UILabel *)[cell.contentView viewWithTag:15];
-        
-        numlabel.text = @"123456";
         
         return cell;
     }
@@ -278,151 +276,28 @@
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
             
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = [UIColor clearColor];
+            UIButton *cailiaoBtn = [[UIButton alloc] initWithFrame:CGRectMake(9*widthRate, 5*widthRate, 135*widthRate, 120*widthRate)];
+            cailiaoBtn.backgroundColor = [UIColor clearColor];
+            [cailiaoBtn setImage:[UIImage imageNamed:@"caiiao"] forState:UIControlStateNormal];
+            cailiaoBtn.tag = 17;
+            [cailiaoBtn addTarget:self action:@selector(buttonClicked2:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:cailiaoBtn];
+            [cailiaoBtn release];
             
-            cell.backgroundColor=[UIColor whiteColor];
-            UIButton *firstBtn = [[UIButton alloc] initWithFrame:CGRectMake(5, 0, applicationwidth-10, 105*widthRate)];
-            firstBtn.tag = 70;
-            firstBtn.backgroundColor = [UIColor clearColor];
-            [firstBtn setImage:[UIImage imageNamed:@"设计师首页大图"] forState:UIControlStateNormal];
-            [firstBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:firstBtn];
-            [firstBtn release];
-            
-        }
-        
-        return cell;
-    }
-    else if(row ==4)
-    {
-        static NSString *CellIdentifier = @"Cell4";
-        
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-            
-            cell.selectionStyle=UITableViewCellSelectionStyleNone;
-            
-            cell.backgroundColor=[UIColor whiteColor];
-            
-            UIButton *preBtn = [[UIButton alloc] initWithFrame:CGRectMake(8, 10, 24, 30)];
-            preBtn.backgroundColor = [UIColor clearColor];
-            [preBtn setImage:[UIImage imageNamed:@"小箭头"] forState:UIControlStateNormal];
-            preBtn.transform = CGAffineTransformMakeRotation(M_PI);
-            [preBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            preBtn.tag = 61;
-            [cell.contentView addSubview:preBtn];
-            [preBtn release];
-            
-            UIButton *nextBtn = [[UIButton alloc] initWithFrame:CGRectMake(applicationwidth-8-24, 10, 24, 30)];
-            nextBtn.backgroundColor = [UIColor clearColor];
-            [nextBtn setImage:[UIImage imageNamed:@"小箭头"] forState:UIControlStateNormal];
-            [nextBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            nextBtn.tag = 62;
-            [cell.contentView addSubview:nextBtn];
-            [nextBtn release];
-            
-            UIScrollView *scrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(32, 0, applicationwidth-64, 50*widthRate)];
-            scrollView.backgroundColor=[UIColor clearColor];
-            scrollView.tag=2;
-            self.designerscrollView=scrollView;
-            [cell.contentView addSubview:scrollView];
-            [scrollView release];
-            
-            scrollView.bounces=NO;
-            scrollView.pagingEnabled = YES;
-            scrollView.showsHorizontalScrollIndicator = NO;
-            scrollView.showsVerticalScrollIndicator = NO;
-            scrollView.scrollsToTop = NO;
-            scrollView.delegate = self;
-            
-            self.designerscrollView.contentSize = CGSizeMake(50*widthRate * designerArray.count, designerscrollView.frame.size.height);
-            
-            for(UIView *v in self.designerscrollView.subviews)
-                [v removeFromSuperview];
-            for (int i=0; i<self.designerArray.count; i++) {
-                NSString *imageName = [[designerArray objectAtIndex:i] objectForKey:@"image"];
-                UIButton *imagebtn = [[UIButton alloc] initWithFrame:CGRectMake(5+50*i, 5, 40, 40)];
-                [imagebtn setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-                imagebtn.layer.cornerRadius = imagebtn.frame.size.width/2.0f;
-                imagebtn.layer.masksToBounds = YES;
-                imagebtn.tag = 100+i;
-                [imagebtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-                [self.designerscrollView addSubview:imagebtn];
-                [imagebtn release];
-            }
+            UIButton *gongsiBtn = [[UIButton alloc] initWithFrame:CGRectMake(149*widthRate, 5*widthRate, 162*widthRate, 120*widthRate)];
+            gongsiBtn.backgroundColor = [UIColor clearColor];
+            [gongsiBtn setImage:[UIImage imageNamed:@"jiazhuang"] forState:UIControlStateNormal];
+            gongsiBtn.tag = 18;
+            [gongsiBtn addTarget:self action:@selector(buttonClicked4:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:gongsiBtn];
+            [gongsiBtn release];
             
         }
         
         return cell;
     }
-    else{
-        static NSString *CellIdentifier = @"Cell";
-        
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-        if (cell == nil) {
-            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
-            
-            cell.selectionStyle=UITableViewCellSelectionStyleNone;
-            
-            cell.backgroundColor=[UIColor clearColor];
-            
-            UIView *mybackView = [[UIView alloc] initWithFrame:CGRectMake(0, 7*widthRate, applicationwidth, 135*widthRate)];
-            mybackView.backgroundColor = [UIColor whiteColor];
-            [cell.contentView addSubview:mybackView];
-            [mybackView release];
-            
-            UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(10, 5*widthRate, 150*widthRate, 30*widthRate)];
-            titlelabel.text = @"著名家装公司";
-            titlelabel.font=font(16);
-            titlelabel.tag = 50;
-            titlelabel.textAlignment=UITextAlignmentLeft;
-            titlelabel.backgroundColor=[UIColor clearColor];
-            [mybackView addSubview:titlelabel];
-            [titlelabel release];
-            
-            UIImageView *leftimageview=[[UIImageView alloc]initWithFrame:CGRectMake(7*widthRate, 35*widthRate, 150*widthRate, 78*widthRate)];
-            leftimageview.tag = 51;
-            leftimageview.image=[UIImage imageNamed:@"家装公司小图"];
-            [mybackView addSubview:leftimageview];
-            [leftimageview release];
-            UILabel *leftlabel=[[UILabel alloc]initWithFrame:CGRectMake(7*widthRate, 113*widthRate, 150*widthRate, 16*widthRate)];
-            leftlabel.text = @"南京好利来设计公司";
-            leftlabel.font=font(13);
-            leftlabel.tag = 52;
-            leftlabel.textAlignment=UITextAlignmentLeft;
-            leftlabel.backgroundColor=[UIColor clearColor];
-            [mybackView addSubview:leftlabel];
-            [leftlabel release];
-            
-            UIImageView *rightimageview=[[UIImageView alloc]initWithFrame:CGRectMake(163*widthRate, 35*widthRate, 150*widthRate, 78*widthRate)];
-            rightimageview.tag = 53;
-            rightimageview.image=[UIImage imageNamed:@"家装公司小图2"];
-            [mybackView addSubview:rightimageview];
-            [rightimageview release];
-            UILabel *rightlabel=[[UILabel alloc]initWithFrame:CGRectMake(163*widthRate, 113*widthRate, 150*widthRate, 16*widthRate)];
-            rightlabel.tag = 54;
-            rightlabel.text = @"南京艺术设计有限公司";
-            rightlabel.font=font(13);
-            rightlabel.textAlignment=UITextAlignmentLeft;
-            rightlabel.backgroundColor=[UIColor clearColor];
-            [mybackView addSubview:rightlabel];
-            [rightlabel release];
-        }
-        UILabel *titleLabel = (UILabel*)[cell.contentView viewWithTag:50];
-        UILabel *leftLabel = (UILabel*)[cell.contentView viewWithTag:52];
-        UILabel *rightLabel = (UILabel*)[cell.contentView viewWithTag:54];
-        UIImageView *leftImage = (UIImageView*)[cell.contentView viewWithTag:51];
-        UIImageView *rightImage = (UIImageView*)[cell.contentView viewWithTag:53];
-        if (row == 5) {
-            titleLabel.text = @"著名家装公司";
-        }else if (row==6){
-            titleLabel.text = @"材料商";
-        }else if (row==7){
-            titleLabel.text = @"热门楼盘";
-        }
-        
-        return cell;
-    }
+    
     return nil;
 }
 
@@ -431,28 +306,16 @@
     int row=[indexPath row];
     switch (row) {
         case 0:
-            return 160*widthRate;
+            return 80*widthRate;
             break;
         case 1:
-            return 89*widthRate;
+            return 142.5*widthRate;
             break;
         case 2:
-            return 40;
+            return 137.5*widthRate;
             break;
         case 3:
-            return 105*widthRate;
-            break;
-        case 4:
-            return 50*widthRate;
-            break;
-        case 5:
-            return 142*widthRate;
-            break;
-        case 6:
-            return 142*widthRate;
-            break;
-        case 7:
-            return 142*widthRate;
+            return 135*widthRate;
             break;
         default:
             break;
@@ -579,14 +442,32 @@
 
 -(void)buttonClicked2:(UIButton*)btn
 {
-    //我家楼盘
-    FaxianViewController *faxian4 = [[FaxianViewController alloc] init];
-    faxian4.contentType = 4;
-    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
-        self.navigationController.interactivePopGestureRecognizer.delegate = nil;
-    }
-    [self.navigationController pushViewController:faxian4 animated:YES];
-    [faxian4 release];
+    [self.homeMBProgress show:YES];
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        //装修材料
+        FaxianViewController *faxian = [[FaxianViewController alloc] init];
+        faxian.contentType = 3;
+        [UserInfo shared].m_plateType = @"C";
+        [self.navigationController pushViewController:faxian animated:YES];
+        [faxian release];
+    });
+}
+-(void)buttonClicked4:(UIButton*)btn
+{
+    //家装公司
+    [self.homeMBProgress show:YES];
+    double delayInSeconds = 0.1;
+    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+        //家装公司
+        FaxianViewController *faxian = [[FaxianViewController alloc] init];
+        faxian.contentType = 4;
+        [UserInfo shared].m_plateType = @"J";
+        [self.navigationController pushViewController:faxian animated:YES];
+        [faxian release];
+    });
 }
 
 -(void)buttonClicked:(UIButton*)btn
@@ -602,39 +483,132 @@
             break;
         case 11:
         {
-            //设计师
-            FaxianViewController *faxian = [[FaxianViewController alloc] init];
-            faxian.contentType = 1;
-            [self.navigationController pushViewController:faxian animated:YES];
-            [faxian release];
+            //广告
+//            FaxianViewController *faxian = [[FaxianViewController alloc] init];
+//            faxian.contentType = 1;
+//            [self.navigationController pushViewController:faxian animated:YES];
+//            [faxian release];
+            LoginViewController *login = [[LoginViewController alloc] init];
+            login.hidesBottomBarWhenPushed= YES;
+            [self.navigationController pushViewController:login animated:YES];
+            [login release];
         }
             break;
         case 12:
         {
-            //装饰公司
-            FaxianViewController *faxian = [[FaxianViewController alloc] init];
-            faxian.contentType = 2;
-            [self.navigationController pushViewController:faxian animated:YES];
-            [faxian release];
+            [self.homeMBProgress show:YES];
+            double delayInSeconds = 0.1;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                //设计师
+                FaxianViewController *faxian = [[FaxianViewController alloc] init];
+                faxian.contentType = 1;
+                [UserInfo shared].m_plateType = @"S";
+                [self.navigationController pushViewController:faxian animated:YES];
+                [faxian release];
+            });
         }
             break;
         case 13:
         {
-            //装饰材料
-            FaxianViewController *faxian = [[FaxianViewController alloc] init];
-            faxian.contentType = 3;
-            [self.navigationController pushViewController:faxian animated:YES];
-            [faxian release];
+            [self.homeMBProgress show:YES];
+            double delayInSeconds = 0.1;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                //我家楼盘
+                FaxianViewController *faxian = [[FaxianViewController alloc] init];
+                faxian.contentType = 2;
+                [UserInfo shared].m_plateType = @"L";
+                [self.navigationController pushViewController:faxian animated:YES];
+                [faxian release];
+            });
+            
         }
             break;
         case 14:
         {
+            ShareView *shareView = [[ShareView alloc] initWithFrame:CGRectMake(0, applicationheight, applicationwidth, 220)];
+            [self.view addSubview:shareView];
+            [shareView release];
+//            shareView.selectItemAtIndex = ^(NSInteger index){
+//                NSLog(@"hhhhh:%d",index);
+//                if (index==1) {
+//                    //收藏
+//                }else if (index==2){
+//                    //微信
+//                }else if (index==3){
+//                    //微信朋友圈
+//                }else if (index==4){
+//                    //QQ
+//                }else if (index==5){
+//                    //QQ空间
+//                }else if (index==6){
+//                    //新浪微博
+//                }
+//            };
+            [shareView show];
+            //报名
+//            FaxianViewController *faxian = [[FaxianViewController alloc] init];
+//            faxian.contentType = 2;
+//            [self.navigationController pushViewController:faxian animated:YES];
+//            [faxian release];
+        }
+            break;
+        case 15:
+        {
+            //搜索
+//            FaxianViewController *faxian = [[FaxianViewController alloc] init];
+//            faxian.contentType = 2;
+//            [self.navigationController pushViewController:faxian animated:YES];
+//            [faxian release];
+        }
+            break;
+        case 16:
+        {
+            //红星家具
+//            FaxianViewController *faxian = [[FaxianViewController alloc] init];
+//            faxian.contentType = 2;
+//            [self.navigationController pushViewController:faxian animated:YES];
+//            [faxian release];
+        }
+            break;
+        case 17:
+        {
+            [self.homeMBProgress show:YES];
+            double delayInSeconds = 0.1;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                //装修材料
+                FaxianViewController *faxian = [[FaxianViewController alloc] init];
+                faxian.contentType = 3;
+                [UserInfo shared].m_plateType = @"C";
+                [self.navigationController pushViewController:faxian animated:YES];
+                [faxian release];
+            });
             
         }
+            break;
+        case 18:
+        {
+            [self.homeMBProgress show:YES];
+            double delayInSeconds = 0.1;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                //家装公司
+                FaxianViewController *faxian = [[FaxianViewController alloc] init];
+                faxian.contentType = 4;
+                [UserInfo shared].m_plateType = @"J";
+                [self.navigationController pushViewController:faxian animated:YES];
+                [faxian release];
+            });
+            
+        }
+            break;
         case 33:
         {
             
         }
+            break;
         case 70:
         {
             //设计师个人详情界面
@@ -643,15 +617,7 @@
             [designerViewController release];
         }
             break;
-        default:
-        {
-            //tag>=100
-            int currIndex = btn.tag -100;
-            DesignerViewController *designerViewController = [[DesignerViewController alloc] init];
-            [self.navigationController pushViewController:designerViewController animated:YES];
-            [designerViewController release];
-        }
-            break;
+        
     }
 }
 
