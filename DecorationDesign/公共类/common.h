@@ -12,7 +12,7 @@
 #import "pinyin.h"
 #import "UserInfo.h"
 #import "HessianFormDataRequest.h"
-
+#import "myLabel.h"
 
 #define UIVIEW_ANIMATION_BEGIN3(animationid, time, sel)\
 [UIView beginAnimations:animationid context:nil];\

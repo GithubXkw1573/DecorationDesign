@@ -210,6 +210,9 @@
 		D25044751A1D83E0006DC4A0 /* PersonIntroduceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D25044741A1D83E0006DC4A0 /* PersonIntroduceView.m */; };
 		D25044781A1D840E006DC4A0 /* ZuopingView.m in Sources */ = {isa = PBXBuildFile; fileRef = D25044771A1D840E006DC4A0 /* ZuopingView.m */; };
 		D250447B1A1D8425006DC4A0 /* ArticleView.m in Sources */ = {isa = PBXBuildFile; fileRef = D250447A1A1D8425006DC4A0 /* ArticleView.m */; };
+		D2548F4C1A3FE2E500A54A02 /* myLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2548F4B1A3FE2E500A54A02 /* myLabel.m */; };
+		D2548F4F1A4015D000A54A02 /* CommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2548F4E1A4015D000A54A02 /* CommentCell.m */; };
+		D2548F531A40273E00A54A02 /* CommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2548F521A40273E00A54A02 /* CommentViewController.m */; };
 		D26021B41A19E1760072A021 /* CoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26021AD1A19E1760072A021 /* CoverViewController.m */; };
 		D26021B51A19E1760072A021 /* IntroduceView.m in Sources */ = {isa = PBXBuildFile; fileRef = D26021AF1A19E1760072A021 /* IntroduceView.m */; };
 		D26021B81A19E20A0072A021 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D26021B71A19E20A0072A021 /* HomeViewController.m */; };
@@ -251,6 +254,9 @@
 		D29813261A3ECE31002D48F1 /* CompanyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D29813251A3ECE31002D48F1 /* CompanyViewController.m */; };
 		D29AC2DC1A1DD588003A3163 /* ImageLooker.m in Sources */ = {isa = PBXBuildFile; fileRef = D29AC2DB1A1DD588003A3163 /* ImageLooker.m */; };
 		D29AC2DF1A1DE810003A3163 /* ZiliaoDetaillViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D29AC2DE1A1DE810003A3163 /* ZiliaoDetaillViewController.m */; };
+		D29E87CB1A41636E005F9EC4 /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D29E87CA1A41636E005F9EC4 /* DetailViewController.m */; };
+		D29E87CE1A416660005F9EC4 /* LabelCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D29E87CD1A416660005F9EC4 /* LabelCell.m */; };
+		D29E87D11A41668C005F9EC4 /* ImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D29E87D01A41668C005F9EC4 /* ImageCell.m */; };
 		D2A48C241A19A87600E37852 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A48BC11A19A87600E37852 /* ASIAuthenticationDialog.m */; };
 		D2A48C251A19A87600E37852 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A48BC41A19A87600E37852 /* ASIDataCompressor.m */; };
 		D2A48C261A19A87600E37852 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A48BC61A19A87600E37852 /* ASIDataDecompressor.m */; };
@@ -401,6 +407,10 @@
 		D2F222891A270AD7008295D3 /* CWValueObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2227C1A270AD7008295D3 /* CWValueObject.m */; };
 		D2F2228A1A270AD7008295D3 /* NSData+ReadableDescription.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2227F1A270AD7008295D3 /* NSData+ReadableDescription.m */; };
 		D2F864681A3E7FB300625BD4 /* YXShareApi.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F864661A3E7FB300625BD4 /* YXShareApi.m */; };
+		D2FB60B61A42BEDC004A060F /* GerenxinxiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FB60B51A42BEDC004A060F /* GerenxinxiViewController.m */; };
+		D2FB60BD1A42BFA1004A060F /* XiugainichenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FB60B81A42BFA1004A060F /* XiugainichenViewController.m */; };
+		D2FB60BE1A42BFA1004A060F /* UserSettingDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FB60BA1A42BFA1004A060F /* UserSettingDetailController.m */; };
+		D2FB60BF1A42BFA1004A060F /* BangdingshoujiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FB60BC1A42BFA1004A060F /* BangdingshoujiViewController.m */; };
 		D2FB6E3B1A198CD0008DBDBC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FB6E3A1A198CD0008DBDBC /* Foundation.framework */; };
 		D2FB6E3D1A198CD0008DBDBC /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FB6E3C1A198CD0008DBDBC /* CoreGraphics.framework */; };
 		D2FB6E3F1A198CD0008DBDBC /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2FB6E3E1A198CD0008DBDBC /* UIKit.framework */; };
@@ -408,6 +418,8 @@
 		D2FB6E471A198CD0008DBDBC /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FB6E461A198CD0008DBDBC /* main.m */; };
 		D2FB6E4B1A198CD0008DBDBC /* DDAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FB6E4A1A198CD0008DBDBC /* DDAppDelegate.m */; };
 		D2FB6E4D1A198CD0008DBDBC /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2FB6E4C1A198CD0008DBDBC /* Images.xcassets */; };
+		D2FF37661A427FE20089FDFD /* pinglun_btn_bg_03.png in Resources */ = {isa = PBXBuildFile; fileRef = D2FF37651A427FE20089FDFD /* pinglun_btn_bg_03.png */; };
+		D2FF37691A42B1CB0089FDFD /* BookingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2FF37681A42B1CB0089FDFD /* BookingViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -635,6 +647,12 @@
 		D25044771A1D840E006DC4A0 /* ZuopingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZuopingView.m; sourceTree = "<group>"; };
 		D25044791A1D8425006DC4A0 /* ArticleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ArticleView.h; sourceTree = "<group>"; };
 		D250447A1A1D8425006DC4A0 /* ArticleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArticleView.m; sourceTree = "<group>"; };
+		D2548F4A1A3FE2E500A54A02 /* myLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = myLabel.h; sourceTree = "<group>"; };
+		D2548F4B1A3FE2E500A54A02 /* myLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = myLabel.m; sourceTree = "<group>"; };
+		D2548F4D1A4015D000A54A02 /* CommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentCell.h; sourceTree = "<group>"; };
+		D2548F4E1A4015D000A54A02 /* CommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentCell.m; sourceTree = "<group>"; };
+		D2548F511A40273E00A54A02 /* CommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentViewController.h; sourceTree = "<group>"; };
+		D2548F521A40273E00A54A02 /* CommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentViewController.m; sourceTree = "<group>"; };
 		D26021AC1A19E1760072A021 /* CoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoverViewController.h; sourceTree = "<group>"; };
 		D26021AD1A19E1760072A021 /* CoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoverViewController.m; sourceTree = "<group>"; };
 		D26021AE1A19E1760072A021 /* IntroduceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntroduceView.h; sourceTree = "<group>"; };
@@ -686,6 +704,12 @@
 		D29AC2DB1A1DD588003A3163 /* ImageLooker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageLooker.m; sourceTree = "<group>"; };
 		D29AC2DD1A1DE810003A3163 /* ZiliaoDetaillViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZiliaoDetaillViewController.h; sourceTree = "<group>"; };
 		D29AC2DE1A1DE810003A3163 /* ZiliaoDetaillViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZiliaoDetaillViewController.m; sourceTree = "<group>"; };
+		D29E87C91A41636E005F9EC4 /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
+		D29E87CA1A41636E005F9EC4 /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
+		D29E87CC1A416660005F9EC4 /* LabelCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LabelCell.h; sourceTree = "<group>"; };
+		D29E87CD1A416660005F9EC4 /* LabelCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LabelCell.m; sourceTree = "<group>"; };
+		D29E87CF1A41668C005F9EC4 /* ImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageCell.h; sourceTree = "<group>"; };
+		D29E87D01A41668C005F9EC4 /* ImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageCell.m; sourceTree = "<group>"; };
 		D2A48BC01A19A87600E37852 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
 		D2A48BC11A19A87600E37852 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
 		D2A48BC21A19A87600E37852 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
@@ -904,6 +928,14 @@
 		D2F864641A3E7FB300625BD4 /* YXApiObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YXApiObject.h; sourceTree = "<group>"; };
 		D2F864651A3E7FB300625BD4 /* YXShareApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YXShareApi.h; sourceTree = "<group>"; };
 		D2F864661A3E7FB300625BD4 /* YXShareApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YXShareApi.m; sourceTree = "<group>"; };
+		D2FB60B41A42BEDC004A060F /* GerenxinxiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GerenxinxiViewController.h; sourceTree = "<group>"; };
+		D2FB60B51A42BEDC004A060F /* GerenxinxiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GerenxinxiViewController.m; sourceTree = "<group>"; };
+		D2FB60B71A42BFA1004A060F /* XiugainichenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XiugainichenViewController.h; sourceTree = "<group>"; };
+		D2FB60B81A42BFA1004A060F /* XiugainichenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XiugainichenViewController.m; sourceTree = "<group>"; };
+		D2FB60B91A42BFA1004A060F /* UserSettingDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserSettingDetailController.h; sourceTree = "<group>"; };
+		D2FB60BA1A42BFA1004A060F /* UserSettingDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserSettingDetailController.m; sourceTree = "<group>"; };
+		D2FB60BB1A42BFA1004A060F /* BangdingshoujiViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BangdingshoujiViewController.h; sourceTree = "<group>"; };
+		D2FB60BC1A42BFA1004A060F /* BangdingshoujiViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BangdingshoujiViewController.m; sourceTree = "<group>"; };
 		D2FB6E371A198CD0008DBDBC /* 设计圈.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "设计圈.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2FB6E3A1A198CD0008DBDBC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D2FB6E3C1A198CD0008DBDBC /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -916,6 +948,9 @@
 		D2FB6E4A1A198CD0008DBDBC /* DDAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DDAppDelegate.m; sourceTree = "<group>"; };
 		D2FB6E4C1A198CD0008DBDBC /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		D2FB6E531A198CD0008DBDBC /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		D2FF37651A427FE20089FDFD /* pinglun_btn_bg_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pinglun_btn_bg_03.png; sourceTree = "<group>"; };
+		D2FF37671A42B1CB0089FDFD /* BookingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BookingViewController.h; sourceTree = "<group>"; };
+		D2FF37681A42B1CB0089FDFD /* BookingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BookingViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1052,6 +1087,7 @@
 		D2325A681A35938400C7BA63 /* 1206切图 */ = {
 			isa = PBXGroup;
 			children = (
+				D2FF37651A427FE20089FDFD /* pinglun_btn_bg_03.png */,
 				D2325B831A3598D300C7BA63 /* 首页 */,
 				D2325A691A35938400C7BA63 /* Bowen_img1.png */,
 				D2325A6A1A35938400C7BA63 /* Bowen_img2.png */,
@@ -1256,6 +1292,12 @@
 				D2D20A0D1A3ECEEC00529BE2 /* CailiaoViewController.m */,
 				D2D20A0F1A3ECF0900529BE2 /* LoupanViewController.h */,
 				D2D20A101A3ECF0900529BE2 /* LoupanViewController.m */,
+				D2548F511A40273E00A54A02 /* CommentViewController.h */,
+				D2548F521A40273E00A54A02 /* CommentViewController.m */,
+				D29E87C91A41636E005F9EC4 /* DetailViewController.h */,
+				D29E87CA1A41636E005F9EC4 /* DetailViewController.m */,
+				D2FF37671A42B1CB0089FDFD /* BookingViewController.h */,
+				D2FF37681A42B1CB0089FDFD /* BookingViewController.m */,
 			);
 			name = "首页";
 			path = Tab1;
@@ -1284,6 +1326,14 @@
 		D26021B31A19E1760072A021 /* 我的 */ = {
 			isa = PBXGroup;
 			children = (
+				D2FB60B41A42BEDC004A060F /* GerenxinxiViewController.h */,
+				D2FB60B51A42BEDC004A060F /* GerenxinxiViewController.m */,
+				D2FB60B71A42BFA1004A060F /* XiugainichenViewController.h */,
+				D2FB60B81A42BFA1004A060F /* XiugainichenViewController.m */,
+				D2FB60B91A42BFA1004A060F /* UserSettingDetailController.h */,
+				D2FB60BA1A42BFA1004A060F /* UserSettingDetailController.m */,
+				D2FB60BB1A42BFA1004A060F /* BangdingshoujiViewController.h */,
+				D2FB60BC1A42BFA1004A060F /* BangdingshoujiViewController.m */,
 				D21EC4741A19E2B500317D0C /* Tab4ViewController.h */,
 				D21EC4751A19E2B500317D0C /* Tab4ViewController.m */,
 				50880B781A20348B00BE5FDF /* WodeViewController.h */,
@@ -1475,6 +1525,8 @@
 				D2A48C5F1A19AA0800E37852 /* TabbarView.m */,
 				D2A48C601A19AA0800E37852 /* VerticallyAlignedLabel.h */,
 				D2A48C611A19AA0800E37852 /* VerticallyAlignedLabel.m */,
+				D2548F4A1A3FE2E500A54A02 /* myLabel.h */,
+				D2548F4B1A3FE2E500A54A02 /* myLabel.m */,
 			);
 			path = "自定义控件";
 			sourceTree = "<group>";
@@ -1617,6 +1669,12 @@
 				D29AC2DB1A1DD588003A3163 /* ImageLooker.m */,
 				D279070D1A1F1D9F0094971D /* DesignerListCell.h */,
 				D279070E1A1F1D9F0094971D /* DesignerListCell.m */,
+				D2548F4D1A4015D000A54A02 /* CommentCell.h */,
+				D2548F4E1A4015D000A54A02 /* CommentCell.m */,
+				D29E87CC1A416660005F9EC4 /* LabelCell.h */,
+				D29E87CD1A416660005F9EC4 /* LabelCell.m */,
+				D29E87CF1A41668C005F9EC4 /* ImageCell.h */,
+				D29E87D01A41668C005F9EC4 /* ImageCell.m */,
 			);
 			name = "组件";
 			sourceTree = "<group>";
@@ -2080,6 +2138,7 @@
 				D2325B761A35938500C7BA63 /* 广告背景.png in Resources */,
 				D2BF664A1A1EE031001DAFBC /* bowen_img2.png in Resources */,
 				D2BF66691A1EE031001DAFBC /* img_1.png in Resources */,
+				D2FF37661A427FE20089FDFD /* pinglun_btn_bg_03.png in Resources */,
 				D2325B241A35938500C7BA63 /* JIAzhuang_img3.png in Resources */,
 				D2BF66881A1EE031001DAFBC /* xiangqing_nav_bg.png in Resources */,
 				D2325B411A35938500C7BA63 /* Loup_img4.png in Resources */,
@@ -2140,21 +2199,26 @@
 				D26021B41A19E1760072A021 /* CoverViewController.m in Sources */,
 				D2A48C491A19A87600E37852 /* SDWebImageManager.m in Sources */,
 				D2F222891A270AD7008295D3 /* CWValueObject.m in Sources */,
+				D29E87D11A41668C005F9EC4 /* ImageCell.m in Sources */,
 				D250447B1A1D8425006DC4A0 /* ArticleView.m in Sources */,
+				D2FB60BF1A42BFA1004A060F /* BangdingshoujiViewController.m in Sources */,
 				D21EC4BA1A19F77900317D0C /* NewsTableView.m in Sources */,
 				D2A48C281A19A87600E37852 /* ASIFormDataRequest.m in Sources */,
 				D21EC4BB1A19F77900317D0C /* ScrollMenu.m in Sources */,
 				D2F028C71A3E7A3D00EAF4BA /* XLWeiboApi.m in Sources */,
 				D2A48C401A19A87600E37852 /* SBJsonWriter.m in Sources */,
+				D2548F4F1A4015D000A54A02 /* CommentCell.m in Sources */,
 				D2A48C291A19A87600E37852 /* ASIHTTPRequest.m in Sources */,
 				D2B6A6CF1A2305690009C4F0 /* BookingController.m in Sources */,
 				D2A48C341A19A87600E37852 /* EGORefreshTableFooterView.m in Sources */,
 				D2A48C4B1A19A87600E37852 /* ShowMessaege.m in Sources */,
 				50880B681A1B72E200BE5FDF /* PicTextButton.m in Sources */,
+				D2548F531A40273E00A54A02 /* CommentViewController.m in Sources */,
 				D2F222811A270AD7008295D3 /* CWDistantHessianObject.m in Sources */,
 				D285BA971A19FB2100434DD9 /* BannerTableCell.m in Sources */,
 				D29AC2DF1A1DE810003A3163 /* ZiliaoDetaillViewController.m in Sources */,
 				D2FB6E4B1A198CD0008DBDBC /* DDAppDelegate.m in Sources */,
+				D29E87CE1A416660005F9EC4 /* LabelCell.m in Sources */,
 				D2A48C2C1A19A87600E37852 /* Reachability.m in Sources */,
 				D25044711A1D760F006DC4A0 /* DesignerViewController.m in Sources */,
 				D2A48C241A19A87600E37852 /* ASIAuthenticationDialog.m in Sources */,
@@ -2194,16 +2258,20 @@
 				D2A48C661A19AA0800E37852 /* TabbarView.m in Sources */,
 				D2F222871A270AD7008295D3 /* CWHessianUnarchiver.m in Sources */,
 				D25044781A1D840E006DC4A0 /* ZuopingView.m in Sources */,
+				D2548F4C1A3FE2E500A54A02 /* myLabel.m in Sources */,
 				D2F222881A270AD7008295D3 /* CWValueObject+Private.m in Sources */,
 				D2F864681A3E7FB300625BD4 /* YXShareApi.m in Sources */,
 				D2A48C451A19A87600E37852 /* NJKWebViewProgress.m in Sources */,
+				D29E87CB1A41636E005F9EC4 /* DetailViewController.m in Sources */,
 				D21EC4B81A19F77900317D0C /* FaxianViewController.m in Sources */,
 				D2B81CE11A393C16004C716C /* ShareItem.m in Sources */,
 				D24A77281A1DC9AD00CAFCC1 /* ZuopingLookViewController.m in Sources */,
 				D2A48C3A1A19A87600E37852 /* MD5Hash.m in Sources */,
 				D2A48C3D1A19A87600E37852 /* SBJSON.m in Sources */,
 				D2FB6E471A198CD0008DBDBC /* main.m in Sources */,
+				D2FF37691A42B1CB0089FDFD /* BookingViewController.m in Sources */,
 				D21694A91A3E83EA002279F1 /* TCWeiboApi.m in Sources */,
+				D2FB60BE1A42BFA1004A060F /* UserSettingDetailController.m in Sources */,
 				D2125FF31A19FA92001D6A22 /* TypeButton.m in Sources */,
 				D2A48C351A19A87600E37852 /* EGORefreshTableHeaderView.m in Sources */,
 				D2A48C631A19AA0800E37852 /* MBProgressHUD.m in Sources */,
@@ -2213,7 +2281,9 @@
 				D2B6A6CB1A22C4970009C4F0 /* DistributeController.m in Sources */,
 				50880B7A1A20348B00BE5FDF /* WodeViewController.m in Sources */,
 				D2A48C471A19A87600E37852 /* SDImageCache.m in Sources */,
+				D2FB60B61A42BEDC004A060F /* GerenxinxiViewController.m in Sources */,
 				D2F222801A270AD7008295D3 /* CWDistantHessianObject+Private.m in Sources */,
+				D2FB60BD1A42BFA1004A060F /* XiugainichenViewController.m in Sources */,
 				D2A48C4A1A19A87600E37852 /* UIImageView+WebCache.m in Sources */,
 				D2A48C411A19A87600E37852 /* MyASIHTTPRequest.m in Sources */,
 				D26021B51A19E1760072A021 /* IntroduceView.m in Sources */,

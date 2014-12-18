@@ -38,6 +38,20 @@
     [super didReceiveMemoryWarning];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController.navigationBar setHidden:YES];
+    if ([UserInfo shared].m_isLogin) {
+        nameLabel.userInteractionEnabled = NO;
+        nameLabel.text = [UserInfo shared].m_nikeName==nil?[UserInfo shared].m_UserName:[UserInfo shared].m_nikeName;
+        [touPic setImage:[UserInfo shared].m_toupic==nil?[UIImage imageNamed:@"GR_touxiang"]:[UserInfo shared].m_toupic forState:UIControlStateNormal];
+    }else{
+        nameLabel.userInteractionEnabled = YES;
+        nameLabel.text = @"点击登录";
+        [touPic setImage:[UIImage imageNamed:@"GR_touxiang"] forState:UIControlStateNormal];
+    }
+}
+
 -(void)initComponents
 {
     self.m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-28.5) style:UITableViewStylePlain];
@@ -75,14 +89,14 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             UIButton *picview = [[UIButton alloc] initWithFrame:CGRectMake(125, 60, 70, 70)];
             picview.backgroundColor = [UIColor clearColor];
-            [picview setImage:[UIImage imageNamed:@"shejishi_4"] forState:UIControlStateNormal];
+            [picview setImage:[UIImage imageNamed:@"GR_touxiang"] forState:UIControlStateNormal];
             picview.layer.cornerRadius = picview.frame.size.width/2.f;
             picview.layer.borderColor = [[UIColor whiteColor] CGColor];
             picview.layer.borderWidth = 2.f;
             picview.layer.masksToBounds = YES;
             picview.tag = 1;
             touPic = picview;
-            [picview addTarget:self action:@selector(butonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [picview addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView  addSubview:picview];
             [picview release];
             
@@ -291,7 +305,10 @@
 
 -(void)tap:(UITapGestureRecognizer*)tap
 {
-    
+    LoginViewController *login = [[LoginViewController alloc] init];
+    login.hidesBottomBarWhenPushed= YES;
+    [self.navigationController pushViewController:login animated:YES];
+    [login release];
 }
 
 -(void)buttonClicked:(UIButton*)btn
@@ -303,6 +320,23 @@
         } completion:^(BOOL flag){
             
         }];
+    }else if (btn.tag ==1)
+    {
+        if ([UserInfo shared].m_isLogin) {
+            GerenxinxiViewController *Gerenxinxi =[[GerenxinxiViewController alloc] init];
+            Gerenxinxi.hidesBottomBarWhenPushed=YES;
+            if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+                self.navigationController.interactivePopGestureRecognizer.delegate = nil;
+            }
+            [self.navigationController pushViewController:Gerenxinxi animated:YES];
+            [Gerenxinxi release];
+        }else{
+            LoginViewController *login = [[LoginViewController alloc] init];
+            login.hidesBottomBarWhenPushed= YES;
+            [self.navigationController pushViewController:login animated:YES];
+            [login release];
+        }
+        
     }
 }
 

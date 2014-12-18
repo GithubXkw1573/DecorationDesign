@@ -16,6 +16,7 @@
 @synthesize m_Id;
 @synthesize m_nikeName;
 @synthesize m_plateType;
+@synthesize m_toupic;
 
 @synthesize loc_city;
 @synthesize curr_city;
@@ -42,6 +43,7 @@ static UserInfo *userinfo;
         m_PassWord=[[NSUserDefaults standardUserDefaults] objectForKey:@"m_PassWord"];
         m_UserName=[[NSUserDefaults standardUserDefaults] objectForKey:@"m_UserName"];
         m_nikeName=[[NSUserDefaults standardUserDefaults] objectForKey:@"m_nikeName"];
+        m_toupic=[[NSUserDefaults standardUserDefaults] objectForKey:@"m_toupic"];
     }
     return self;
 }
@@ -55,6 +57,7 @@ static UserInfo *userinfo;
     [defaults setBool:m_isMember forKey:@"m_isMember"];
     [defaults setObject:m_Id forKey:@"m_Id"];
     [defaults setObject:m_nikeName forKey:@"m_nikeName"];
+    [defaults setObject:m_toupic forKey:@"m_toupic"];
     [defaults synchronize];
 }
 
@@ -67,6 +70,7 @@ static UserInfo *userinfo;
     [defaults removeObjectForKey:@"m_isMember"];
     [defaults removeObjectForKey:@"m_Id"];
     [defaults removeObjectForKey:@"m_nikeName"];
+    [defaults removeObjectForKey:@"m_toupic"];
     [defaults synchronize];
 }
 @end

@@ -7,7 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "common.h"
 
-@interface LoupanViewController : UIViewController
+@interface LoupanViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+{
+    UITableView *m_tableView;
+    MBProgressHUD *MBProgress;
+    NSArray *m_jsonArr;
+    NSArray *n_jsonArr;
+    NSArray *m_array;
+    CGFloat inroduceHeight;
+    CGFloat productHeight;
+}
 @property (nonatomic,retain) NSArray *m_array;
+@property (nonatomic,retain) NSArray *m_jsonArr;
+@property (nonatomic,retain) NSArray *n_jsonArr;
 @end

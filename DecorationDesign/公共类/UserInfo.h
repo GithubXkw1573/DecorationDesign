@@ -18,6 +18,8 @@
 @property (retain ,nonatomic)NSString *m_Id;
 @property (retain ,nonatomic)NSString *m_nikeName;
 @property (retain,nonatomic)NSString *m_plateType;
+@property (retain,nonatomic)UIImage *m_toupic;
+@property (retain,nonatomic)NSString *m_session;
 
 @property (retain,nonatomic) NSString *loc_city;
 @property (retain,nonatomic) NSString *curr_city;

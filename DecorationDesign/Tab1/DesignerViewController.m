@@ -428,8 +428,14 @@
             UIImageView *works2Image = (UIImageView*)[cell.contentView viewWithTag:51];
             UIImageView *works3Image = (UIImageView*)[cell.contentView viewWithTag:52];
             NSString *imageurl1 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:2];
-            NSString *imageurl2 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-2)] objectAtIndex:2];
-            NSString *imageurl3 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-1)] objectAtIndex:2];
+            NSString *imageurl2=@"";
+            NSString *imageurl3=@"";
+            if ((row-3)/6*2+row-2 <= n_jsonArr.count-1) {
+                imageurl2 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-2)] objectAtIndex:2];
+            }
+            if ((row-3)/6*2+row-1 <= n_jsonArr.count-1) {
+                imageurl3 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-1)] objectAtIndex:2];
+            }
             [works1Image setImageWithURL:[NSURL URLWithString:imageurl1] placeholderImage:[UIImage imageNamed:@"Sjs_xiangqing_img2"]];
             [works2Image setImageWithURL:[NSURL URLWithString:imageurl2] placeholderImage:[UIImage imageNamed:@"Sjs_xiangqing_img2"]];
             [works3Image setImageWithURL:[NSURL URLWithString:imageurl3] placeholderImage:[UIImage imageNamed:@"Sjs_xiangqing_img2"]];
@@ -439,7 +445,7 @@
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
-                cell.selectionStyle=UITableViewCellSelectionStyleNone;
+                cell.selectionStyle=UITableViewCellSelectionStyleGray;
                 
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
                 line.image = [UIImage imageNamed:@"线"];
@@ -501,6 +507,20 @@
          }
     }
     return 0;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    DetailViewController *detail = [[DetailViewController alloc] init];
+    NSInteger row = indexPath.row;
+    detail.hidesBottomBarWhenPushed = YES;
+    detail.method = @"DESIGNER-WORKSINFO";
+    detail.designerId =  [m_array objectAtIndex:1];
+    detail.designer = [m_jsonArr objectAtIndex:0];
+    detail.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
+    [self.navigationController pushViewController:detail animated:YES];
+    [detail release];
 }
 
 
@@ -638,6 +658,19 @@
 
 -(void)orderClicked:(UIButton*)btn
 {
+    if ([UserInfo shared].m_isLogin) {
+        BookingViewController *book = [[BookingViewController alloc] init];
+        book.designerId=[m_array objectAtIndex:1];
+        book.designerName = [m_jsonArr objectAtIndex:0];
+        book.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:book animated:YES];
+        [book release];
+    }else{
+        LoginViewController *login = [[LoginViewController alloc] init];
+        login.hidesBottomBarWhenPushed= YES;
+        [self.navigationController pushViewController:login animated:YES];
+        [login release];
+    }
     
 }
 

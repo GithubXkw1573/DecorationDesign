@@ -93,7 +93,8 @@
 //    NSLog(@"HHH:%@",[Dictionary objectForKey:@"id"]);
     NSMutableDictionary *params= [NSMutableDictionary dictionary];
     [params setValue:[NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:0]] forKey:@"USERTYPE"];
-    [params setValue:@"USER-LIST" forKey:@"JUDGEMETHOD"];
+    [params setValue:@"USER-LIST-PAGE" forKey:@"JUDGEMETHOD"];
+    [params setValue:[NSString stringWithFormat:@"%d",page++] forKey:@"GETTIMES"];
     hessianrequest.postData =  params;
     myrequest = hessianrequest;
     [hessianrequest setCompletionBlock:^(NSDictionary *result){
@@ -229,9 +230,9 @@
 -(int)tablewheight
 {
     if (m_newsArray.count>0) {
-        return 105*(m_newsArray.count-1)+125+160;
+        return 90*m_newsArray.count+160;
     }else{
-        return 125+160;
+        return 160;
     }
     
 }

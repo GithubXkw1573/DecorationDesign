@@ -110,7 +110,7 @@
     
     //更多视图
     UIView *addView = [[UIView alloc] initWithFrame:CGRectMake(0, 44-125, applicationwidth, 125)];
-    addView.backgroundColor = [UIColor grayColor];
+    addView.backgroundColor = [UIColor lightTextColor];
     addView.alpha = 0.9f;
     addView.hidden = YES;
     moreView = addView;
@@ -262,17 +262,21 @@
 
 -(void)showMore:(UIButton*)btn
 {
+    CGFloat heigt =125.f;
+    if ([_menuList count]<=8) {
+        heigt = 100.f;
+    }
     if (moreView.hidden) {
         moreView.hidden = NO;
-        moreView.frame = CGRectMake(0, 44.5-125, applicationwidth, 125);
+        moreView.frame = CGRectMake(0, 44.5-heigt, applicationwidth, heigt);
         [UIView animateWithDuration:0.35f animations:^{
-            moreView.frame = CGRectMake(0, 44.5, applicationwidth, 125);
+            moreView.frame = CGRectMake(0, 44.5, applicationwidth, heigt);
             btn.transform =CGAffineTransformMakeRotation(M_PI);
         }];
     }else{
-        moreView.frame = CGRectMake(0, 44.5, applicationwidth, 125);
+        moreView.frame = CGRectMake(0, 44.5, applicationwidth, heigt);
         [UIView animateWithDuration:0.35f animations:^{
-            moreView.frame = CGRectMake(0, 44.5-125, applicationwidth, 125);
+            moreView.frame = CGRectMake(0, 44.5-heigt, applicationwidth, heigt);
             btn.transform =CGAffineTransformIdentity;
         } completion:^(BOOL success){
             moreView.hidden = YES;

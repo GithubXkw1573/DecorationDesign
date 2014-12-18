@@ -488,10 +488,6 @@
 //            faxian.contentType = 1;
 //            [self.navigationController pushViewController:faxian animated:YES];
 //            [faxian release];
-            LoginViewController *login = [[LoginViewController alloc] init];
-            login.hidesBottomBarWhenPushed= YES;
-            [self.navigationController pushViewController:login animated:YES];
-            [login release];
         }
             break;
         case 12:
@@ -527,26 +523,7 @@
             break;
         case 14:
         {
-            ShareView *shareView = [[ShareView alloc] initWithFrame:CGRectMake(0, applicationheight, applicationwidth, 220)];
-            [self.view addSubview:shareView];
-            [shareView release];
-//            shareView.selectItemAtIndex = ^(NSInteger index){
-//                NSLog(@"hhhhh:%d",index);
-//                if (index==1) {
-//                    //收藏
-//                }else if (index==2){
-//                    //微信
-//                }else if (index==3){
-//                    //微信朋友圈
-//                }else if (index==4){
-//                    //QQ
-//                }else if (index==5){
-//                    //QQ空间
-//                }else if (index==6){
-//                    //新浪微博
-//                }
-//            };
-            [shareView show];
+            
             //报名
 //            FaxianViewController *faxian = [[FaxianViewController alloc] init];
 //            faxian.contentType = 2;
@@ -556,6 +533,7 @@
             break;
         case 15:
         {
+            
             //搜索
 //            FaxianViewController *faxian = [[FaxianViewController alloc] init];
 //            faxian.contentType = 2;

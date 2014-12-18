@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "common.h"
 #import "PicTextButton.h"
+#import "LoginViewController.h"
+#import "GerenxinxiViewController.h"
 
 @interface WodeViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 {

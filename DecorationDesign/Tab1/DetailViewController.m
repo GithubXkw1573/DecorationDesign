@@ -1,0 +1,398 @@
+//
+//  DetailViewController.m
+//  DecorationDesign
+//
+//  Created by 许开伟 on 14/12/17.
+//  Copyright (c) 2014年 许开伟. All rights reserved.
+//
+
+#import "DetailViewController.h"
+
+@interface DetailViewController ()
+
+@end
+
+@implementation DetailViewController
+@synthesize m_array,m_jsonArr,method,designer,designerId,worksId;
+
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    if (iOS7Later) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+    
+    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
+    
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"标题栏%i.png",[[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0?7:6]] forBarMetrics:UIBarMetricsDefault];
+    
+    UIImage *shadowimage=[[UIImage alloc]init];
+    self.navigationController.navigationBar.shadowImage = shadowimage;//去掉navigationBar阴影黑线
+    [shadowimage release];
+    
+    UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
+    titlelabel.backgroundColor=[UIColor clearColor];
+    titlelabel.textColor=[UIColor whiteColor];
+    titlelabel.tag = 101;
+    titlelabel.text=@"作品详情";
+    titlelabel.textAlignment=UITextAlignmentCenter;
+    titlelabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:19];
+    self.navigationItem.titleView=titlelabel;
+    [titlelabel release];
+    
+    UIView *leftbtnview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
+    [leftbtnview setBackgroundColor:[UIColor clearColor]];
+    
+    UIButton *leftbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    leftbtn.frame=CGRectMake(-10, 0, 60, 44);
+    leftbtn.tag=1;
+    [leftbtn setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
+    [leftbtn addTarget:self action:@selector(detailViewControllerBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [leftbtnview addSubview:leftbtn];
+    UIBarButtonItem *myleftitem = [[UIBarButtonItem alloc] initWithCustomView:leftbtnview];
+    self.navigationItem.leftBarButtonItem = myleftitem;
+    [myleftitem release];
+    [leftbtnview release];
+    
+    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-50-44) style:UITableViewStylePlain];
+    m_tableView.delegate =self;
+    m_tableView.dataSource =self;
+    m_tableView.backgroundColor=[UIColor clearColor];
+    m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
+    [self.view addSubview:m_tableView];
+    
+    MBProgress=[[MBProgressHUD alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160)];
+    [MBProgress setCenter:CGPointMake(applicationwidth/2.0, applicationheight/2)];
+    [self.view addSubview:MBProgress];
+    [MBProgress show:YES];
+    [MBProgress setLabelText:@"刷新中"];
+    
+    [self loadRequest];
+    
+    [self initBottom:[m_jsonArr objectAtIndex:0]];
+}
+
+-(void)initBottom:(NSString *)type
+{
+    if ([type isEqualToString:@"Z"]) {
+        //作品
+        UIView *commentView = [[UIView alloc] initWithFrame:CGRectMake(0, applicationheight-94, applicationwidth, 50)];
+        commentView.backgroundColor = [UIColor colorWithRed:245/255.f green:245/255.f blue:245/255.f alpha:1.0];
+        [self.view addSubview:commentView];
+        [commentView release];
+        UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, .5)];
+        line.image = [UIImage imageNamed:@"线"];
+        [commentView addSubview:line];
+        [line release];
+        
+        NSDictionary *dic1 = [NSDictionary dictionaryWithObjectsAndKeys:@"ZP_tab_icon1",@"image",@"提问", @"text",nil];
+        NSDictionary *dic2 = [NSDictionary dictionaryWithObjectsAndKeys:@"ZP_tab_icon2",@"image",@"评论", @"text",nil];
+        NSDictionary *dic3 = [NSDictionary dictionaryWithObjectsAndKeys:@"ZP_tab_icon3",@"image",@"分享", @"text",nil];
+        NSDictionary *dic4 = [NSDictionary dictionaryWithObjectsAndKeys:@"ZP_tab_icon4",@"image",@"预约", @"text",nil];
+        NSMutableArray *list = [NSMutableArray arrayWithObjects:dic1,dic2,dic3,dic4, nil];
+        [self createButtons:list addTo:commentView];
+        
+    }else{
+        //博文
+        UIView *commentView = [[UIView alloc] initWithFrame:CGRectMake(0, applicationheight-94, applicationwidth, 150)];
+        commentView.backgroundColor = [UIColor colorWithRed:245/255.f green:245/255.f blue:245/255.f alpha:1.0];
+        [self.view addSubview:commentView];
+        [commentView release];
+        
+        UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, .5)];
+        line.image = [UIImage imageNamed:@"线"];
+        [commentView addSubview:line];
+        [line release];
+        
+        UITextField *inputField = [[UITextField alloc] initWithFrame:CGRectMake(10, 10, 220, 30)];
+        inputField.placeholder = @" 我也说两句";
+        [inputField setBackground:[UIImage imageNamed:@"PingLun_bg"]];
+        inputField.font = font(15);
+        inputField.returnKeyType = UIReturnKeySend;
+        inputField.delegate = self;
+        [commentView addSubview:inputField];
+        [inputField release];
+        //在弹出的键盘上面加一个view来放置退出键盘的Done按钮
+        UIToolbar * topView = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, 320, 30)];
+        [topView setBarStyle:UIBarStyleDefault];
+        UIBarButtonItem * btnSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil];
+        UIBarButtonItem * doneButton = [[UIBarButtonItem alloc] initWithTitle:@"完成" style:UIBarButtonItemStyleDone target:self action:@selector(dismissKeyBoard)];
+        NSArray * buttonsArray = [NSArray arrayWithObjects:btnSpace, doneButton, nil];
+        [btnSpace release];
+        [doneButton release];
+        [topView setItems:buttonsArray];
+        [inputField setInputAccessoryView:topView];
+        [topView release];
+        
+        UIButton *detailBtn = [[UIButton alloc] initWithFrame:CGRectMake(250, 10, 60, 30)];
+        [detailBtn setTitle:[NSString stringWithFormat:@"%@",@""] forState:UIControlStateNormal];
+        [detailBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        detailBtn.backgroundColor = [UIColor clearColor];
+        detailBtn.titleLabel.font = font(13);
+        [detailBtn setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0, 20)];
+        [detailBtn setBackgroundImage:[UIImage imageNamed:@"pinglun_btn_bg_03"] forState:UIControlStateNormal];
+        detailBtn.tag = 23;
+        [detailBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [commentView addSubview:detailBtn];
+        [detailBtn release];
+    }
+}
+
+-(void)createButtons:(NSArray*)list addTo:(UIView*)commentView
+{
+    for(int i=0;i<list.count;i++)
+    {
+        UIImageView *imge1 = [[UIImageView alloc] initWithFrame:CGRectMake(30+80*i, 10, 20, 20)];
+        imge1.image = [UIImage imageNamed:[[list objectAtIndex:i] objectForKey:@"image"]];
+        imge1.backgroundColor = [UIColor clearColor];
+        [commentView addSubview:imge1];
+        [imge1 release];
+        UILabel *lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(80*i, 30, 80, 20)];
+        lbl1.text = [[list objectAtIndex:i] objectForKey:@"text"];
+        lbl1.textColor = [UIColor grayColor];
+        lbl1.font = font(12);
+        lbl1.textAlignment = UITextAlignmentCenter;
+        lbl1.backgroundColor = [UIColor clearColor];
+        [commentView addSubview:lbl1];
+        [lbl1 release];
+        UIButton *btn1 = [[UIButton alloc] initWithFrame:CGRectMake(80*i, 0, 80, 50)];
+        btn1.backgroundColor = [UIColor clearColor];
+        btn1.tag = 200+i;
+        [btn1 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+        [commentView addSubview:btn1];
+        [btn1 release];
+    }
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+-(void)detailViewControllerBtnPressed:(UIButton*)btn
+{
+    if (btn.tag == 1) {
+        [self.navigationController popViewControllerAnimated:YES];
+    }else if (btn.tag ==2){
+        
+    }
+}
+
+-(void)buttonClicked:(UIButton*)btn
+{
+    if (btn.tag == 200) {
+        //提问
+    }else if (btn.tag == 201){
+        //评论
+        if ([UserInfo shared].m_isLogin) {
+            CommentViewController *comment = [[CommentViewController alloc] init];
+            comment.designerId = designerId;
+            comment.worksId = worksId;
+            comment.worksType = [m_jsonArr objectAtIndex:0];
+            [self.navigationController pushViewController:comment animated:YES];
+            [comment release];
+        }else{
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            [login release];
+        }
+        
+    }else if (btn.tag == 202){
+        //分享
+        ShareView *shareView = [[ShareView alloc] initWithFrame:CGRectMake(0, applicationheight, applicationwidth, 220)];
+        [self.view addSubview:shareView];
+        [shareView show];
+        [shareView release];
+    }else if (btn.tag == 203){
+        //预约
+        if ([UserInfo shared].m_isLogin) {
+            BookingViewController *book = [[BookingViewController alloc] init];
+            book.designerId=designerId;
+            book.designerName = designer;
+            [self.navigationController pushViewController:book animated:YES];
+            [book release];
+        }else{
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            [login release];
+        }
+    }
+}
+
+-(void)loadRequest
+{
+    [MBProgress show:YES];
+    [MBProgress setLabelText:@"获取中"];
+    NSURL *url = [NSURL URLWithString:MineURL];
+    self.worksId = [m_array objectAtIndex:0];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:self.method,@"JUDGEMETHOD",[m_array objectAtIndex:0],@"WORKSID", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            [MBProgress setHidden:YES];
+            NSArray *infolist = [result objectForKey:@"DESIGNERTHREEPAGE"];
+            self.m_jsonArr = infolist;
+            UILabel *titleLabel = (UILabel*)self.navigationItem.titleView;
+            titleLabel.text = [[m_jsonArr objectAtIndex:0] isEqualToString:@"Z"]?@"作品详情":@"博文详情";
+            UIButton *detailBtn = (UIButton*)[self.view viewWithTag:23];
+            [detailBtn setTitle:[NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:3]] forState:UIControlStateNormal];
+        }else {
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            [MBProgress settext:errrDesc aftertime:1.0];
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+        [MBProgress settext:@"网络错误!" aftertime:1.0];
+    }];
+    [request startRequest];
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+-(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return m_jsonArr.count-3;
+}
+
+-(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger row = indexPath.row;
+    if (row == 0) {
+        static NSString *cellIdentific = @"cell0";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
+        if (cell == nil) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell.selectionStyle=UITableViewCellSelectionStyleNone;
+            UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
+            personTitle.text = @"设计没有好坏之分";
+            personTitle.font = font(18);
+            personTitle.tag = 10;
+            [cell.contentView addSubview:personTitle];
+            [personTitle release];
+            
+            UILabel *zuoping = [[UILabel alloc] initWithFrame:CGRectMake(10, 50, 80, 20)];
+            zuoping.text =[NSString stringWithFormat:@"%@",self.designer];
+            zuoping.backgroundColor = [UIColor clearColor];
+            zuoping.font = font(13);
+            zuoping.tag = 11;
+            zuoping.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:zuoping];
+            [zuoping release];
+            
+            UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(100, 50, 120, 20)];
+            zuopingValue.text = @"2014-10-1 12:45";
+            zuopingValue.textColor = [UIColor grayColor];
+            zuopingValue.tag = 12;
+            zuopingValue.backgroundColor = [UIColor clearColor];
+            zuopingValue.font = font(13);
+            [cell.contentView addSubview:zuopingValue];
+            [zuopingValue release];
+            
+            UILabel *jingping = [[UILabel alloc] initWithFrame:CGRectMake(220, 50, 90, 20)];
+            jingping.text = @"545 评论";
+            jingping.backgroundColor = [UIColor clearColor];
+            jingping.font = font(13);
+            jingping.tag = 13;
+            jingping.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:jingping];
+            [jingping release];
+            
+            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80, 300, 1)];
+            line.image = [UIImage imageNamed:@"线"];
+            [cell.contentView addSubview:line];
+            [line release];
+        }
+        UILabel *lbl0 = (UILabel*)[cell.contentView viewWithTag:10];
+        UILabel *lbl2 = (UILabel*)[cell.contentView viewWithTag:12];
+        UILabel *lbl3 = (UILabel*)[cell.contentView viewWithTag:13];
+        lbl0.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:1]];
+        lbl2.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:2]];
+        lbl3.text = [NSString stringWithFormat:@"%@ 评论",[m_jsonArr objectAtIndex:3]];
+        return cell;
+    }else{
+        if ([self isShowText:row]) {
+            static NSString *cellIdentific = @"cell_label";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
+            if (cell == nil) {
+                cell = [[LabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell.selectionStyle=UITableViewCellSelectionStyleNone;
+            
+            }
+            [(LabelCell*)cell setContentwithText:[[m_jsonArr objectAtIndex:(row+3)] substringFromIndex:2]];
+            return cell;
+        }else{
+            NSString *cellIdentific = [NSString stringWithFormat:@"cell%d",row];
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
+            if (cell == nil) {
+                cell = [[ImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell.selectionStyle=UITableViewCellSelectionStyleNone;
+            }
+            [(ImageCell*)cell setContentImage:[[m_jsonArr objectAtIndex:(row+3)] substringFromIndex:2]];
+            return cell;
+        }
+    }
+    return nil;
+}
+
+-(BOOL)isShowText:(NSInteger)row
+{
+    if ([[[m_jsonArr objectAtIndex:(row+3)] substringToIndex:1] isEqualToString:@"0"]) {
+        
+        return YES;
+    }else{
+        return NO;
+    }
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSInteger row =indexPath.row;
+    if (row==0) {
+        return 90;
+    }else{
+        if ([self isShowText:row]) {
+            LabelCell *cell = (LabelCell*)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+            return [cell cellHeight];
+        }else{
+            ImageCell *cell = (ImageCell*)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+            return [cell cellHeight];
+        }
+    }
+    return 0;
+}
+
+-(void)dismissKeyBoard
+{
+    [self.view endEditing:YES];
+    [self movoTo:64];
+}
+
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    [self movoTo:-200];
+    return YES;
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    //发送
+    [textField resignFirstResponder];
+    [self movoTo:64];
+    return YES;
+}
+
+-(void)movoTo:(CGFloat)dh
+{
+    [UIView animateWithDuration:0.35f animations:^{
+        self.view.frame = CGRectMake(0, dh, self.view.frame.size.width, self.view.frame.size.height);
+        
+    }];
+}
+@end

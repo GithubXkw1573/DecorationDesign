@@ -15,6 +15,7 @@
 #import "ImageLooker.h"
 #import "LoginViewController.h"
 #import "ShareView.h"
+#import "CommentViewController.h"
 
 @class DDAppDelegate;
 

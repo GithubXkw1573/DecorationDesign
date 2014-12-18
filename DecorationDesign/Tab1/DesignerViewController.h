@@ -11,6 +11,9 @@
 #import "PersonIntroduceView.h"
 #import "ZuopingView.h"
 #import "ArticleView.h"
+#import "DetailViewController.h"
+#import "BookingViewController.h"
+#import "LoginViewController.h"
 
 @interface DesignerViewController : UIViewController<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>
 {

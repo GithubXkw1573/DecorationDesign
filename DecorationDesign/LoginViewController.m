@@ -324,8 +324,10 @@
             //调用成功
             [MBProgress settext:@"登录成功!" aftertime:1.0];
             [UserInfo shared].m_isLogin = YES;
+            [UserInfo shared].m_Id = userfield.text;
             [UserInfo shared].m_UserName = userfield.text;
             [UserInfo shared].m_PassWord = pwdfield.text;
+            [UserInfo shared].m_session = [result objectForKey:@"SESSION"];
             double delayInSeconds = 1.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
