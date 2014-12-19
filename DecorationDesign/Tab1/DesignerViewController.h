@@ -15,11 +15,19 @@
 #import "BookingViewController.h"
 #import "LoginViewController.h"
 
-@interface DesignerViewController : UIViewController<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface DesignerViewController : UIViewController<UIScrollViewDelegate,UITableViewDataSource,UITableViewDelegate,EGORefreshTableFooterDelegate,EGORefreshTableHeaderDelegate>
 {
     UITableView *m_tableView;
     NSMutableArray *viewControllers;
     UIScrollView *myscrollView;
+    EGORefreshTableFooterView *_refreshFooterView;
+    EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL _Headerreloading;
+    BOOL reloadormore;
+    int page;
+    NSString *mytime;
+    NSArray *newList;
+    
     UIView *shadow;
     NSArray *m_array;
     MBProgressHUD *MBProgress;
@@ -30,7 +38,7 @@
     UILabel *cityLabel;
     UILabel *typeLabel;
     NSArray *m_jsonArr;
-    NSArray *n_jsonArr;
+    NSMutableArray *n_jsonArr;
 }
 @property (nonatomic,retain) UILabel *titleLabel;
 @property (nonatomic,retain) UIImageView *designerPicView;
@@ -38,5 +46,5 @@
 @property(nonatomic, retain)UIScrollView *myscrollView;
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSArray *m_jsonArr;
-@property (nonatomic,retain) NSArray *n_jsonArr;
+@property (nonatomic,retain) NSMutableArray *n_jsonArr;
 @end

@@ -13,7 +13,7 @@
 @end
 
 @implementation CommentViewController
-@synthesize m_array,m_jsonArr,worksId,worksType,designerId;
+@synthesize m_array,m_jsonArr,n_jsonArr,worksId,worksType,designerId;
 
 - (void)viewDidLoad
 {
@@ -78,7 +78,7 @@
     [self initBottom];
     
     [self loadRequest];
-    
+    [self loadCommontNumRequest];
     MBProgress=[[MBProgressHUD alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160)];
     [MBProgress setCenter:CGPointMake(applicationwidth/2.0, applicationheight/2)];
     [self.view addSubview:MBProgress];
@@ -100,6 +100,32 @@
             commentNums = [NSString stringWithFormat:@"%@",[result objectForKey:@"COMMENTTEXTNUMS"]];
             NSArray *infolist = [result objectForKey:@"COMMENTTEXTINFO"];
             self.m_jsonArr = infolist;
+        }else {
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            [MBProgress settext:errrDesc aftertime:1.0];
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+        [MBProgress settext:@"网络错误!" aftertime:1.0];
+    }];
+    [request startRequest];
+}
+
+-(void)loadCommontNumRequest
+{
+    [MBProgress show:YES];
+    [MBProgress setLabelText:@"获取中"];
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"GET-COMMENTTIMES",@"JUDGEMETHOD",worksId,@"WORKSID", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            [MBProgress setHidden:YES];
+            NSArray *infolist = [result objectForKey:@"COMMENTTIMES"];
+            self.n_jsonArr = infolist;
         }else {
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
             NSLog(@"%@",errrDesc);
@@ -242,37 +268,47 @@
             [cell.contentView addSubview:fengmian];
             [fengmian release];
             
-            UIImageView *face1 = [[UIImageView alloc] initWithFrame:CGRectMake(20, 15, 60, 60)];
+            
+            UIButton *face1 = [[UIButton alloc] initWithFrame:CGRectMake(20, 15, 60, 60)];
             face1.backgroundColor = [UIColor clearColor];
-            face1.image = [UIImage imageNamed:@"Pinglun_img1"];
+            face1.tag = 221;
+            [face1 addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
+            [face1 setImage:[UIImage imageNamed:@"Pinglun_img1"] forState:UIControlStateNormal];
             [fengmian addSubview:face1];
             [face1 release];
             UILabel *desc1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 80, 100, 30)];
             desc1.font = font(16);
+            support1 = desc1;
             desc1.tag = 21;
             desc1.textAlignment = UITextAlignmentCenter;
             [fengmian addSubview:desc1];
             [desc1 release];
             
-            UIImageView *face2 = [[UIImageView alloc] initWithFrame:CGRectMake(120, 15, 60, 60)];
+            UIButton *face2 = [[UIButton alloc] initWithFrame:CGRectMake(120, 15, 60, 60)];
             face2.backgroundColor = [UIColor clearColor];
-            face2.image = [UIImage imageNamed:@"Pinglun_img2"];
+            face2.tag = 222;
+            [face2 addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
+            [face2 setImage:[UIImage imageNamed:@"Pinglun_img2"] forState:UIControlStateNormal];
             [fengmian addSubview:face2];
             [face2 release];
             UILabel *desc2 = [[UILabel alloc] initWithFrame:CGRectMake(100, 80, 100, 30)];
             desc2.font = font(16);
+            support2 = desc2;
             desc2.tag = 22;
             desc2.textAlignment = UITextAlignmentCenter;
             [fengmian addSubview:desc2];
             [desc2 release];
             
-            UIImageView *face3 = [[UIImageView alloc] initWithFrame:CGRectMake(220, 15, 60, 60)];
+            UIButton *face3 = [[UIButton alloc] initWithFrame:CGRectMake(220, 15, 60, 60)];
             face3.backgroundColor = [UIColor clearColor];
-            face3.image = [UIImage imageNamed:@"Pinglun_img3"];
+            face3.tag = 223;
+            [face3 addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
+            [face3 setImage:[UIImage imageNamed:@"Pinglun_img3"] forState:UIControlStateNormal];
             [fengmian addSubview:face3];
             [face3 release];
             UILabel *desc3 = [[UILabel alloc] initWithFrame:CGRectMake(200, 80, 100, 30)];
             desc3.font = font(16);
+            support3 = desc3;
             desc3.tag = 23;
             desc3.textAlignment = UITextAlignmentCenter;
             [fengmian addSubview:desc3];
@@ -281,9 +317,9 @@
         UILabel *desc1 = (UILabel*)[cell.contentView viewWithTag:21];
         UILabel *desc2 = (UILabel*)[cell.contentView viewWithTag:22];
         UILabel *desc3 = (UILabel*)[cell.contentView viewWithTag:23];
-        desc1.text = [NSString stringWithFormat:@"%d 满意",123];
-        desc2.text = [NSString stringWithFormat:@"%d 基本满意",123];
-        desc3.text = [NSString stringWithFormat:@"%d 不满意",123];
+        desc1.text = [NSString stringWithFormat:@"%@ 满意",[n_jsonArr objectAtIndex:0]];
+        desc2.text = [NSString stringWithFormat:@"%@ 基本满意",[n_jsonArr objectAtIndex:1]];
+        desc3.text = [NSString stringWithFormat:@"%@ 不满意",[n_jsonArr objectAtIndex:2]];
         return cell;
     }
     else if (row == 2){
@@ -371,7 +407,7 @@
     if (![commentField.text isEqualToString:@""]) {
         [self startCommonrequest];
     }else{
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论不能为空!" delegate:self cancelButtonTitle:nil otherButtonTitles:nil, nil];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论不能为空!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];
         [alert release];
     }
@@ -387,16 +423,55 @@
     [MBProgress setLabelText:@"评论中..."];
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"CUSTOM-COMMENTTEXT",@"JUDGEMETHOD",worksId,@"ID",[UserInfo shared].m_Id,@"USERID",designerId,@"COMMENTEDID",worksType,@"WORKSTYPE",@"1",@"COMMENTTYPE",commentField.text,@"COMMENT",[UserInfo shared].m_session,@"SESSION", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"CUSTOM-COMMENTTEXT",@"JUDGEMETHOD",worksId,@"ID",[UserInfo shared].m_Id,@"USERID",designerId,@"COMMENTEDID",worksType,@"WORKSTYPE",commentField.text,@"COMMENT",[UserInfo shared].m_session,@"SESSION", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
-            [MBProgress settext:@"评论成功!" aftertime:1.0];
+            [MBProgress hide:YES];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论成功!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+            [self loadRequest];
+            [m_tableView reloadData];
             commentField.text = @"";
         }else {
+            [MBProgress hide:YES];
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
             NSLog(@"%@",errrDesc);
-            [MBProgress settext:errrDesc aftertime:1.0];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+        [MBProgress settext:@"网络错误!" aftertime:1.0];
+    }];
+    [request startRequest];
+}
+
+-(void)startSupportComment:(NSString*)commentType
+{
+    [MBProgress show:YES];
+    [MBProgress setLabelText:@"评论中..."];
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"CUSTOM-COMMENTTIMES",@"JUDGEMETHOD",worksId,@"ID",[UserInfo shared].m_Id,@"USERID",designerId,@"COMMENTEDID",worksType,@"WORKSTYPE",commentType,@"COMMENTTYPE",[UserInfo shared].m_session,@"SESSION", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            [MBProgress hide:YES];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论成功!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+            commentField.text = @"";
+        }else {
+            [MBProgress hide:YES];
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
         }
     }];
     [request setFailedBlock:^{
@@ -412,6 +487,35 @@
         self.view.frame = CGRectMake(0, dh, self.view.frame.size.width, self.view.frame.size.height);
         
     }];
+}
+
+-(void)tap:(UIButton*)tap
+{
+    if (isCommented) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您已经进行过满意度评价!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+        [alert release];
+    }else{
+        isCommented = YES;
+        NSString *commentSectect = @"";
+        if (tap.tag == 221) {
+            //满意
+            commentSectect = @"1";
+            NSInteger num = [[n_jsonArr objectAtIndex:0] integerValue]+1;
+            support1.text = [NSString stringWithFormat:@"%i 满意",num];
+        }else if (tap.tag == 222){
+            //基本满意
+            commentSectect = @"2";
+            NSInteger num = [[n_jsonArr objectAtIndex:1] integerValue]+1;
+            support2.text = [NSString stringWithFormat:@"%i 满意",num];
+        }else{
+            //不满意
+            commentSectect = @"3";
+            NSInteger num = [[n_jsonArr objectAtIndex:2] integerValue]+1;
+            support3.text = [NSString stringWithFormat:@"%i 满意",num];
+        }
+        [self startSupportComment:commentSectect];
+    }
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{

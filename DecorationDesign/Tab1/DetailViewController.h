@@ -15,7 +15,7 @@
 #import "BookingViewController.h"
 #import "LoginViewController.h"
 
-@interface DetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+@interface DetailViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UITextViewDelegate>
 {
     UITableView *m_tableView;
     MBProgressHUD *MBProgress;
@@ -25,6 +25,10 @@
     NSString *designer;
     NSString *designerId;
     NSString *worksId;
+    
+    UIView *shuomingView;
+    UITextView *contentView;
+    UIImageView *zhezhaoView;
 }
 @property (nonatomic,retain) NSString *method;
 @property (nonatomic,retain) NSString *designer;

@@ -328,6 +328,9 @@
             [UserInfo shared].m_UserName = userfield.text;
             [UserInfo shared].m_PassWord = pwdfield.text;
             [UserInfo shared].m_session = [result objectForKey:@"SESSION"];
+            //保存账号
+            NSDictionary *mydic = [NSDictionary dictionaryWithObjectsAndKeys:userfield.text,@"username",pwdfield.text,@"pwd", nil];
+            [[NSUserDefaults standardUserDefaults] setValue:mydic forKey:@"loginer"];
             double delayInSeconds = 1.0;
             dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
             dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

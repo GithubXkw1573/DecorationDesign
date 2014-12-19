@@ -20,11 +20,17 @@
     NSString *worksType;
     NSString *designerId;
     NSArray *m_jsonArr;
+    NSArray *n_jsonArr;
     NSString *commentNums;
     UITextField *commentField;
+    BOOL isCommented;
+    UILabel *support1;
+    UILabel *support2;
+    UILabel *support3;
 }
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSArray *m_jsonArr;
+@property (nonatomic,retain) NSArray *n_jsonArr;
 @property (nonatomic,retain) NSString *worksId;
 @property (nonatomic,retain) NSString *worksType;
 @property (nonatomic,retain) NSString *designerId;

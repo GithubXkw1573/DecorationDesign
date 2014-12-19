@@ -50,6 +50,9 @@
 		D21EC4B91A19F77900317D0C /* NewsScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = D21EC4B31A19F77900317D0C /* NewsScrollView.m */; };
 		D21EC4BA1A19F77900317D0C /* NewsTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D21EC4B51A19F77900317D0C /* NewsTableView.m */; };
 		D21EC4BB1A19F77900317D0C /* ScrollMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D21EC4B71A19F77900317D0C /* ScrollMenu.m */; };
+		D22EB7B21A43D76B00B65F62 /* 关闭.png in Resources */ = {isa = PBXBuildFile; fileRef = D22EB7B11A43D76B00B65F62 /* 关闭.png */; };
+		D22EB7B41A44092B00B65F62 /* index_btn2.png in Resources */ = {isa = PBXBuildFile; fileRef = D22EB7B31A44092B00B65F62 /* index_btn2.png */; };
+		D22EB7B61A44093700B65F62 /* index_btn7.png in Resources */ = {isa = PBXBuildFile; fileRef = D22EB7B51A44093700B65F62 /* index_btn7.png */; };
 		D2325A671A35484000C7BA63 /* HessianFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D2325A661A35484000C7BA63 /* HessianFormDataRequest.m */; };
 		D2325AF61A35938500C7BA63 /* Bowen_img1.png in Resources */ = {isa = PBXBuildFile; fileRef = D2325A691A35938400C7BA63 /* Bowen_img1.png */; };
 		D2325AF71A35938500C7BA63 /* Bowen_img2.png in Resources */ = {isa = PBXBuildFile; fileRef = D2325A6A1A35938400C7BA63 /* Bowen_img2.png */; };
@@ -478,6 +481,9 @@
 		D21EC4B51A19F77900317D0C /* NewsTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewsTableView.m; sourceTree = "<group>"; };
 		D21EC4B61A19F77900317D0C /* ScrollMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollMenu.h; sourceTree = "<group>"; };
 		D21EC4B71A19F77900317D0C /* ScrollMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollMenu.m; sourceTree = "<group>"; };
+		D22EB7B11A43D76B00B65F62 /* 关闭.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "关闭.png"; sourceTree = "<group>"; };
+		D22EB7B31A44092B00B65F62 /* index_btn2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = index_btn2.png; sourceTree = "<group>"; };
+		D22EB7B51A44093700B65F62 /* index_btn7.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = index_btn7.png; sourceTree = "<group>"; };
 		D2325A651A35484000C7BA63 /* HessianFormDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HessianFormDataRequest.h; sourceTree = "<group>"; };
 		D2325A661A35484000C7BA63 /* HessianFormDataRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HessianFormDataRequest.m; sourceTree = "<group>"; };
 		D2325A691A35938400C7BA63 /* Bowen_img1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Bowen_img1.png; sourceTree = "<group>"; };
@@ -1060,6 +1066,7 @@
 		D21EC4841A19EB7400317D0C /* 框架 */ = {
 			isa = PBXGroup;
 			children = (
+				D22EB7B11A43D76B00B65F62 /* 关闭.png */,
 				D27907091A1F169F0094971D /* 返回.png */,
 				D279070A1A1F169F0094971D /* 导航搜索.png */,
 				D2ED0BB61A1C2D7C0026EB4F /* 黑色半透明.png */,
@@ -1238,6 +1245,8 @@
 		D2325B831A3598D300C7BA63 /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
+				D22EB7B31A44092B00B65F62 /* index_btn2.png */,
+				D22EB7B51A44093700B65F62 /* index_btn7.png */,
 				D2325B841A3598D300C7BA63 /* baoming.png */,
 				D2325B851A3598D300C7BA63 /* caiiao.png */,
 				D2325B861A3598D300C7BA63 /* hongxing.png */,
@@ -1938,9 +1947,11 @@
 				D2325B0D1A35938500C7BA63 /* GR_icon1.png in Resources */,
 				D2325AFD1A35938500C7BA63 /* CAIliao_img4.png in Resources */,
 				D2325B431A35938500C7BA63 /* Loup_img6.png in Resources */,
+				D22EB7B41A44092B00B65F62 /* index_btn2.png in Resources */,
 				D2325B071A35938500C7BA63 /* Fenxiang_pyq.png in Resources */,
 				D2A48C381A19A87600E37852 /* whiteArrow.png in Resources */,
 				D2BF664D1A1EE031001DAFBC /* company_img2.png in Resources */,
+				D22EB7B21A43D76B00B65F62 /* 关闭.png in Resources */,
 				D2325B0A1A35938500C7BA63 /* Fenxiang_weixin.png in Resources */,
 				D2BF66481A1EE030001DAFBC /* banner.png in Resources */,
 				D21EC4A81A19EB7400317D0C /* 推享.png in Resources */,
@@ -1959,6 +1970,7 @@
 				D29813201A3E8CFB002D48F1 /* ic_default_thumb6.png in Resources */,
 				D2ED0BC91A1C34400026EB4F /* 家装公司小图2.png in Resources */,
 				D2325B1E1A35938500C7BA63 /* index_tab_icon3_pre.png in Resources */,
+				D22EB7B61A44093700B65F62 /* index_btn7.png in Resources */,
 				D2F028C61A3E7A3D00EAF4BA /* WeiboSDK.bundle in Resources */,
 				D2325B3F1A35938500C7BA63 /* Loup_img2.png in Resources */,
 				D2BF668E1A1EE031001DAFBC /* zuopin_img4.png in Resources */,

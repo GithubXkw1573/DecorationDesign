@@ -179,10 +179,200 @@
     }
 }
 
+-(void)openQuestion
+{
+    //新建一个遮罩层
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    zhezhaoView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, applicationheight)];
+    zhezhaoView.userInteractionEnabled = YES;
+    [zhezhaoView addGestureRecognizer:tap];
+    [tap release];
+    zhezhaoView.image = [UIImage imageNamed:@"黑色半透明"];
+    
+    [self.view addSubview:zhezhaoView];
+    
+    //新建一个view
+    shuomingView = [[UIView alloc] initWithFrame:CGRectMake(40, 100, 240, 165)];
+    shuomingView.backgroundColor = [UIColor colorWithRed:240/255.f green:240/255.f blue:240/255.f alpha:1.0f];
+    shuomingView.layer.borderWidth = 1.0f;
+    shuomingView.layer.borderColor = [[UIColor lightGrayColor] CGColor];
+    shuomingView.alpha = 1;
+    
+    UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, 180, 30)];
+    titleLabel.text = @"提问";
+    titleLabel.textAlignment = NSTextAlignmentCenter;
+    titleLabel.font = font(18);
+    titleLabel.textColor = [UIColor redColor];
+    titleLabel.backgroundColor = [UIColor clearColor];
+    [shuomingView addSubview:titleLabel];
+    [titleLabel release];
+    
+    UIButton *closebtn = [[UIButton alloc] initWithFrame:CGRectMake(210, 0, 30, 30)];
+    [closebtn setBackgroundImage:[UIImage imageNamed:@"关闭"] forState:UIControlStateNormal];
+    closebtn.backgroundColor = [UIColor clearColor];
+    [closebtn addTarget:self action:@selector(shuomingBtnCloseBtn:) forControlEvents:UIControlEventTouchUpInside];
+    [shuomingView addSubview:closebtn];
+    [closebtn release];
+    
+    UIImageView *lineimage=[[UIImageView alloc]initWithFrame:CGRectMake(0, 30, 240, 1)];
+    lineimage.image=[UIImage imageNamed:@"线.png"];
+    [shuomingView addSubview:lineimage];
+    [lineimage release];
+    
+    contentView = [[UITextView alloc] initWithFrame:CGRectMake(10, 31, 220, 100)];
+    contentView.text = @"有什么问题都可以这里咨询我吧...";
+    contentView.textColor = [UIColor grayColor];
+    contentView.font = font(14);
+    contentView.backgroundColor = [UIColor whiteColor];
+    contentView.delegate = self;
+    contentView.returnKeyType = UIReturnKeyDone;
+    [shuomingView addSubview:contentView];
+    [contentView release];
+    
+    UIButton *quxioaBtn = [[UIButton alloc] initWithFrame:CGRectMake(35, 135, 50, 25)];
+    [quxioaBtn setBackgroundImage:[UIImage imageNamed:@"index_btn2"]  forState:UIControlStateNormal];
+    [quxioaBtn setTitle:@"取消" forState:UIControlStateNormal];
+    [quxioaBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    quxioaBtn.titleLabel.font = font(14);
+    quxioaBtn.layer.cornerRadius = 4;
+    quxioaBtn.layer.masksToBounds = YES;
+    quxioaBtn.tag = 4544;
+    [quxioaBtn addTarget:self action:@selector(sumbmit:) forControlEvents:UIControlEventTouchUpInside];
+    [shuomingView addSubview:quxioaBtn];
+    [quxioaBtn release];
+    UIButton *submitBtn = [[UIButton alloc] initWithFrame:CGRectMake(155, 135, 50, 25)];
+    [submitBtn setBackgroundImage:[UIImage imageNamed:@"index_btn7"]  forState:UIControlStateNormal];
+    [submitBtn setTitle:@"提交" forState:UIControlStateNormal];
+    [submitBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    submitBtn.titleLabel.font = font(14);
+    submitBtn.layer.cornerRadius = 4;
+    submitBtn.layer.masksToBounds = YES;
+    submitBtn.tag = 4545;
+    [submitBtn addTarget:self action:@selector(sumbmit:) forControlEvents:UIControlEventTouchUpInside];
+    [shuomingView addSubview:submitBtn];
+    [submitBtn release];
+    
+    shuomingView.alpha = 0;
+    zhezhaoView.alpha = 0;
+    zhezhaoView.transform = CGAffineTransformMakeScale(1.3, 1.3) ;
+    [UIView animateWithDuration:.35f animations:^{
+        shuomingView.alpha = 1;
+        zhezhaoView.alpha = 1;
+        zhezhaoView.transform = CGAffineTransformMakeScale(1, 1) ;
+    } completion:^(BOOL flag){
+        
+    }];
+    
+    [zhezhaoView addSubview:shuomingView];
+    [zhezhaoView bringSubviewToFront:shuomingView];
+}
+
+-(BOOL)textViewShouldBeginEditing:(UITextView *)textView
+{
+    textView.text = @"";
+    [self movoTo:-40];
+    textView.textColor = [UIColor blackColor];
+    return YES;
+}
+
+-(void)shuomingBtnCloseBtn:(UIButton*)btn
+{
+    
+    [self dismissWithAnimated:1];
+}
+
+-(void)sumbmit:(UIButton*)btn
+{
+    
+    if (btn.tag == 4544) {
+        //取消
+        
+    }else if (btn.tag == 4545){
+        //提交
+        [self startQuestionrequest];
+    }
+    [self dismissWithAnimated:2];
+}
+
+-(void)startQuestionrequest
+{
+    [MBProgress show:YES];
+    [MBProgress setLabelText:@"发送中..."];
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"CUSTOM-QUESTION",@"JUDGEMETHOD",worksId,@"WORKSID",[UserInfo shared].m_Id,@"USERID",[m_jsonArr objectAtIndex:0],@"WORKSTYPE",contentView.text,@"QUESTION",[UserInfo shared].m_session,@"SESSION", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            [MBProgress hide:YES];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您的提问已成功，我们会尽快回答您！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+        }else {
+            [MBProgress hide:YES];
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+        [MBProgress settext:@"网络错误!" aftertime:1.0];
+    }];
+    [request startRequest];
+}
+
+-(void)dismissWithAnimated:(NSInteger)type{
+    if (type ==1) {
+        shuomingView.alpha = 1;
+        zhezhaoView.alpha = 1;
+        [UIView animateWithDuration:.35f animations:^{
+            shuomingView.alpha = 0;
+            zhezhaoView.alpha = 0;
+            zhezhaoView.transform = CGAffineTransformMakeScale(1.3, 1.3) ;
+        } completion:^(BOOL flag){
+            for (UIView *v in shuomingView.subviews) {
+                [v removeFromSuperview];
+            }
+            [shuomingView removeFromSuperview];
+            [zhezhaoView removeFromSuperview];
+            [self movoTo:64];
+        }];
+    }else{
+        shuomingView.alpha = 1;
+        zhezhaoView.alpha = 1;
+        [UIView animateWithDuration:.35f animations:^{
+            shuomingView.alpha = 0;
+            zhezhaoView.alpha = 0;
+        } completion:^(BOOL flag){
+            for (UIView *v in shuomingView.subviews) {
+                [v removeFromSuperview];
+            }
+            [shuomingView removeFromSuperview];
+            [zhezhaoView removeFromSuperview];
+            [self movoTo:64];
+        }];
+    }
+}
+
+-(void)tap:(id)sender
+{
+    [self dismissWithAnimated:1];
+}
+
 -(void)buttonClicked:(UIButton*)btn
 {
     if (btn.tag == 200) {
         //提问
+        if ([UserInfo shared].m_isLogin) {
+            [self openQuestion];
+        }else{
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            [login release];
+        }
     }else if (btn.tag == 201){
         //评论
         if ([UserInfo shared].m_isLogin) {

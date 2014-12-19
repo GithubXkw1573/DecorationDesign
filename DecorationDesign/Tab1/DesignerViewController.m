@@ -28,6 +28,8 @@
     self.navigationController.navigationBar.shadowImage = shadowimage;//去掉navigationBar阴影黑线
     [shadowimage release];
     
+    n_jsonArr = [[NSMutableArray alloc] initWithCapacity:1];
+    
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
     titlelabel.backgroundColor=[UIColor clearColor];
     titlelabel.textColor=[UIColor whiteColor];
@@ -61,6 +63,7 @@
     m_tableView.backgroundColor=[UIColor clearColor];
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
+    [self initEgoRefreshComponent];
     
     MBProgress=[[MBProgressHUD alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160)];
     [MBProgress setCenter:CGPointMake(applicationwidth/2.0, applicationheight/2)];
@@ -81,6 +84,39 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+-(void)initEgoRefreshComponent
+{
+    UIView *touview=[[UIView alloc]initWithFrame:CGRectMake(0, -460, applicationwidth, 460-65)];
+    touview.backgroundColor=[UIColor beijingcolor];
+    [m_tableView addSubview:touview];
+    [touview release];
+    
+    // 上拉加载视图 － RefreshView
+    _refreshFooterView = [[EGORefreshTableFooterView alloc] initWithFrame:
+                          CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460)];
+    _refreshFooterView.delegate = self;
+    [m_tableView addSubview:_refreshFooterView];
+    
+    // 更新时间
+    [_refreshFooterView refreshLastUpdatedDate];
+    
+    // 下拉加载视图 － RefreshView
+    _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:
+                          CGRectMake(0, -65, applicationwidth, 65)];
+    _refreshHeaderView.delegate = self;
+    [m_tableView addSubview:_refreshHeaderView];
+    
+    // 更新时间
+    [_refreshHeaderView refreshLastUpdatedDate];
+    
+    // 表示是否在加载
+    _Headerreloading = YES;
+    
+    // page = 0;
+    reloadormore = YES;
+    mytime=@"";
 }
 
 -(void)loadRequest
@@ -115,36 +151,64 @@
     [MBProgress setLabelText:@"获取中"];
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"DESIGNER-WORKSLIST",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"USERID", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"DESIGNER-WORKSLIST-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"USERID",[NSString stringWithFormat:@"%d",page++],@"GETTIMES", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
-            [MBProgress setHidden:YES];
-            NSArray *infolist = [result objectForKey:@"WORKSARTICLEINFO"];
-            self.n_jsonArr = infolist;
-        }else {
-            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
-            NSLog(@"%@",errrDesc);
-            [MBProgress settext:errrDesc aftertime:1.0];
+            newList = [result objectForKey:@"WORKSARTICLEINFO"];
+            
+            if ([newList count] > 0) {
+                [MBProgress hide:YES];
+                if (reloadormore) {
+                    [n_jsonArr removeAllObjects];
+                    [n_jsonArr addObjectsFromArray:newList];
+                    reloadormore = NO;
+                    [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
+                    return;
+                }
+                else{
+                    [n_jsonArr  addObjectsFromArray:newList];
+                    [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
+                    return;
+                }
+            }
+            else if([newList count] == 0){
+                if (page>1) {
+                    [MBProgress settext:@"没有更多了！" aftertime:1.0];
+                }
+                else
+                {
+                    [MBProgress settext:@"暂无数据!" aftertime:1.0];
+                    [n_jsonArr removeAllObjects];
+                }
+                page --;
+            }
+        }
+        if (reloadormore) {
+            [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
+            reloadormore=NO;
+        }
+        else
+        {
+            [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
+            reloadormore=NO;
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@"网络错误");
-        [MBProgress settext:@"网络错误!" aftertime:1.0];
+        [MBProgress settext:@"网络错误，请检查网络连接！" aftertime:1.0];
+        page--;
+        
+        if (reloadormore) {
+            [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
+            reloadormore=NO;
+        }
+        else
+        {
+            [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
+            reloadormore=NO;
+        }
     }];
     [request startRequest];
-}
-
--(void)initHeaderComponents
-{
-    
-    
-}
-
--(void)initPersonalInfo
-{
-    
-    
 }
 
 -(void)worksExample
@@ -400,24 +464,24 @@
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 300, 1)];
+                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
                 line.image = [UIImage imageNamed:@"线"];
                 [cell.contentView addSubview:line];
                 [line release];
                 
-                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 90, 80)];
+                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 90, 80)];
                 works1.image = [UIImage imageNamed:@"Sjs-xiangqing_img2"];
                 works1.tag = 50;
                 [cell.contentView addSubview:works1];
                 [works1 release];
                 
-                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(115, 20, 90, 80)];
+                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(115, 5, 90, 80)];
                 works2.image = [UIImage imageNamed:@"Sjs-xiangqing_img2"];
                 works2.tag = 51;
                 [cell.contentView addSubview:works2];
                 [works2 release];
                 
-                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(220, 20, 90, 80)];
+                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(220, 5, 90, 80)];
                 works3.image = [UIImage imageNamed:@"Sjs-xiangqing_img2"];
                 works3.tag = 52;
                 [cell.contentView addSubview:works3];
@@ -501,7 +565,7 @@
     }else{
          if ((row+4)%6==0)
          {
-             return 110;
+             return 90;
          }else{
              return 90;
          }
@@ -529,132 +593,7 @@
     
 }
 
--(void)initScrollComponents
-{
-    UIView *bannerView = [[UIView alloc] initWithFrame:CGRectMake(10, 103, applicationwidth-20, 27)];
-    bannerView.backgroundColor = [UIColor myorangecolor];
-    [self.view addSubview:bannerView];
-    [bannerView release];
-    
-    UIView *yinying = [[UIView alloc] initWithFrame:CGRectMake(10, 4, 80, 20)];
-    yinying.backgroundColor = [UIColor grayColor];
-    shadow = yinying;
-    yinying.layer.cornerRadius = 10;
-    yinying.layer.masksToBounds = YES;
-    [bannerView addSubview:yinying];
-    [yinying release];
-    
-    UIButton *inroduce = [[UIButton alloc] initWithFrame:CGRectMake(10, 4, 80, 20)];
-    inroduce.tag = 100;
-    inroduce.titleLabel.font = font(16);
-    [inroduce setTitle:@"个人介绍" forState:UIControlStateNormal];
-    [inroduce setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    inroduce.backgroundColor = [UIColor clearColor];
-    [inroduce addTarget:self action:@selector(swichPanel:) forControlEvents:UIControlEventTouchUpInside];
-    [bannerView addSubview:inroduce];
-    [inroduce release];
-    
-    UIButton *zuoping = [[UIButton alloc] initWithFrame:CGRectMake(100, 4, 80, 20)];
-    zuoping.tag = 101;
-    zuoping.titleLabel.font = font(16);
-    [zuoping setTitle:@"作品案例" forState:UIControlStateNormal];
-    [zuoping setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    zuoping.backgroundColor = [UIColor clearColor];
-    [zuoping addTarget:self action:@selector(swichPanel:) forControlEvents:UIControlEventTouchUpInside];
-    [bannerView addSubview:zuoping];
-    [zuoping release];
-    
-    UIButton *article = [[UIButton alloc] initWithFrame:CGRectMake(190, 4, 80, 20)];
-    article.tag = 102;
-    article.titleLabel.font = font(16);
-    [article setTitle:@"精彩博文" forState:UIControlStateNormal];
-    [article setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    article.backgroundColor = [UIColor clearColor];
-    [article addTarget:self action:@selector(swichPanel:) forControlEvents:UIControlEventTouchUpInside];
-    [bannerView addSubview:article];
-    [article release];
-    
-    
-    
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 138, applicationwidth, applicationheight-49-44-138)];
-    scrollView.backgroundColor = [UIColor clearColor];
-    scrollView.tag=11;
-    self.myscrollView = scrollView;
-    [self.view addSubview:scrollView];
-    [scrollView release];
-    scrollView.bounces=NO;
-    scrollView.pagingEnabled = YES;
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.scrollsToTop = NO;
-    scrollView.delegate = self;
-    
-    NSMutableArray *controllers = [[NSMutableArray alloc] init];
-    for (int i = 0; i < 3; i++) {
-        [controllers addObject:[NSNull null]];
-    }
-    self.viewControllers = controllers;
-    [controllers release];
-    
-    for (int i=0; i<[viewControllers count]; i++) {
-        UIView *controller = [viewControllers objectAtIndex:i];
-        if ((NSNull *)controller == [NSNull null]) {
-            
-        }
-        else
-        {
-            [controller removeFromSuperview];
-            controller=nil;
-        }
-    }
-    
-    scrollView.contentSize = CGSizeMake(scrollView.frame.size.width*3, scrollView.frame.size.height);
-    [scrollView scrollRectToVisible:CGRectMake(0, 0, scrollView.frame.size.width, scrollView.frame.size.height) animated:YES];
-    [self loadScrollViewWithPage:0];
-    
-}
 
-- (void)loadScrollViewWithPage:(int)page2 {
-    if (page2 < 0) return;
-    if (page2 >= 3) return;
-    
-    // replace the placeholder if necessary
-    UIView *controller = [viewControllers objectAtIndex:page2];
-    if ((NSNull *)controller == [NSNull null]) {
-        controller = [[UIView alloc] init];
-        
-        if (page2==0) {
-            PersonIntroduceView *intr = [[PersonIntroduceView alloc] initWithFrame:CGRectMake(10, 0, myscrollView.frame.size.width-20, myscrollView.frame.size.height)];
-            [controller addSubview:intr];
-            [intr release];
-            
-        }else if (page2==1){
-            //table2
-            ZuopingView *intr = [[ZuopingView alloc] initWithFrame:CGRectMake(10, 0, myscrollView.frame.size.width-20, myscrollView.frame.size.height)];
-            intr.currController = self.navigationController;
-            [controller addSubview:intr];
-            [intr release];
-        }else{
-            //table3
-            ArticleView *intr = [[ArticleView alloc] initWithFrame:CGRectMake(0, 0, myscrollView.frame.size.width, myscrollView.frame.size.height)];
-            intr.currController = self.navigationController;
-            [controller addSubview:intr];
-            [intr release];
-        }
-        
-        [viewControllers replaceObjectAtIndex:page2 withObject:controller];
-        [controller release];
-    }
-    
-    // add the controller's view to the scroll view
-    if (nil == controller.superview) {
-        CGRect frame = myscrollView.frame;
-        frame.origin.x = frame.size.width * page2;
-        frame.origin.y = 0;
-        controller.frame = frame;
-        [myscrollView addSubview:controller];
-    }
-}
 
 -(void)orderClicked:(UIButton*)btn
 {
@@ -674,41 +613,141 @@
     
 }
 
--(void)swichPanel:(UIButton*)btn
+
+
+-(int)tablewheight
 {
-    int index = btn.tag -100;
-//    [UIView animateWithDuration:0.35f animations:^{
-//        CGRect myframe = shadow.frame;
-//        //shadow.transform = CGAffineTransformMakeTranslation(10+90*index-myframe.origin.x, 0) ;
-//        shadow.frame = CGRectMake(10+90*index, myframe.origin.y, myframe.size.width, myframe.size.height);
-//        
-//    } completion:^(BOOL succ){
-//        
-//    }];
-    [self loadScrollViewWithPage:index - 1];
-    [self loadScrollViewWithPage:index];
-    [self loadScrollViewWithPage:index + 1];
+    NSInteger n = n_jsonArr.count-1;
+    if (n%8==6) {
+        return (n/8*6+n%8)*90+320;
+    }else if (n%8==7) {
+        return (n/8*6+n%8-1)*90+320;
+    }else{
+        return (n/8*6+n%8+1)*90+320;
+    }
+}
+
+- (void)FooterreloadFinish
+{
+    if (_Headerreloading) {
+        [m_tableView reloadData];
+        if ([n_jsonArr count]==0) {
+            m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
+            _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
+        }
+        else
+        {
+            if ([self tablewheight]<m_tableView.frame.size.height) {
+                m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
+                _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
+            }
+            else
+            {
+                m_tableView.contentSize=CGSizeMake(applicationwidth, [self tablewheight]);
+                _refreshFooterView.frame=CGRectMake(0, [self tablewheight], applicationwidth, 460);
+            }
+        }
+        _refreshHeaderView.Frame=CGRectMake(0, -65, applicationwidth, 65);
+        
+    }
     
-    [myscrollView scrollRectToVisible:CGRectMake(myscrollView.frame.size.width*index, myscrollView.frame.origin.y, myscrollView.frame.size.width, myscrollView.frame.size.height) animated:YES];
+    // 数据加载完成
+	[_refreshFooterView egoRefreshScrollViewDataSourceDidFinishedLoading:m_tableView];
     
+    _Headerreloading = NO;
+}
+
+- (void)HeaderreloadFinish
+{
+    if (_Headerreloading) {
+        [m_tableView reloadData];
+        if ([n_jsonArr count]==0) {
+            m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
+            _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
+        }
+        else
+        {
+            if ([self tablewheight]<m_tableView.frame.size.height) {
+                m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
+                _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
+            }
+            else
+            {
+                m_tableView.contentSize=CGSizeMake(applicationwidth, [self tablewheight]);
+                _refreshFooterView.frame=CGRectMake(0, [self tablewheight], applicationwidth, 460);
+            }
+        }
+        _refreshHeaderView.Frame=CGRectMake(0, -65, applicationwidth, 65);
+    }
+    
+    // 数据加载完成
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:m_tableView];
+    
+    _Headerreloading = NO;
+}
+
+#pragma mark -
+#pragma mark UIScrollView Delegate Methods
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:m_tableView];
+    
+    [_refreshFooterView egoRefreshScrollViewDidEndDragging:m_tableView];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (scrollView.tag==11) {
-        
-        
-        CGFloat pageWidth = myscrollView.frame.size.width;
-        int page2 = floor((myscrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
-        
-        [UIView animateWithDuration:0.15f animations:^{
-            shadow.transform = CGAffineTransformMakeTranslation(90*page2, 0) ;
-        } completion:^(BOOL succ){
-            //shadow.transform = CGAffineTransformMakeTranslation(90*page2, 0) ;
-        }];
-        [self loadScrollViewWithPage:page2 - 1];
-        [self loadScrollViewWithPage:page2];
-        [self loadScrollViewWithPage:page2 + 1];
-    }
+    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+    [_refreshFooterView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableFooter Delegate Methods
+
+// 开始更新
+- (void)egoRefreshTableFooterDidTriggerRefresh:(EGORefreshTableFooterView *)view
+{
+    //    [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:5.f];
+    [self loadWorklistRequest];
+    
+    _Headerreloading = YES;   // 表示正处于加载更多数据状态
+}
+
+// 是否处于更新状态
+- (BOOL)egoRefreshTableFooterDataSourceIsLoading:(EGORefreshTableFooterView *)view {
+    
+	return _Headerreloading; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableFooterDataSourceLastUpdated:(EGORefreshTableFooterView *)view {
+    
+	return [NSDate date]; // should return date data source was last changed
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeader Delegate Methods
+
+// 开始更新
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
+{
+    //    [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:5.f];
+    
+    page=0;
+    reloadormore=YES;
+    [self loadWorklistRequest];
+    _Headerreloading = YES;   // 表示正处于加载更多数据状态
+}
+
+// 是否处于更新状态
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+    
+    return _Headerreloading; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+    
+	return [NSDate date]; // should return date data source was last changed
 }
 @end

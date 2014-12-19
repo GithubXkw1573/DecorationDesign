@@ -141,6 +141,10 @@
             guanggaoscrollView.scrollsToTop = NO;
             guanggaoscrollView.delegate = self;
             
+            //新建一个定时器
+            [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(changePic) userInfo:nil repeats:YES];
+            
+            
             UIPageControl *pageCon=[[UIPageControl alloc]initWithFrame:CGRectMake(135*widthRate, 60, 50, 20)];
             pageCon.backgroundColor = [UIColor clearColor];
             pageCon.currentPageIndicatorTintColor = [UIColor redColor];
@@ -403,6 +407,21 @@
 // At the end of scroll animation, reset the boolean used when scrolls originate from the UIPageControl
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     pageControlUsed = NO;
+}
+
+-(void)changePic
+{
+    currPage ++;
+    if (currPage>guanggaoArray.count-1) {
+        currPage=0;
+    }
+    [self loadScrollViewWithPage:currPage - 1];
+    [self loadScrollViewWithPage:currPage];
+    [self loadScrollViewWithPage:currPage + 1];
+    CGRect frame = imagescrollView.frame;
+    frame.origin.x = frame.size.width * currPage;
+    frame.origin.y = 0;
+    [imagescrollView scrollRectToVisible:frame animated:YES];
 }
 
 - (void)changePage:(id)sender {

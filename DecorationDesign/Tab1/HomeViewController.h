@@ -33,6 +33,7 @@
     NSMutableArray *designerArray;
     MBProgressHUD *homeMBProgress;
     ShareView *myshareView;
+    NSInteger currPage;
 }
 @property(nonatomic, retain)MBProgressHUD *homeMBProgress;
 @property(nonatomic, retain)NSMutableArray *viewControllers;
