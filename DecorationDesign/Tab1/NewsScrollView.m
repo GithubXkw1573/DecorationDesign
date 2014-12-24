@@ -13,6 +13,7 @@
 @synthesize zixunleibieused;
 @synthesize navigationScrollView;
 @synthesize t_delegate;
+@synthesize shaixuan;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -88,7 +89,7 @@
         newsTableView.tag=99;
         [controller addSubview:newsTableView];
         newsTableView.delegate=self;
-        newsTableView.shaixuan = 99;
+        newsTableView.shaixuan = self.shaixuan;
         newsTableView.m_array = [zixunleibieused objectAtIndex:page];
         //        [newsTableView informationrequest];
         [newsTableView ViewFrashData];

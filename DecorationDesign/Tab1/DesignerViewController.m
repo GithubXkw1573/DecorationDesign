@@ -54,9 +54,6 @@
     [myleftitem release];
     [leftbtnview release];
     
-    //[self initHeaderComponents];
-    //[self initScrollComponents];
-    
     m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-49-44) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
@@ -265,7 +262,7 @@
             zuoping.font = font(12);
             [cell.contentView addSubview:zuoping];
             [zuoping release];
-            UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(140, 10, 30, 20)];
+            UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(140, 10, 100, 20)];
             zuopingValue.text = @"888";
             worksLabel = zuopingValue;
             zuopingValue.tag = 11;
@@ -280,7 +277,7 @@
             jingping.font = font(12);
             [cell.contentView addSubview:jingping];
             [jingping release];
-            UILabel *jingpingValue = [[UILabel alloc] initWithFrame:CGRectMake(140, 30, 30, 20)];
+            UILabel *jingpingValue = [[UILabel alloc] initWithFrame:CGRectMake(140, 30, 100, 20)];
             jingpingValue.text = @"88";
             good_workLabel = jingpingValue;
             jingpingValue.tag = 12;
@@ -319,7 +316,7 @@
             city.font = font(12);
             [cell.contentView addSubview:city];
             [city release];
-            UILabel *cityValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 50, 40, 20)];
+            UILabel *cityValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 50, 60, 20)];
             cityValue.text = @"南京";
             cityLabel = cityValue;
             cityValue.tag = 14;
@@ -349,7 +346,7 @@
             type.font = font(12);
             [cell.contentView addSubview:type];
             [type release];
-            UILabel *typeValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 70, 50, 20)];
+            UILabel *typeValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 70, 60, 20)];
             typeValue.text = @"室内设计";
             typeLabel = typeValue;
             typeValue.tag = 16;
@@ -366,9 +363,9 @@
         UILabel *lbl1 = (UILabel*)[cell.contentView viewWithTag:11];
         UILabel *lbl2 = (UILabel*)[cell.contentView viewWithTag:12];
         UILabel *lbl3 = (UILabel*)[cell.contentView viewWithTag:13];
-        UILabel *lbl4 = (UILabel*)[cell.contentView viewWithTag:14];
+        UILabel *lbl4 = (UILabel*)[cell.contentView viewWithTag:16];
         UILabel *lbl5 = (UILabel*)[cell.contentView viewWithTag:15];
-        UILabel *lbl6 = (UILabel*)[cell.contentView viewWithTag:16];
+        UILabel *lbl6 = (UILabel*)[cell.contentView viewWithTag:14];
         lbl1.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:1]];
         lbl2.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:2]];
         lbl3.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:3]];
@@ -414,12 +411,9 @@
             [cell.contentView addSubview:line];
             [line release];
             
-            UIButton *detailBtn = [[UIButton alloc] initWithFrame:CGRectMake(applicationwidth-60, 15, 50, 20)];
-            [detailBtn setTitle:@"详情" forState:UIControlStateNormal];
-            [detailBtn setBackgroundImage:[UIImage imageNamed:@"Tiwen_text-bg"] forState:UIControlStateNormal];
+            UIButton *detailBtn = [[UIButton alloc] initWithFrame:CGRectMake(applicationwidth-60, 10, 50, 25)];
+            [detailBtn setImage:[UIImage imageNamed:@"xiangqing_btn_03"] forState:UIControlStateNormal];
             detailBtn.backgroundColor = [UIColor clearColor];
-            detailBtn.layer.borderWidth = 1.0f;
-            detailBtn.layer.backgroundColor = [[UIColor grayColor] CGColor];
             detailBtn.tag = 23;
             [detailBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:detailBtn];

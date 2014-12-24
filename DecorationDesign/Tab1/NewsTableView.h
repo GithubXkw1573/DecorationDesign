@@ -19,6 +19,8 @@
 #import "ActivityCell.h"
 #import "BannerTableCell.h"
 #import "DesignerListCell.h"
+#import "CailiaoCell.h"
+#import "LoupanCell.h"
 
 @interface NewsTableView : UIView<UITableViewDataSource,UITableViewDelegate,EGORefreshTableFooterDelegate,EGORefreshTableHeaderDelegate>
 {

@@ -28,6 +28,8 @@
     self.navigationController.navigationBar.shadowImage = shadowimage;//去掉navigationBar阴影黑线
     [shadowimage release];
     
+    n_jsonArr = [[NSMutableArray alloc] initWithCapacity:1];
+    
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
     titlelabel.backgroundColor=[UIColor clearColor];
     titlelabel.textColor=[UIColor whiteColor];
@@ -61,6 +63,7 @@
     m_tableView.backgroundColor=[UIColor clearColor];
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
+    [self initEgoRefreshComponent];
     
     MBProgress=[[MBProgressHUD alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160)];
     [MBProgress setCenter:CGPointMake(applicationwidth/2.0, applicationheight/2)];
@@ -83,18 +86,51 @@
     [super didReceiveMemoryWarning];
 }
 
+-(void)initEgoRefreshComponent
+{
+    UIView *touview=[[UIView alloc]initWithFrame:CGRectMake(0, -460, applicationwidth, 460-65)];
+    touview.backgroundColor=[UIColor beijingcolor];
+    [m_tableView addSubview:touview];
+    [touview release];
+    
+    // 上拉加载视图 － RefreshView
+    _refreshFooterView = [[EGORefreshTableFooterView alloc] initWithFrame:
+                          CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460)];
+    _refreshFooterView.delegate = self;
+    [m_tableView addSubview:_refreshFooterView];
+    
+    // 更新时间
+    [_refreshFooterView refreshLastUpdatedDate];
+    
+    // 下拉加载视图 － RefreshView
+    _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:
+                          CGRectMake(0, -65, applicationwidth, 65)];
+    _refreshHeaderView.delegate = self;
+    [m_tableView addSubview:_refreshHeaderView];
+    
+    // 更新时间
+    [_refreshHeaderView refreshLastUpdatedDate];
+    
+    // 表示是否在加载
+    _Headerreloading = YES;
+    
+    // page = 0;
+    reloadormore = YES;
+    mytime=@"";
+}
+
 -(void)loadRequest
 {
     [MBProgress show:YES];
     [MBProgress setLabelText:@"获取中"];
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"DESIGNER-TWOPAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"USERID", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"COMPANY-TWOPAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"COMPANYID", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
             [MBProgress setHidden:YES];
-            NSArray *infolist = [result objectForKey:@"DESIGNERTWOPAGE"];
+            NSArray *infolist = [result objectForKey:@"COMPANYTWOPAGE"];
             self.m_jsonArr = infolist;
         }else {
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
@@ -115,22 +151,61 @@
     [MBProgress setLabelText:@"获取中"];
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"DESIGNER-WORKSLIST",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"USERID", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"COMPANY-WORKSLIST-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"COMPANYID",[NSString stringWithFormat:@"%d",page++],@"GETTIMES", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
-            [MBProgress setHidden:YES];
-            NSArray *infolist = [result objectForKey:@"WORKSARTICLEINFO"];
-            self.n_jsonArr = infolist;
-        }else {
-            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
-            NSLog(@"%@",errrDesc);
-            [MBProgress settext:errrDesc aftertime:1.0];
+            newList = [result objectForKey:@"COMPANYARTICLEINFO"];
+            if ([newList count] > 0) {
+                [MBProgress hide:YES];
+                if (reloadormore) {
+                    [n_jsonArr removeAllObjects];
+                    [n_jsonArr addObjectsFromArray:newList];
+                    reloadormore = NO;
+                    [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
+                    return;
+                }
+                else{
+                    [n_jsonArr  addObjectsFromArray:newList];
+                    [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
+                    return;
+                }
+            }
+            else if([newList count] == 0){
+                if (page>1) {
+                    [MBProgress settext:@"没有更多了！" aftertime:1.0];
+                }
+                else
+                {
+                    [MBProgress settext:@"暂无数据!" aftertime:1.0];
+                    [n_jsonArr removeAllObjects];
+                }
+                page --;
+            }
+        }
+        if (reloadormore) {
+            [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
+            reloadormore=NO;
+        }
+        else
+        {
+            [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
+            reloadormore=NO;
         }
     }];
     [request setFailedBlock:^{
-        NSLog(@"网络错误");
-        [MBProgress settext:@"网络错误!" aftertime:1.0];
+        [MBProgress settext:@"网络错误，请检查网络连接！" aftertime:1.0];
+        page--;
+        
+        if (reloadormore) {
+            [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
+            reloadormore=NO;
+        }
+        else
+        {
+            [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
+            reloadormore=NO;
+        }
     }];
     [request startRequest];
 }
@@ -175,7 +250,7 @@
             zuoping.font = font(12);
             [cell.contentView addSubview:zuoping];
             [zuoping release];
-            UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(140, 10, 30, 20)];
+            UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(140, 10, 100, 20)];
             zuopingValue.text = @"888";
             worksLabel = zuopingValue;
             zuopingValue.tag = 11;
@@ -190,7 +265,7 @@
             jingping.font = font(12);
             [cell.contentView addSubview:jingping];
             [jingping release];
-            UILabel *jingpingValue = [[UILabel alloc] initWithFrame:CGRectMake(140, 30, 30, 20)];
+            UILabel *jingpingValue = [[UILabel alloc] initWithFrame:CGRectMake(140, 30, 100, 20)];
             jingpingValue.text = @"88";
             good_workLabel = jingpingValue;
             jingpingValue.tag = 12;
@@ -229,7 +304,7 @@
             city.font = font(12);
             [cell.contentView addSubview:city];
             [city release];
-            UILabel *cityValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 50, 40, 20)];
+            UILabel *cityValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 50, 60, 20)];
             cityValue.text = @"南京";
             cityLabel = cityValue;
             cityValue.tag = 14;
@@ -259,7 +334,7 @@
             type.font = font(12);
             [cell.contentView addSubview:type];
             [type release];
-            UILabel *typeValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 70, 50, 20)];
+            UILabel *typeValue = [[UILabel alloc] initWithFrame:CGRectMake(260, 70, 60, 20)];
             typeValue.text = @"室内设计";
             typeLabel = typeValue;
             typeValue.tag = 16;
@@ -276,9 +351,9 @@
         UILabel *lbl1 = (UILabel*)[cell.contentView viewWithTag:11];
         UILabel *lbl2 = (UILabel*)[cell.contentView viewWithTag:12];
         UILabel *lbl3 = (UILabel*)[cell.contentView viewWithTag:13];
-        UILabel *lbl4 = (UILabel*)[cell.contentView viewWithTag:14];
+        UILabel *lbl4 = (UILabel*)[cell.contentView viewWithTag:16];
         UILabel *lbl5 = (UILabel*)[cell.contentView viewWithTag:15];
-        UILabel *lbl6 = (UILabel*)[cell.contentView viewWithTag:16];
+        UILabel *lbl6 = (UILabel*)[cell.contentView viewWithTag:14];
         lbl1.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:1]];
         lbl2.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:2]];
         lbl3.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:3]];
@@ -307,12 +382,9 @@
             [personName release];
             
             
-            UIButton *detailBtn = [[UIButton alloc] initWithFrame:CGRectMake(applicationwidth-60, 15, 50, 20)];
-            [detailBtn setTitle:@"详情" forState:UIControlStateNormal];
-            [detailBtn setBackgroundImage:[UIImage imageNamed:@"Tiwen_text-bg"] forState:UIControlStateNormal];
+            UIButton *detailBtn = [[UIButton alloc] initWithFrame:CGRectMake(applicationwidth-60, 10, 50, 25)];
+            [detailBtn setImage:[UIImage imageNamed:@"xiangqing_btn_03"] forState:UIControlStateNormal];
             detailBtn.backgroundColor = [UIColor clearColor];
-            detailBtn.layer.borderWidth = 1.0f;
-            detailBtn.layer.backgroundColor = [[UIColor grayColor] CGColor];
             detailBtn.tag = 23;
             [detailBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:detailBtn];
@@ -360,24 +432,24 @@
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 300, 1)];
+                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
                 line.image = [UIImage imageNamed:@"线"];
                 [cell.contentView addSubview:line];
                 [line release];
                 
-                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 90, 80)];
+                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 90, 80)];
                 works1.image = [UIImage imageNamed:@"Sjs-xiangqing_img2"];
                 works1.tag = 50;
                 [cell.contentView addSubview:works1];
                 [works1 release];
                 
-                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(115, 20, 90, 80)];
+                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(115, 5, 90, 80)];
                 works2.image = [UIImage imageNamed:@"Sjs-xiangqing_img2"];
                 works2.tag = 51;
                 [cell.contentView addSubview:works2];
                 [works2 release];
                 
-                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(220, 20, 90, 80)];
+                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(220, 5, 90, 80)];
                 works3.image = [UIImage imageNamed:@"Sjs-xiangqing_img2"];
                 works3.tag = 52;
                 [cell.contentView addSubview:works3];
@@ -388,8 +460,14 @@
             UIImageView *works2Image = (UIImageView*)[cell.contentView viewWithTag:51];
             UIImageView *works3Image = (UIImageView*)[cell.contentView viewWithTag:52];
             NSString *imageurl1 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:2];
-            NSString *imageurl2 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-2)] objectAtIndex:2];
-            NSString *imageurl3 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-1)] objectAtIndex:2];
+            NSString *imageurl2=@"";
+            NSString *imageurl3=@"";
+            if ((row-3)/6*2+row-2 <= n_jsonArr.count-1) {
+                imageurl2 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-2)] objectAtIndex:2];
+            }
+            if ((row-3)/6*2+row-1 <= n_jsonArr.count-1) {
+                imageurl3 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-1)] objectAtIndex:2];
+            }
             [works1Image setImageWithURL:[NSURL URLWithString:imageurl1] placeholderImage:[UIImage imageNamed:@"Sjs_xiangqing_img2"]];
             [works2Image setImageWithURL:[NSURL URLWithString:imageurl2] placeholderImage:[UIImage imageNamed:@"Sjs_xiangqing_img2"]];
             [works3Image setImageWithURL:[NSURL URLWithString:imageurl3] placeholderImage:[UIImage imageNamed:@"Sjs_xiangqing_img2"]];
@@ -399,7 +477,7 @@
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
-                cell.selectionStyle=UITableViewCellSelectionStyleNone;
+                cell.selectionStyle=UITableViewCellSelectionStyleGray;
                 
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
                 line.image = [UIImage imageNamed:@"线"];
@@ -455,7 +533,7 @@
     }else{
         if ((row+4)%6==0)
         {
-            return 110;
+            return 90;
         }else{
             return 90;
         }
@@ -478,6 +556,157 @@
 -(void)orderClicked:(UIButton*)btn
 {
     
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    DetailViewController *detail = [[DetailViewController alloc] init];
+    NSInteger row = indexPath.row;
+    detail.hidesBottomBarWhenPushed = YES;
+    detail.method = @"COMPANY-WORKSINFO";
+    detail.designerId =  [m_array objectAtIndex:1];
+    detail.designer = [m_jsonArr objectAtIndex:0];
+    detail.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
+    [self.navigationController pushViewController:detail animated:YES];
+    [detail release];
+}
+
+
+-(int)tablewheight
+{
+    NSInteger n = n_jsonArr.count-1;
+    if (n%8==6) {
+        return (n/8*6+n%8)*90+290+[self cellHeight];
+    }else if (n%8==7) {
+        return (n/8*6+n%8-1)*90+290+[self cellHeight];
+    }else{
+        return (n/8*6+n%8+1)*90+290+[self cellHeight];
+    }
+}
+
+- (void)FooterreloadFinish
+{
+    if (_Headerreloading) {
+        [m_tableView reloadData];
+        if ([n_jsonArr count]==0) {
+            m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
+            _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
+        }
+        else
+        {
+            if ([self tablewheight]<m_tableView.frame.size.height) {
+                m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
+                _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
+            }
+            else
+            {
+                m_tableView.contentSize=CGSizeMake(applicationwidth, [self tablewheight]);
+                _refreshFooterView.frame=CGRectMake(0, [self tablewheight], applicationwidth, 460);
+            }
+        }
+        _refreshHeaderView.Frame=CGRectMake(0, -65, applicationwidth, 65);
+        
+    }
+    
+    // 数据加载完成
+	[_refreshFooterView egoRefreshScrollViewDataSourceDidFinishedLoading:m_tableView];
+    
+    _Headerreloading = NO;
+}
+
+- (void)HeaderreloadFinish
+{
+    if (_Headerreloading) {
+        [m_tableView reloadData];
+        if ([n_jsonArr count]==0) {
+            m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
+            _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
+        }
+        else
+        {
+            if ([self tablewheight]<m_tableView.frame.size.height) {
+                m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
+                _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
+            }
+            else
+            {
+                m_tableView.contentSize=CGSizeMake(applicationwidth, [self tablewheight]);
+                _refreshFooterView.frame=CGRectMake(0, [self tablewheight], applicationwidth, 460);
+            }
+        }
+        _refreshHeaderView.Frame=CGRectMake(0, -65, applicationwidth, 65);
+    }
+    
+    // 数据加载完成
+	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:m_tableView];
+    
+    _Headerreloading = NO;
+}
+
+#pragma mark -
+#pragma mark UIScrollView Delegate Methods
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:m_tableView];
+    
+    [_refreshFooterView egoRefreshScrollViewDidEndDragging:m_tableView];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+    [_refreshFooterView egoRefreshScrollViewDidScroll:scrollView];
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableFooter Delegate Methods
+
+// 开始更新
+- (void)egoRefreshTableFooterDidTriggerRefresh:(EGORefreshTableFooterView *)view
+{
+    //    [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:5.f];
+    [self loadWorklistRequest];
+    
+    _Headerreloading = YES;   // 表示正处于加载更多数据状态
+}
+
+// 是否处于更新状态
+- (BOOL)egoRefreshTableFooterDataSourceIsLoading:(EGORefreshTableFooterView *)view {
+    
+	return _Headerreloading; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableFooterDataSourceLastUpdated:(EGORefreshTableFooterView *)view {
+    
+	return [NSDate date]; // should return date data source was last changed
+}
+
+#pragma mark -
+#pragma mark EGORefreshTableHeader Delegate Methods
+
+// 开始更新
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
+{
+    //    [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:5.f];
+    
+    page=0;
+    reloadormore=YES;
+    [self loadWorklistRequest];
+    _Headerreloading = YES;   // 表示正处于加载更多数据状态
+}
+
+// 是否处于更新状态
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
+    
+    return _Headerreloading; // should return if data source model is reloading
+}
+
+- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
+    
+	return [NSDate date]; // should return date data source was last changed
 }
 
 @end

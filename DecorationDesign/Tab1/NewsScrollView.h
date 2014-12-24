@@ -15,7 +15,9 @@
     NSUInteger kNumberOfPages;
     UIPageControl *pageControl;
     BOOL pageControlUsed;
+    NSInteger shaixuan;
 }
+@property (nonatomic,assign) NSInteger shaixuan;
 @property (nonatomic,retain) NSMutableArray *viewControllers;
 @property(nonatomic,retain)NSMutableArray *zixunleibieused;
 @property (nonatomic,retain) ScrollMenu *navigationScrollView;

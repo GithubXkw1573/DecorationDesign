@@ -378,7 +378,9 @@
         if ([UserInfo shared].m_isLogin) {
             CommentViewController *comment = [[CommentViewController alloc] init];
             comment.designerId = designerId;
+            comment.designerName = designer;
             comment.worksId = worksId;
+            comment.m_array = m_jsonArr;
             comment.worksType = [m_jsonArr objectAtIndex:0];
             [self.navigationController pushViewController:comment animated:YES];
             [comment release];
@@ -422,7 +424,17 @@
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
             [MBProgress setHidden:YES];
-            NSArray *infolist = [result objectForKey:@"DESIGNERTHREEPAGE"];
+            NSString *resultKey = @"DESIGNERTHREEPAGE";
+            if ([[UserInfo shared].m_plateType isEqualToString:@"S"]) {
+                resultKey = @"DESIGNERTHREEPAGE";
+            }else if ([[UserInfo shared].m_plateType isEqualToString:@"J"]){
+                resultKey = @"COMPANYTHREEPAGE";
+            }else if ([[UserInfo shared].m_plateType isEqualToString:@"C"]){
+                resultKey = @"DESIGNERTHREEPAGE";
+            }else if ([[UserInfo shared].m_plateType isEqualToString:@"L"]){
+                resultKey = @"DESIGNERTHREEPAGE";
+            }
+            NSArray *infolist = [result objectForKey:resultKey];
             self.m_jsonArr = infolist;
             UILabel *titleLabel = (UILabel*)self.navigationItem.titleView;
             titleLabel.text = [[m_jsonArr objectAtIndex:0] isEqualToString:@"Z"]?@"作品详情":@"博文详情";
@@ -467,7 +479,7 @@
             [cell.contentView addSubview:personTitle];
             [personTitle release];
             
-            UILabel *zuoping = [[UILabel alloc] initWithFrame:CGRectMake(10, 50, 80, 20)];
+            UILabel *zuoping = [[UILabel alloc] initWithFrame:CGRectMake(10, 50, 120, 20)];
             zuoping.text =[NSString stringWithFormat:@"%@",self.designer];
             zuoping.backgroundColor = [UIColor clearColor];
             zuoping.font = font(13);
@@ -476,7 +488,7 @@
             [cell.contentView addSubview:zuoping];
             [zuoping release];
             
-            UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(100, 50, 120, 20)];
+            UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(140, 50, 80, 20)];
             zuopingValue.text = @"2014-10-1 12:45";
             zuopingValue.textColor = [UIColor grayColor];
             zuopingValue.tag = 12;
@@ -500,10 +512,16 @@
             [line release];
         }
         UILabel *lbl0 = (UILabel*)[cell.contentView viewWithTag:10];
+        UILabel *nameLabel = (UILabel*)[cell.contentView viewWithTag:11];
         UILabel *lbl2 = (UILabel*)[cell.contentView viewWithTag:12];
         UILabel *lbl3 = (UILabel*)[cell.contentView viewWithTag:13];
+        NSString *timeStr = [self returnFormatTime:[NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:2]]];
         lbl0.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:1]];
-        lbl2.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:2]];
+        CGSize size = [nameLabel.text sizeWithFont:font(13) constrainedToSize:CGSizeMake(150, 20) lineBreakMode:NSLineBreakByWordWrapping];
+        nameLabel.frame = CGRectMake(nameLabel.frame.origin.x, nameLabel.frame.origin.y, size.width, nameLabel.frame.size.height);
+        lbl2.frame = CGRectMake(20+size.width, lbl2.frame.origin.y, lbl2.frame.size.width, lbl2.frame.size.height);
+        lbl3.frame = CGRectMake(100+size.width, lbl3.frame.origin.y, lbl3.frame.size.width, lbl3.frame.size.height);
+        lbl2.text = [NSString stringWithFormat:@"%@",timeStr];
         lbl3.text = [NSString stringWithFormat:@"%@ 评论",[m_jsonArr objectAtIndex:3]];
         return cell;
     }else{
@@ -529,6 +547,15 @@
         }
     }
     return nil;
+}
+
+-(NSString*)returnFormatTime:(NSString *)timeStr
+{
+    NSString *month = [timeStr substringWithRange:NSMakeRange (4, 2)];
+    NSString *day =[timeStr substringWithRange:NSMakeRange (6, 2)];
+    NSString *hour = [timeStr substringWithRange:NSMakeRange (8, 2)];
+    NSString *minit = [timeStr substringWithRange:NSMakeRange (10, 2)];
+    return [NSString stringWithFormat:@"%@-%@ %@:%@",month,day,hour,minit];
 }
 
 -(BOOL)isShowText:(NSInteger)row

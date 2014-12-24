@@ -180,6 +180,7 @@
             //更多按钮设置
             [self addMoreButton:_menuList];
             //更新newsscroll
+            newsScrollView.shaixuan = self.contentType;
             [newsScrollView reloadscrollview:_menuList];
             if ([_menuList count] > 0) {
                 

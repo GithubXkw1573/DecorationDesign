@@ -13,7 +13,7 @@
 @end
 
 @implementation CommentViewController
-@synthesize m_array,m_jsonArr,n_jsonArr,worksId,worksType,designerId;
+@synthesize m_array,m_jsonArr,n_jsonArr,worksId,worksType,designerId,designerName;
 
 - (void)viewDidLoad
 {
@@ -221,13 +221,13 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
-            personTitle.text = @"设计没有好坏之分";
+            personTitle.text = [NSString stringWithFormat:@"%@",[m_array objectAtIndex:1]];
             personTitle.font = font(18);
             [cell.contentView addSubview:personTitle];
             [personTitle release];
             
             UILabel *zuoping = [[UILabel alloc] initWithFrame:CGRectMake(10, 50, 80, 20)];
-            zuoping.text = @"凯瑞丽";
+            zuoping.text = [NSString stringWithFormat:@"%@",designerName];
             zuoping.backgroundColor = [UIColor clearColor];
             zuoping.font = font(13);
             zuoping.textColor = [UIColor grayColor];
@@ -235,7 +235,8 @@
             [zuoping release];
             
             UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(100, 50, 120, 20)];
-            zuopingValue.text = @"2014-10-1 12:45";
+            NSString *timeStr = [self returnFormatTime:[NSString stringWithFormat:@"%@",[m_array objectAtIndex:2]]];
+            zuopingValue.text = [NSString stringWithFormat:@"%@",timeStr];
             zuopingValue.textColor = [UIColor grayColor];
             zuopingValue.tag = 11;
             zuopingValue.backgroundColor = [UIColor clearColor];
@@ -244,12 +245,17 @@
             [zuopingValue release];
             
             UILabel *jingping = [[UILabel alloc] initWithFrame:CGRectMake(220, 50, 90, 20)];
-            jingping.text = @"545 评论";
+            jingping.text = [NSString stringWithFormat:@"%@ 评论",[m_array objectAtIndex:3]];
             jingping.backgroundColor = [UIColor clearColor];
             jingping.font = font(13);
             jingping.textColor = [UIColor grayColor];
             [cell.contentView addSubview:jingping];
             [jingping release];
+            
+            CGSize size = [zuoping.text sizeWithFont:font(13) constrainedToSize:CGSizeMake(150, 20) lineBreakMode:NSLineBreakByWordWrapping];
+            zuoping.frame = CGRectMake(zuoping.frame.origin.x, zuoping.frame.origin.y, size.width, zuoping.frame.size.height);
+            zuopingValue.frame = CGRectMake(20+size.width, zuopingValue.frame.origin.y, zuopingValue.frame.size.width, zuopingValue.frame.size.height);
+            jingping.frame = CGRectMake(100+size.width, jingping.frame.origin.y, jingping.frame.size.width, jingping.frame.size.height);
         }
         return cell;
     }else if (row == 1){
@@ -263,7 +269,7 @@
             [cell.contentView addSubview:line];
             [line release];
             
-            UIImageView *fengmian = [[UIImageView alloc] initWithFrame:CGRectMake(10, 20, 300, 120)];
+            UIView *fengmian = [[UIView alloc] initWithFrame:CGRectMake(10, 20, 300, 120)];
             fengmian.backgroundColor = [UIColor colorWithRed:230/255.f green:230/255.f blue:230/255.f alpha:1.0];
             [cell.contentView addSubview:fengmian];
             [fengmian release];
@@ -272,7 +278,7 @@
             UIButton *face1 = [[UIButton alloc] initWithFrame:CGRectMake(20, 15, 60, 60)];
             face1.backgroundColor = [UIColor clearColor];
             face1.tag = 221;
-            [face1 addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
+            [face1 addTarget:self action:@selector(mydtap:) forControlEvents:UIControlEventTouchUpInside];
             [face1 setImage:[UIImage imageNamed:@"Pinglun_img1"] forState:UIControlStateNormal];
             [fengmian addSubview:face1];
             [face1 release];
@@ -287,7 +293,7 @@
             UIButton *face2 = [[UIButton alloc] initWithFrame:CGRectMake(120, 15, 60, 60)];
             face2.backgroundColor = [UIColor clearColor];
             face2.tag = 222;
-            [face2 addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
+            [face2 addTarget:self action:@selector(mydtap:) forControlEvents:UIControlEventTouchUpInside];
             [face2 setImage:[UIImage imageNamed:@"Pinglun_img2"] forState:UIControlStateNormal];
             [fengmian addSubview:face2];
             [face2 release];
@@ -302,7 +308,7 @@
             UIButton *face3 = [[UIButton alloc] initWithFrame:CGRectMake(220, 15, 60, 60)];
             face3.backgroundColor = [UIColor clearColor];
             face3.tag = 223;
-            [face3 addTarget:self action:@selector(tap:) forControlEvents:UIControlEventTouchUpInside];
+            [face3 addTarget:self action:@selector(mydtap:) forControlEvents:UIControlEventTouchUpInside];
             [face3 setImage:[UIImage imageNamed:@"Pinglun_img3"] forState:UIControlStateNormal];
             [fengmian addSubview:face3];
             [face3 release];
@@ -380,6 +386,15 @@
 -(void)buttonClicked:(UIButton*)btn
 {
     
+}
+
+-(NSString*)returnFormatTime:(NSString *)timeStr
+{
+    NSString *month = [timeStr substringWithRange:NSMakeRange (4, 2)];
+    NSString *day =[timeStr substringWithRange:NSMakeRange (6, 2)];
+    NSString *hour = [timeStr substringWithRange:NSMakeRange (8, 2)];
+    NSString *minit = [timeStr substringWithRange:NSMakeRange (10, 2)];
+    return [NSString stringWithFormat:@"%@-%@ %@:%@",month,day,hour,minit];
 }
 
 -(void)dismissKeyBoard
@@ -461,10 +476,10 @@
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
             [MBProgress hide:YES];
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论成功!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-            [alert show];
-            [alert release];
-            commentField.text = @"";
+//            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论成功!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+//            [alert show];
+//            [alert release];
+//            commentField.text = @"";
         }else {
             [MBProgress hide:YES];
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
@@ -489,32 +504,37 @@
     }];
 }
 
--(void)tap:(UIButton*)tap
+-(void)mydtap:(UIButton*)tap
 {
     if (isCommented) {
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"您已经进行过满意度评价!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
         [alert show];
         [alert release];
     }else{
-        isCommented = YES;
-        NSString *commentSectect = @"";
-        if (tap.tag == 221) {
-            //满意
-            commentSectect = @"1";
-            NSInteger num = [[n_jsonArr objectAtIndex:0] integerValue]+1;
-            support1.text = [NSString stringWithFormat:@"%i 满意",num];
-        }else if (tap.tag == 222){
-            //基本满意
-            commentSectect = @"2";
-            NSInteger num = [[n_jsonArr objectAtIndex:1] integerValue]+1;
-            support2.text = [NSString stringWithFormat:@"%i 满意",num];
-        }else{
-            //不满意
-            commentSectect = @"3";
-            NSInteger num = [[n_jsonArr objectAtIndex:2] integerValue]+1;
-            support3.text = [NSString stringWithFormat:@"%i 满意",num];
-        }
-        [self startSupportComment:commentSectect];
+        [UIView animateWithDuration:.35f animations:^{
+            tap.transform = CGAffineTransformMakeScale(1.3, 1.3);
+        } completion:^(BOOL flag){
+            tap.transform = CGAffineTransformMakeScale(1.0, 1.0);
+            isCommented = YES;
+            NSString *commentSectect = @"";
+            if (tap.tag == 221) {
+                //满意
+                commentSectect = @"1";
+                NSInteger num = [[n_jsonArr objectAtIndex:0] integerValue]+1;
+                support1.text = [NSString stringWithFormat:@"%i 满意",num];
+            }else if (tap.tag == 222){
+                //基本满意
+                commentSectect = @"2";
+                NSInteger num = [[n_jsonArr objectAtIndex:1] integerValue]+1;
+                support2.text = [NSString stringWithFormat:@"%i 基本满意",num];
+            }else{
+                //不满意
+                commentSectect = @"3";
+                NSInteger num = [[n_jsonArr objectAtIndex:2] integerValue]+1;
+                support3.text = [NSString stringWithFormat:@"%i 不满意",num];
+            }
+            [self startSupportComment:commentSectect];
+        }];
     }
 }
 

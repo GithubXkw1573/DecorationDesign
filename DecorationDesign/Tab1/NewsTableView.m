@@ -91,16 +91,36 @@
     NSURL *url=[NSURL URLWithString:[MineURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     HessianFormDataRequest *hessianrequest=[[HessianFormDataRequest alloc] initWithURL:url];
 //    NSLog(@"HHH:%@",[Dictionary objectForKey:@"id"]);
+    NSString *methodName = @"USER-LIST-PAGE";
+    NSString *userType = @"USERTYPE";
+    NSString *resultKey = @"USERLISTINFO";
+    if (self.shaixuan ==1) {
+        methodName=@"USER-LIST-PAGE";
+        userType = @"USERTYPE";
+        resultKey = @"USERLISTINFO";
+    }else if (self.shaixuan ==2){
+        methodName=@"USER-LIST-PAGE";
+        userType = @"USERTYPE";
+        resultKey = @"USERLISTINFO";
+    }else if (self.shaixuan==3){
+        methodName=@"MERCHANT-LIST-PAGE";
+        userType = @"COMPANYTYPE";
+        resultKey = @"COMPANYLISTINFO";
+    }else if (self.shaixuan ==4){
+        methodName=@"COMPANY-LIST-PAGE";
+        userType = @"COMPANYTYPE";
+        resultKey = @"COMPANYLISTINFO";
+    }
     NSMutableDictionary *params= [NSMutableDictionary dictionary];
-    [params setValue:[NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:0]] forKey:@"USERTYPE"];
-    [params setValue:@"USER-LIST-PAGE" forKey:@"JUDGEMETHOD"];
+    [params setValue:[NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:0]] forKey:userType];
+    [params setValue:methodName forKey:@"JUDGEMETHOD"];
     [params setValue:[NSString stringWithFormat:@"%d",page++] forKey:@"GETTIMES"];
     hessianrequest.postData =  params;
     myrequest = hessianrequest;
     [hessianrequest setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
-            newList = [result objectForKey:@"USERLISTINFO"];
+            newList = [result objectForKey:resultKey];
             
             if ([newList count] > 0) {
                 [MBProgress hide:YES];
@@ -191,16 +211,32 @@
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3] autorelease];
             }
             cell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
-            //[(DesignerListCell*)cell setCell:dic row:row];
             return cell;
         }
         else{
             static NSString *CellIdentifier1 = @"Cell1";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
             if (cell == nil) {
-                cell = [[[DesignerListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
+                if (self.shaixuan ==1) {
+                    cell = [[[DesignerListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
+                }else if (self.shaixuan ==2){
+                    cell = [[[LoupanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
+                }else if (self.shaixuan==3){
+                    cell = [[[CailiaoCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
+                }else if (self.shaixuan ==4){
+                    cell = [[[DesignerListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
+                }
             }
-            [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+            if (self.shaixuan ==1) {
+                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+            }else if (self.shaixuan ==2){
+                [(LoupanCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+            }else if (self.shaixuan==3){
+                [(CailiaoCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+            }else if (self.shaixuan ==4){
+                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+            }
+            
             return cell;
         }
     }
@@ -215,7 +251,16 @@
         if (indexPath.row%2==0) {
             return  10;
         }else{
-            return 80;
+            if (self.shaixuan ==1) {
+                return 80;
+            }else if (self.shaixuan ==2){
+                return 100;
+            }else if (self.shaixuan==3){
+                return 100;
+            }else if (self.shaixuan ==4){
+                return 80;
+            }
+            return 0;
         }
     }
 }
@@ -230,11 +275,19 @@
 -(int)tablewheight
 {
     if (m_newsArray.count>0) {
-        return 90*m_newsArray.count+160;
+        if (self.shaixuan ==1) {
+            return 90*m_newsArray.count+160;
+        }else if (self.shaixuan ==2){
+            return 110*m_newsArray.count+160;
+        }else if (self.shaixuan==3){
+            return 110*m_newsArray.count+160;
+        }else if (self.shaixuan ==4){
+            return 90*m_newsArray.count+160;
+        }
+        return 0;
     }else{
         return 160;
     }
-    
 }
 
 

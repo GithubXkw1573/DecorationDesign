@@ -19,6 +19,7 @@
     NSString *worksId;
     NSString *worksType;
     NSString *designerId;
+    NSString *designerName;
     NSArray *m_jsonArr;
     NSArray *n_jsonArr;
     NSString *commentNums;
@@ -34,4 +35,5 @@
 @property (nonatomic,retain) NSString *worksId;
 @property (nonatomic,retain) NSString *worksType;
 @property (nonatomic,retain) NSString *designerId;
+@property (nonatomic,retain) NSString *designerName;
 @end

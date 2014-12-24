@@ -379,6 +379,11 @@
 		D2BF668D1A1EE031001DAFBC /* zuopin_img3.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF66461A1EE030001DAFBC /* zuopin_img3.png */; };
 		D2BF668E1A1EE031001DAFBC /* zuopin_img4.png in Resources */ = {isa = PBXBuildFile; fileRef = D2BF66471A1EE030001DAFBC /* zuopin_img4.png */; };
 		D2C912681A19D90400394076 /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2C912671A19D90400394076 /* libz.1.1.3.dylib */; };
+		D2CC66481A4A58D800608604 /* xiangqing_btn_03.png in Resources */ = {isa = PBXBuildFile; fileRef = D2CC66471A4A58D800608604 /* xiangqing_btn_03.png */; };
+		D2CC664B1A4A6A4100608604 /* CailiaoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CC664A1A4A6A4100608604 /* CailiaoCell.m */; };
+		D2CC664E1A4A6A5900608604 /* LoupanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CC664D1A4A6A5900608604 /* LoupanCell.m */; };
+		D2CC66511A4A9BB700608604 /* CailiaoDisplayController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CC66501A4A9BB700608604 /* CailiaoDisplayController.m */; };
+		D2CC66541A4AA0BD00608604 /* DisplayBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CC66531A4AA0BD00608604 /* DisplayBtn.m */; };
 		D2D20A0E1A3ECEEC00529BE2 /* CailiaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D20A0D1A3ECEEC00529BE2 /* CailiaoViewController.m */; };
 		D2D20A111A3ECF0900529BE2 /* LoupanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D20A101A3ECF0900529BE2 /* LoupanViewController.m */; };
 		D2ED0BB71A1C2D7C0026EB4F /* 黑色半透明.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ED0BB61A1C2D7C0026EB4F /* 黑色半透明.png */; };
@@ -882,6 +887,15 @@
 		D2BF66461A1EE030001DAFBC /* zuopin_img3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zuopin_img3.png; sourceTree = "<group>"; };
 		D2BF66471A1EE030001DAFBC /* zuopin_img4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zuopin_img4.png; sourceTree = "<group>"; };
 		D2C912671A19D90400394076 /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
+		D2CC66471A4A58D800608604 /* xiangqing_btn_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiangqing_btn_03.png; sourceTree = "<group>"; };
+		D2CC66491A4A6A4100608604 /* CailiaoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CailiaoCell.h; sourceTree = "<group>"; };
+		D2CC664A1A4A6A4100608604 /* CailiaoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CailiaoCell.m; sourceTree = "<group>"; };
+		D2CC664C1A4A6A5900608604 /* LoupanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoupanCell.h; sourceTree = "<group>"; };
+		D2CC664D1A4A6A5900608604 /* LoupanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoupanCell.m; sourceTree = "<group>"; };
+		D2CC664F1A4A9BB700608604 /* CailiaoDisplayController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CailiaoDisplayController.h; sourceTree = "<group>"; };
+		D2CC66501A4A9BB700608604 /* CailiaoDisplayController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CailiaoDisplayController.m; sourceTree = "<group>"; };
+		D2CC66521A4AA0BD00608604 /* DisplayBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DisplayBtn.h; sourceTree = "<group>"; };
+		D2CC66531A4AA0BD00608604 /* DisplayBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DisplayBtn.m; sourceTree = "<group>"; };
 		D2D20A0C1A3ECEEC00529BE2 /* CailiaoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CailiaoViewController.h; sourceTree = "<group>"; };
 		D2D20A0D1A3ECEEC00529BE2 /* CailiaoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CailiaoViewController.m; sourceTree = "<group>"; };
 		D2D20A0F1A3ECF0900529BE2 /* LoupanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoupanViewController.h; sourceTree = "<group>"; };
@@ -1094,6 +1108,7 @@
 		D2325A681A35938400C7BA63 /* 1206切图 */ = {
 			isa = PBXGroup;
 			children = (
+				D2CC66471A4A58D800608604 /* xiangqing_btn_03.png */,
 				D2FF37651A427FE20089FDFD /* pinglun_btn_bg_03.png */,
 				D2325B831A3598D300C7BA63 /* 首页 */,
 				D2325A691A35938400C7BA63 /* Bowen_img1.png */,
@@ -1307,6 +1322,8 @@
 				D29E87CA1A41636E005F9EC4 /* DetailViewController.m */,
 				D2FF37671A42B1CB0089FDFD /* BookingViewController.h */,
 				D2FF37681A42B1CB0089FDFD /* BookingViewController.m */,
+				D2CC664F1A4A9BB700608604 /* CailiaoDisplayController.h */,
+				D2CC66501A4A9BB700608604 /* CailiaoDisplayController.m */,
 			);
 			name = "首页";
 			path = Tab1;
@@ -1684,6 +1701,12 @@
 				D29E87CD1A416660005F9EC4 /* LabelCell.m */,
 				D29E87CF1A41668C005F9EC4 /* ImageCell.h */,
 				D29E87D01A41668C005F9EC4 /* ImageCell.m */,
+				D2CC66491A4A6A4100608604 /* CailiaoCell.h */,
+				D2CC664A1A4A6A4100608604 /* CailiaoCell.m */,
+				D2CC664C1A4A6A5900608604 /* LoupanCell.h */,
+				D2CC664D1A4A6A5900608604 /* LoupanCell.m */,
+				D2CC66521A4AA0BD00608604 /* DisplayBtn.h */,
+				D2CC66531A4AA0BD00608604 /* DisplayBtn.m */,
 			);
 			name = "组件";
 			sourceTree = "<group>";
@@ -2083,6 +2106,7 @@
 				D21EC4991A19EB7400317D0C /* 初次登录2.png in Resources */,
 				D2325B601A35938500C7BA63 /* Sjs_xiangqing_img1.png in Resources */,
 				D21EC4961A19EB7400317D0C /* 初次登录0长.png in Resources */,
+				D2CC66481A4A58D800608604 /* xiangqing_btn_03.png in Resources */,
 				D2325B581A35938500C7BA63 /* regsiter_bg_password.png in Resources */,
 				D2BF66591A1EE031001DAFBC /* D_icon2.png in Resources */,
 				D2325AFC1A35938500C7BA63 /* CAIliao_img3.png in Resources */,
@@ -2215,6 +2239,7 @@
 				D250447B1A1D8425006DC4A0 /* ArticleView.m in Sources */,
 				D2FB60BF1A42BFA1004A060F /* BangdingshoujiViewController.m in Sources */,
 				D21EC4BA1A19F77900317D0C /* NewsTableView.m in Sources */,
+				D2CC66511A4A9BB700608604 /* CailiaoDisplayController.m in Sources */,
 				D2A48C281A19A87600E37852 /* ASIFormDataRequest.m in Sources */,
 				D21EC4BB1A19F77900317D0C /* ScrollMenu.m in Sources */,
 				D2F028C71A3E7A3D00EAF4BA /* XLWeiboApi.m in Sources */,
@@ -2266,6 +2291,7 @@
 				D2A48C2A1A19A87600E37852 /* ASIInputStream.m in Sources */,
 				D2A48C251A19A87600E37852 /* ASIDataCompressor.m in Sources */,
 				D2501DB81A1AF98300B18DD7 /* CityItem.m in Sources */,
+				D2CC664E1A4A6A5900608604 /* LoupanCell.m in Sources */,
 				D2A48C3B1A19A87600E37852 /* NSObject+SBJSON.m in Sources */,
 				D2A48C661A19AA0800E37852 /* TabbarView.m in Sources */,
 				D2F222871A270AD7008295D3 /* CWHessianUnarchiver.m in Sources */,
@@ -2276,6 +2302,7 @@
 				D2A48C451A19A87600E37852 /* NJKWebViewProgress.m in Sources */,
 				D29E87CB1A41636E005F9EC4 /* DetailViewController.m in Sources */,
 				D21EC4B81A19F77900317D0C /* FaxianViewController.m in Sources */,
+				D2CC664B1A4A6A4100608604 /* CailiaoCell.m in Sources */,
 				D2B81CE11A393C16004C716C /* ShareItem.m in Sources */,
 				D24A77281A1DC9AD00CAFCC1 /* ZuopingLookViewController.m in Sources */,
 				D2A48C3A1A19A87600E37852 /* MD5Hash.m in Sources */,
@@ -2286,6 +2313,7 @@
 				D2FB60BE1A42BFA1004A060F /* UserSettingDetailController.m in Sources */,
 				D2125FF31A19FA92001D6A22 /* TypeButton.m in Sources */,
 				D2A48C351A19A87600E37852 /* EGORefreshTableHeaderView.m in Sources */,
+				D2CC66541A4AA0BD00608604 /* DisplayBtn.m in Sources */,
 				D2A48C631A19AA0800E37852 /* MBProgressHUD.m in Sources */,
 				D2A48C461A19A87600E37852 /* NJKWebViewProgressView.m in Sources */,
 				D29813261A3ECE31002D48F1 /* CompanyViewController.m in Sources */,
@@ -2394,6 +2422,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"ADDITIONAL_SDKS[arch=*]" = "";
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
@@ -2427,6 +2459,10 @@
 		D2FB6E651A198CD1008DBDBC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ARCHS = (
+					armv7,
+					armv7s,
+				);
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
