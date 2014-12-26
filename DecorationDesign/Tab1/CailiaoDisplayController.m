@@ -56,10 +56,10 @@
     [leftbtnview release];
     
     
-    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-44) style:UITableViewStylePlain];
+    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-49-44) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
-    m_tableView.backgroundColor=[UIColor clearColor];
+    m_tableView.backgroundColor=[UIColor colorWithRed:230/255.f green:230/255.f blue:230/255.f alpha:1.f];
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
     [self initEgoRefreshComponent];
@@ -69,8 +69,7 @@
     [self.view addSubview:MBProgress];
     [MBProgress show:YES];
     [MBProgress setLabelText:@"刷新中"];
-    
-    [self loadRequest];
+
     [self loadWorklistRequest];
 }
 
@@ -118,43 +117,20 @@
     mytime=@"";
 }
 
--(void)loadRequest
-{
-    [MBProgress show:YES];
-    [MBProgress setLabelText:@"获取中"];
-    NSURL *url = [NSURL URLWithString:MineURL];
-    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"COMPANY-TWOPAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"COMPANYID", nil];
-    [request setCompletionBlock:^(NSDictionary *result){
-        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
-            //调用成功
-            [MBProgress setHidden:YES];
-            NSArray *infolist = [result objectForKey:@"COMPANYTWOPAGE"];
-            self.m_jsonArr = infolist;
-        }else {
-            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
-            NSLog(@"%@",errrDesc);
-            [MBProgress settext:errrDesc aftertime:1.0];
-        }
-    }];
-    [request setFailedBlock:^{
-        NSLog(@"网络错误");
-        [MBProgress settext:@"网络错误!" aftertime:1.0];
-    }];
-    [request startRequest];
-}
-
 -(void)loadWorklistRequest
 {
     [MBProgress show:YES];
     [MBProgress setLabelText:@"获取中"];
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"COMPANY-WORKSLIST-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"COMPANYID",[NSString stringWithFormat:@"%d",page++],@"GETTIMES", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"MERCHANT-PRODCUTLIST-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"TYPEID",[NSString stringWithFormat:@"%d",page++],@"GETTIMES", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
-            newList = [result objectForKey:@"COMPANYARTICLEINFO"];
+            if (page==1) {
+                mybannerUrl = [NSString stringWithFormat:@"%@",[result objectForKey:@"MERCHANTPICTURE"]];
+            }
+            newList = [result objectForKey:@"MERCHANTPRODUCTLISTINFO"];
             if ([newList count] > 0) {
                 [MBProgress hide:YES];
                 if (reloadormore) {
@@ -232,11 +208,11 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell.backgroundColor = [UIColor clearColor];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
-            NSString *imageurl = [m_array objectAtIndex:0];
             UIImageView *picView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 125)];
             picView.backgroundColor = [UIColor clearColor];
-            [picView setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"CAIxiang_img1"]];
+            [picView setImageWithURL:[NSURL URLWithString:mybannerUrl] placeholderImage:[UIImage imageNamed:@"CAIxiang_img1"]];
             [cell.contentView addSubview:picView];
             [picView release];
         }
@@ -247,6 +223,7 @@
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell.backgroundColor = [UIColor clearColor];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             DisplayBtn *btn1 = [[DisplayBtn alloc] initWithFrame:CGRectMake(8, 3, 148, 200)];
             btn1.backgroundColor = [UIColor whiteColor];
@@ -255,7 +232,7 @@
             [cell.contentView addSubview:btn1];
             [btn1 release];
             
-            DisplayBtn *btn2 = [[DisplayBtn alloc] initWithFrame:CGRectMake(160, 3, 148, 200)];
+            DisplayBtn *btn2 = [[DisplayBtn alloc] initWithFrame:CGRectMake(164, 3, 148, 200)];
             btn2.backgroundColor = [UIColor whiteColor];
             btn2.tag = 800+2*(row-1)+1;
             [btn2 addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -284,11 +261,16 @@
 
 -(void)buttonClicked:(UIButton*)btn
 {
-    
+    NSInteger index = btn.tag-800;
+    CailiaoDetailController *detail = [[CailiaoDetailController alloc] init];
+    detail.hidesBottomBarWhenPushed = YES;
+    detail.m_array = [n_jsonArr objectAtIndex:index];
+    [self.navigationController pushViewController:detail animated:YES];
+    [detail release];
 }
 
 
--(int)tablewheight
+-(CGFloat)tablewheight
 {
     NSInteger n = n_jsonArr.count;
     if (n==0) {

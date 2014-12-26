@@ -15,6 +15,8 @@
     UILabel *titleLabel;
     UILabel *originPriceLabel;
     UILabel *nowPriceLabel;
+    NSString *productId;
 }
+@property (nonatomic,retain)NSString *productId;
 -(void)setButtonData:(NSArray*)item withRow:(NSInteger)row;
 @end

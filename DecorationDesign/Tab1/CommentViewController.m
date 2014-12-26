@@ -173,7 +173,7 @@
     [topView release];
     
     UIButton *detailBtn = [[UIButton alloc] initWithFrame:CGRectMake(250, 10, 60, 30)];
-    [detailBtn setTitle:@"原 文" forState:UIControlStateNormal];
+    [detailBtn setTitle:@"评 论" forState:UIControlStateNormal];
     [detailBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     detailBtn.backgroundColor = [UIColor clearColor];
     [detailBtn setBackgroundImage:[UIImage imageNamed:@"PingLun_bg_btn"] forState:UIControlStateNormal];
@@ -385,7 +385,18 @@
 
 -(void)buttonClicked:(UIButton*)btn
 {
-    
+    if (btn.tag == 23) {
+        //发送评论
+        if (![commentField.text isEqualToString:@""]) {
+            [self startCommonrequest];
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论不能为空!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+        }
+        [commentField resignFirstResponder];
+        [self movoTo:64];
+    }
 }
 
 -(NSString*)returnFormatTime:(NSString *)timeStr
@@ -521,17 +532,17 @@
                 //满意
                 commentSectect = @"1";
                 NSInteger num = [[n_jsonArr objectAtIndex:0] integerValue]+1;
-                support1.text = [NSString stringWithFormat:@"%i 满意",num];
+                support1.text = [NSString stringWithFormat:@"%li 满意",num];
             }else if (tap.tag == 222){
                 //基本满意
                 commentSectect = @"2";
                 NSInteger num = [[n_jsonArr objectAtIndex:1] integerValue]+1;
-                support2.text = [NSString stringWithFormat:@"%i 基本满意",num];
+                support2.text = [NSString stringWithFormat:@"%li 基本满意",num];
             }else{
                 //不满意
                 commentSectect = @"3";
                 NSInteger num = [[n_jsonArr objectAtIndex:2] integerValue]+1;
-                support3.text = [NSString stringWithFormat:@"%i 不满意",num];
+                support3.text = [NSString stringWithFormat:@"%li 不满意",num];
             }
             [self startSupportComment:commentSectect];
         }];

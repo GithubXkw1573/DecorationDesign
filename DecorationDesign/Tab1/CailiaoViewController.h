@@ -8,18 +8,27 @@
 
 #import <UIKit/UIKit.h>
 #import "common.h"
+#import "CailiaoDisplayController.h"
 
-@interface CailiaoViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
+@interface CailiaoViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableFooterDelegate,EGORefreshTableHeaderDelegate>
 {
     UITableView *m_tableView;
     MBProgressHUD *MBProgress;
     NSArray *m_jsonArr;
-    NSArray *n_jsonArr;
+    NSMutableArray *n_jsonArr;
     NSArray *m_array;
     CGFloat inroduceHeight;
     CGFloat productHeight;
+    
+    EGORefreshTableFooterView *_refreshFooterView;
+    EGORefreshTableHeaderView *_refreshHeaderView;
+    BOOL _Headerreloading;
+    BOOL reloadormore;
+    int page;
+    NSString *mytime;
+    NSArray *newList;
 }
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSArray *m_jsonArr;
-@property (nonatomic,retain) NSArray *n_jsonArr;
+@property (nonatomic,retain) NSMutableArray *n_jsonArr;
 @end

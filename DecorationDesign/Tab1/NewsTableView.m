@@ -191,7 +191,7 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int row = indexPath.row;
+    NSInteger row = indexPath.row;
     if (row==0) {
         static NSString *CellIdentifier3 = @"Cell2";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
@@ -272,7 +272,7 @@
     [delegate NewsTableViewBtnPressed:[m_newsArray objectAtIndex:indexPath.row/2]];
 }
 
--(int)tablewheight
+-(NSInteger)tablewheight
 {
     if (m_newsArray.count>0) {
         if (self.shaixuan ==1) {

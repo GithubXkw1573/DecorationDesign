@@ -15,7 +15,6 @@
 		50880B7D1A20770F00BE5FDF /* gr_bg_02.png in Resources */ = {isa = PBXBuildFile; fileRef = 50880B7C1A20770F00BE5FDF /* gr_bg_02.png */; };
 		D2125FF01A19FA44001D6A22 /* ActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2125FEF1A19FA44001D6A22 /* ActivityCell.m */; };
 		D2125FF31A19FA92001D6A22 /* TypeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2125FF21A19FA92001D6A22 /* TypeButton.m */; };
-		D21694981A3E809D002279F1 /* libYixinSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2F864621A3E7FB300625BD4 /* libYixinSDK.a */; };
 		D21694A61A3E83EA002279F1 /* QQkongjianApi.m in Sources */ = {isa = PBXBuildFile; fileRef = D216949E1A3E83EA002279F1 /* QQkongjianApi.m */; };
 		D21694A71A3E83EA002279F1 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D216949F1A3E83EA002279F1 /* TencentOpenApi_IOS_Bundle.bundle */; };
 		D21694A81A3E83EA002279F1 /* libTCWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D21694A11A3E83EA002279F1 /* libTCWeiboSDK.a */; };
@@ -241,7 +240,6 @@
 		D27AE9101A19D5F700FBEDE2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27AE90F1A19D5F700FBEDE2 /* Security.framework */; };
 		D27AE9121A19D60000FBEDE2 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27AE9111A19D60000FBEDE2 /* Social.framework */; };
 		D27AE9141A19D60900FBEDE2 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27AE9131A19D60900FBEDE2 /* Accounts.framework */; };
-		D27AE92F1A19D6F100FBEDE2 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D27AE92E1A19D6F100FBEDE2 /* TencentOpenAPI.framework */; };
 		D285BA971A19FB2100434DD9 /* BannerTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D285BA961A19FB2100434DD9 /* BannerTableCell.m */; };
 		D29624B01A36D2640087A70C /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D29624AF1A36D2640087A70C /* RegisterViewController.m */; };
 		D29624B51A36F8880087A70C /* UserInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D29624B41A36F8880087A70C /* UserInfo.m */; };
@@ -386,6 +384,9 @@
 		D2CC66541A4AA0BD00608604 /* DisplayBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CC66531A4AA0BD00608604 /* DisplayBtn.m */; };
 		D2D20A0E1A3ECEEC00529BE2 /* CailiaoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D20A0D1A3ECEEC00529BE2 /* CailiaoViewController.m */; };
 		D2D20A111A3ECF0900529BE2 /* LoupanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2D20A101A3ECF0900529BE2 /* LoupanViewController.m */; };
+		D2E25E3F1A4BF31200CC4987 /* CailiaoDetailController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E25E3E1A4BF31200CC4987 /* CailiaoDetailController.m */; };
+		D2E25E421A4C0AC700CC4987 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D2E25E411A4C0AC700CC4987 /* TencentOpenAPI.framework */; };
+		D2E25E431A4C0C5300CC4987 /* libYixinSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D2F864621A3E7FB300625BD4 /* libYixinSDK.a */; };
 		D2ED0BB71A1C2D7C0026EB4F /* 黑色半透明.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ED0BB61A1C2D7C0026EB4F /* 黑色半透明.png */; };
 		D2ED0BC41A1C34400026EB4F /* 首页切换图.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ED0BB91A1C34400026EB4F /* 首页切换图.png */; };
 		D2ED0BC51A1C34400026EB4F /* 装饰公司头像.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ED0BBA1A1C34400026EB4F /* 装饰公司头像.png */; };
@@ -693,7 +694,6 @@
 		D27AE90F1A19D5F700FBEDE2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		D27AE9111A19D60000FBEDE2 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		D27AE9131A19D60900FBEDE2 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
-		D27AE92E1A19D6F100FBEDE2 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TencentOpenAPI.framework; path = "DecorationDesign/开放平台/TencentOpenAPI.framework"; sourceTree = "<group>"; };
 		D285BA951A19FB2100434DD9 /* BannerTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerTableCell.h; sourceTree = "<group>"; };
 		D285BA961A19FB2100434DD9 /* BannerTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerTableCell.m; sourceTree = "<group>"; };
 		D29624AE1A36D2640087A70C /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
@@ -900,6 +900,9 @@
 		D2D20A0D1A3ECEEC00529BE2 /* CailiaoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CailiaoViewController.m; sourceTree = "<group>"; };
 		D2D20A0F1A3ECF0900529BE2 /* LoupanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoupanViewController.h; sourceTree = "<group>"; };
 		D2D20A101A3ECF0900529BE2 /* LoupanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoupanViewController.m; sourceTree = "<group>"; };
+		D2E25E3D1A4BF31200CC4987 /* CailiaoDetailController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CailiaoDetailController.h; sourceTree = "<group>"; };
+		D2E25E3E1A4BF31200CC4987 /* CailiaoDetailController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CailiaoDetailController.m; sourceTree = "<group>"; };
+		D2E25E411A4C0AC700CC4987 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TencentOpenAPI.framework; path = "DecorationDesign/开放平台/TencentOpenAPI.framework"; sourceTree = "<group>"; };
 		D2ED0BB61A1C2D7C0026EB4F /* 黑色半透明.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "黑色半透明.png"; sourceTree = "<group>"; };
 		D2ED0BB91A1C34400026EB4F /* 首页切换图.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "首页切换图.png"; sourceTree = "<group>"; };
 		D2ED0BBA1A1C34400026EB4F /* 装饰公司头像.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "装饰公司头像.png"; sourceTree = "<group>"; };
@@ -978,11 +981,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2E25E431A4C0C5300CC4987 /* libYixinSDK.a in Frameworks */,
+				D2E25E421A4C0AC700CC4987 /* TencentOpenAPI.framework in Frameworks */,
 				D21694A81A3E83EA002279F1 /* libTCWeiboSDK.a in Frameworks */,
-				D21694981A3E809D002279F1 /* libYixinSDK.a in Frameworks */,
 				D2B0380A1A19DBCA00D11BDF /* CoreLocation.framework in Frameworks */,
 				D2C912681A19D90400394076 /* libz.1.1.3.dylib in Frameworks */,
-				D27AE92F1A19D6F100FBEDE2 /* TencentOpenAPI.framework in Frameworks */,
 				D2F028C51A3E7A3D00EAF4BA /* libWeiboSDK.a in Frameworks */,
 				D27AE9141A19D60900FBEDE2 /* Accounts.framework in Frameworks */,
 				D27AE9121A19D60000FBEDE2 /* Social.framework in Frameworks */,
@@ -1324,6 +1327,8 @@
 				D2FF37681A42B1CB0089FDFD /* BookingViewController.m */,
 				D2CC664F1A4A9BB700608604 /* CailiaoDisplayController.h */,
 				D2CC66501A4A9BB700608604 /* CailiaoDisplayController.m */,
+				D2E25E3D1A4BF31200CC4987 /* CailiaoDetailController.h */,
+				D2E25E3E1A4BF31200CC4987 /* CailiaoDetailController.m */,
 			);
 			name = "首页";
 			path = Tab1;
@@ -1789,6 +1794,7 @@
 		D2FB6E2E1A198CCF008DBDBC = {
 			isa = PBXGroup;
 			children = (
+				D2E25E411A4C0AC700CC4987 /* TencentOpenAPI.framework */,
 				D2FB6E401A198CD0008DBDBC /* DecorationDesign */,
 				D2FB6E381A198CD0008DBDBC /* Products */,
 			);
@@ -1807,7 +1813,6 @@
 			children = (
 				D2B038091A19DBCA00D11BDF /* CoreLocation.framework */,
 				D2C912671A19D90400394076 /* libz.1.1.3.dylib */,
-				D27AE92E1A19D6F100FBEDE2 /* TencentOpenAPI.framework */,
 				D27AE9131A19D60900FBEDE2 /* Accounts.framework */,
 				D27AE9111A19D60000FBEDE2 /* Social.framework */,
 				D27AE90F1A19D5F700FBEDE2 /* Security.framework */,
@@ -2251,6 +2256,7 @@
 				D2A48C4B1A19A87600E37852 /* ShowMessaege.m in Sources */,
 				50880B681A1B72E200BE5FDF /* PicTextButton.m in Sources */,
 				D2548F531A40273E00A54A02 /* CommentViewController.m in Sources */,
+				D2E25E3F1A4BF31200CC4987 /* CailiaoDetailController.m in Sources */,
 				D2F222811A270AD7008295D3 /* CWDistantHessianObject.m in Sources */,
 				D285BA971A19FB2100434DD9 /* BannerTableCell.m in Sources */,
 				D29AC2DF1A1DE810003A3163 /* ZiliaoDetaillViewController.m in Sources */,
@@ -2422,10 +2428,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"ADDITIONAL_SDKS[arch=*]" = "";
-				ARCHS = (
-					armv7,
-					armv7s,
-				);
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
@@ -2459,10 +2462,7 @@
 		D2FB6E651A198CD1008DBDBC /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = (
-					armv7,
-					armv7s,
-				);
+				ARCHS = "$(ARCHS_STANDARD)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;

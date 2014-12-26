@@ -409,6 +409,22 @@
             [self.navigationController pushViewController:login animated:YES];
             [login release];
         }
+    }else if (btn.tag ==23){
+        //评论页
+        if ([UserInfo shared].m_isLogin) {
+            CommentViewController *comment = [[CommentViewController alloc] init];
+            comment.designerId = designerId;
+            comment.designerName = designer;
+            comment.worksId = worksId;
+            comment.m_array = m_jsonArr;
+            comment.worksType = [m_jsonArr objectAtIndex:0];
+            [self.navigationController pushViewController:comment animated:YES];
+            [comment release];
+        }else{
+            LoginViewController *login = [[LoginViewController alloc] init];
+            [self.navigationController pushViewController:login animated:YES];
+            [login release];
+        }
     }
 }
 
@@ -536,7 +552,7 @@
             [(LabelCell*)cell setContentwithText:[[m_jsonArr objectAtIndex:(row+3)] substringFromIndex:2]];
             return cell;
         }else{
-            NSString *cellIdentific = [NSString stringWithFormat:@"cell%d",row];
+            NSString *cellIdentific = [NSString stringWithFormat:@"cell%li",row];
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
                 cell = [[ImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];

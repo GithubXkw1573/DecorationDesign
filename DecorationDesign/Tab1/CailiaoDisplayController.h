@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "common.h"
 #import "DisplayBtn.h"
+#import "CailiaoDetailController.h"
 
 @interface CailiaoDisplayController : UIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableFooterDelegate,EGORefreshTableHeaderDelegate>
 {
@@ -21,7 +22,7 @@
     int page;
     NSString *mytime;
     NSArray *newList;
-    
+    NSString *mybannerUrl;
     NSArray *m_array;
     NSArray *m_jsonArr;
     NSMutableArray *n_jsonArr;

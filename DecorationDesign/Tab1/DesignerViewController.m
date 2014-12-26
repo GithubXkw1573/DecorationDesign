@@ -609,7 +609,7 @@
 
 
 
--(int)tablewheight
+-(CGFloat)tablewheight
 {
     NSInteger n = n_jsonArr.count-1;
     if (n%8==6) {
