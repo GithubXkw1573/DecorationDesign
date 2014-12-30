@@ -1,15 +1,15 @@
 //
-//  LoupanViewController.h
+//  LoupanZhuantiController.h
 //  DecorationDesign
 //
-//  Created by 许开伟 on 14/12/15.
+//  Created by 许开伟 on 14/12/29.
 //  Copyright (c) 2014年 许开伟. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "common.h"
 
-@interface LoupanViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableFooterDelegate,EGORefreshTableHeaderDelegate>
+@interface LoupanZhuantiController : UIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableFooterDelegate,EGORefreshTableHeaderDelegate>
 {
     UITableView *m_tableView;
     MBProgressHUD *MBProgress;
@@ -30,4 +30,5 @@
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSArray *m_jsonArr;
 @property (nonatomic,retain) NSMutableArray *n_jsonArr;
+
 @end

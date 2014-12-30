@@ -180,6 +180,11 @@
                 }
                 page --;
             }
+        }else{
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
         }
         if (reloadormore) {
             [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];

@@ -1,20 +1,20 @@
 //
-//  LoupanViewController.m
+//  CompanyLoupanController.m
 //  DecorationDesign
 //
-//  Created by 许开伟 on 14/12/15.
+//  Created by 许开伟 on 14/12/29.
 //  Copyright (c) 2014年 许开伟. All rights reserved.
 //
 
-#import "LoupanViewController.h"
 #import "CompanyLoupanController.h"
+#import "LoupanZhuantiController.h"
 
-@interface LoupanViewController ()
+@interface CompanyLoupanController ()
 
 @end
 
-@implementation LoupanViewController
-@synthesize m_array,m_jsonArr,n_jsonArr;
+@implementation CompanyLoupanController
+@synthesize m_array,m_jsonArr,n_jsonArr,buildId;
 
 
 - (void)viewDidLoad
@@ -37,7 +37,7 @@
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
     titlelabel.backgroundColor=[UIColor clearColor];
     titlelabel.textColor=[UIColor whiteColor];
-    titlelabel.text=[NSString stringWithFormat:@"%@",[m_array objectAtIndex:2]];
+    titlelabel.text=[NSString stringWithFormat:@"%@",[m_array objectAtIndex:1]];
     titlelabel.textAlignment=UITextAlignmentCenter;
     titlelabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:19];
     self.navigationItem.titleView=titlelabel;
@@ -50,7 +50,7 @@
     leftbtn.frame=CGRectMake(-10, 0, 60, 44);
     leftbtn.tag=1;
     [leftbtn setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
-    [leftbtn addTarget:self action:@selector(loupanViewControllerBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [leftbtn addTarget:self action:@selector(cailiaoViewControllerBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
     [leftbtnview addSubview:leftbtn];
     UIBarButtonItem *myleftitem = [[UIBarButtonItem alloc] initWithCustomView:leftbtnview];
     self.navigationItem.leftBarButtonItem = myleftitem;
@@ -80,7 +80,7 @@
     [super didReceiveMemoryWarning];
 }
 
--(void)loupanViewControllerBtnPressed:(UIButton*)btn
+-(void)cailiaoViewControllerBtnPressed:(UIButton*)btn
 {
     if (btn.tag ==1) {
         [self.navigationController popViewControllerAnimated:YES];
@@ -126,12 +126,12 @@
     [MBProgress setLabelText:@"获取中"];
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"BUILDING-TWO-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"BUILDINGID", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"BUILDINGCOMPANY-THREE-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:4],@"COMPANYID", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
             [MBProgress setHidden:YES];
-            NSArray *infolist = [result objectForKey:@"BUILDINGTWOPAGEUP"];
+            NSArray *infolist = [result objectForKey:@"BUILDCOMPANYTHREEPAGE"];
             self.m_jsonArr = infolist;
         }else {
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
@@ -152,11 +152,11 @@
     [MBProgress setLabelText:@"获取中"];
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"BUILDINGCOMPANY-TWO-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"BUILDINGID",[NSString stringWithFormat:@"%d",page++],@"GETTIMES", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"BUILDINGCOMPANY-ACT-PAGE",@"JUDGEMETHOD",buildId,@"BUILDINGID",[m_array objectAtIndex:4],@"COMPANYID",[NSString stringWithFormat:@"%d",page++],@"GETTIMES", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
-            newList = [result objectForKey:@"BUILDINGCOMPANYLISTINFO"];
+            newList = [result objectForKey:@"SUBJECTACTLISTINFO"];
             if ([newList count] > 0) {
                 [MBProgress hide:YES];
                 if (reloadormore) {
@@ -243,11 +243,36 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 120, 30)];
-            personTitle.text = @"楼盘介绍";
+            personTitle.text = @"公司简介";
             personTitle.font = font(18);
             [cell.contentView addSubview:personTitle];
             [personTitle release];
+            
+            UIImageView *banner = [[UIImageView alloc] initWithFrame:CGRectMake(10, 40, applicationwidth-20, 130)];
+            banner.tag = 12;
+            banner.image = [UIImage imageNamed:@"loup_3_img1"];
+            [cell.contentView addSubview:banner];
+            [banner release];
+            
+            UILabel *personName = [[UILabel alloc] initWithFrame:CGRectMake(10, 175, 300, 1000)];
+            personName.font = font(13);
+            personName.tag = 20;
+            personName.numberOfLines = 0;
+            personName.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:personName];
+            [personName release];
+            
+            
         }
+        NSString *imageurl = [m_jsonArr objectAtIndex:0];
+        UIImageView *guangaoimage = (UIImageView*)[cell.contentView viewWithTag:12];
+        [guangaoimage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"loup_3_img1"]];
+        
+        UILabel *lbl1 = (UILabel*)[cell.contentView viewWithTag:20];
+        lbl1.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:2]];
+        CGSize size = [lbl1.text sizeWithFont:font(13) constrainedToSize:CGSizeMake(300, 1000) lineBreakMode:NSLineBreakByWordWrapping];
+        inroduceHeight = size.height;
+        lbl1.frame = CGRectMake(lbl1.frame.origin.x, lbl1.frame.origin.y, 300, inroduceHeight) ;
         return cell;
     }else if (row == 1){
         static NSString *cellIdentific = @"cell1";
@@ -255,30 +280,32 @@
         if (cell == nil) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
-            UIImageView *fengmian = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 110)];
-            fengmian.backgroundColor = [UIColor clearColor];
-            fengmian.tag = 21;
-            fengmian.image = [UIImage imageNamed:@"loup_2_img1"];
-            [cell.contentView addSubview:fengmian];
-            [fengmian release];
+            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
+            line.image = [UIImage imageNamed:@"线"];
+            [cell.contentView addSubview:line];
+            [line release];
             
-            UILabel *personName = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 300, 1000)];
+            UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 0, 120, 30)];
+            personTitle.text = @"热点楼盘";
+            personTitle.font = font(18);
+            [cell.contentView addSubview:personTitle];
+            [personTitle release];
+            
+            UILabel *personName = [[UILabel alloc] initWithFrame:CGRectMake(10, 35, 300, 1000)];
             personName.font = font(13);
-            personName.tag = 30;
+            personName.tag = 21;
             personName.numberOfLines = 0;
             personName.textColor = [UIColor grayColor];
             [cell.contentView addSubview:personName];
             [personName release];
+            
+            
         }
-        NSString *imageurl = [m_jsonArr objectAtIndex:0];
-        UIImageView *guangaoimage = (UIImageView*)[cell.contentView viewWithTag:21];
-        [guangaoimage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"loup_2_img1"]];
-        
-        UILabel *lbl1 = (UILabel*)[cell.contentView viewWithTag:30];
-        lbl1.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:2]];
+        UILabel *lbl1 = (UILabel*)[cell.contentView viewWithTag:21];
+        lbl1.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:3]];
         CGSize size = [lbl1.text sizeWithFont:font(13) constrainedToSize:CGSizeMake(300, 1000) lineBreakMode:NSLineBreakByWordWrapping];
-        inroduceHeight = size.height;
-        lbl1.frame = CGRectMake(lbl1.frame.origin.x, lbl1.frame.origin.y, 300, inroduceHeight) ;
+        productHeight = size.height;
+        lbl1.frame = CGRectMake(lbl1.frame.origin.x, lbl1.frame.origin.y, 300, productHeight) ;
         return cell;
     }
     else if (row == 2){
@@ -288,18 +315,56 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
-            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 300, 1)];
+            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
             line.image = [UIImage imageNamed:@"线"];
             [cell.contentView addSubview:line];
             [line release];
             
-            UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 120, 30)];
-            personTitle.text = @"相关公司";
-            personTitle.font = font(18);
-            [cell.contentView addSubview:personTitle];
-            [personTitle release];
+            
+            UILabel *contactorTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 80, 20)];
+            contactorTitle.text = @"联系人：";
+            contactorTitle.font = bold_font(15);
+            [cell.contentView addSubview:contactorTitle];
+            [contactorTitle release];
+            UILabel *contactor = [[UILabel alloc] initWithFrame:CGRectMake(90, 10, 200, 20)];
+            contactor.font = font(14);
+            contactor.tag = 31;
+            contactor.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:contactor];
+            [contactor release];
+            
+            UILabel *telTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 30, 80, 20)];
+            telTitle.text = @"联系电话：";
+            telTitle.font = bold_font(15);
+            [cell.contentView addSubview:telTitle];
+            [telTitle release];
+            UILabel *tel = [[UILabel alloc] initWithFrame:CGRectMake(90, 30, 200, 20)];
+            tel.font = font(14);
+            tel.tag = 32;
+            tel.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:tel];
+            [tel release];
+            
+            UILabel *addrTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 50, 80, 20)];
+            addrTitle.text = @"公司地址：";
+            addrTitle.font = bold_font(15);
+            [cell.contentView addSubview:addrTitle];
+            [addrTitle release];
+            myLabel *addr = [[myLabel alloc] initWithFrame:CGRectMake(90, 53, 240, 40)];
+            addr.font = font(14);
+            addr.tag = 33;
+            addr.verticalAlignment = VerticalAlignmentTop_m;
+            addr.textColor = [UIColor grayColor];
+            addr.numberOfLines = 0;
+            [cell.contentView addSubview:addr];
+            [addr release];
         }
-        
+        UILabel *lbl1 = (UILabel*)[cell.contentView viewWithTag:31];
+        UILabel *lbl2 = (UILabel*)[cell.contentView viewWithTag:32];
+        UILabel *lbl3 = (UILabel*)[cell.contentView viewWithTag:33];
+        lbl1.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:4]];
+        lbl2.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:5]];
+        lbl3.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:6]];
         return cell;
     }
     else{
@@ -309,6 +374,10 @@
             if (cell == nil) {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
+                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
+                line.image = [UIImage imageNamed:@"线"];
+                [cell.contentView addSubview:line];
+                [line release];
                 
                 UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 90, 80)];
                 works1.image = [UIImage imageNamed:@"CAIliao_img3"];
@@ -327,11 +396,6 @@
                 works3.tag = 52;
                 [cell.contentView addSubview:works3];
                 [works3 release];
-                
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 99, 300, 1)];
-                line.image = [UIImage imageNamed:@"线"];
-                [cell.contentView addSubview:line];
-                [line release];
                 
             }
             UIImageView *works1Image = (UIImageView*)[cell.contentView viewWithTag:50];
@@ -357,8 +421,13 @@
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
                 cell.selectionStyle=UITableViewCellSelectionStyleGray;
                 
+                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
+                line.image = [UIImage imageNamed:@"线"];
+                [cell.contentView addSubview:line];
+                [line release];
+                
                 UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 80)];
-                works.image = [UIImage imageNamed:@"loup_2_img2"];
+                works.image = [UIImage imageNamed:@"CAIliao_img1"];
                 works.tag = 40;
                 [cell.contentView addSubview:works];
                 [works release];
@@ -371,37 +440,29 @@
                 [cell.contentView addSubview:m_title];
                 [m_title release];
                 
-                UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(130, 35, 180, 40)];
-                desc.font = font(14);
-                desc.tag = 42;
-                desc.numberOfLines = 2;
-                desc.textColor = [UIColor grayColor];
-                [cell.contentView addSubview:desc];
-                [desc release];
+                UILabel *pinpai = [[UILabel alloc] initWithFrame:CGRectMake(130, 30, 180, 50)];
+                pinpai.font = font(14);
+                pinpai.tag = 42;
+                pinpai.numberOfLines = 2;
+                pinpai.textColor = [UIColor grayColor];
+                [cell.contentView addSubview:pinpai];
+                [pinpai release];
                 
-                
-                UILabel *pinglun = [[UILabel alloc] initWithFrame:CGRectMake(130, 75, 180, 15)];
-                pinglun.font = font(14);
-                pinglun.tag = 44;
-                pinglun.textAlignment = UITextAlignmentRight;
-                pinglun.textColor = [UIColor grayColor];
-                [cell.contentView addSubview:pinglun];
-                [pinglun release];
-                
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 99, 300, 1)];
-                line.image = [UIImage imageNamed:@"线"];
-                [cell.contentView addSubview:line];
-                [line release];
+                UIButton *zhuanti = [[UIButton alloc] initWithFrame:CGRectMake(applicationwidth-40, 75, 30, 15)];
+                [zhuanti setImage:[UIImage imageNamed:@"loup_3_zt"] forState:UIControlStateNormal];
+                zhuanti.backgroundColor = [UIColor clearColor];
+                zhuanti.tag = 55;
+                [zhuanti addTarget:self action:@selector(buttonCliked:) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:zhuanti];
+                [zhuanti release];
             }
             UIImageView *worksImage = (UIImageView*)[cell.contentView viewWithTag:40];
             UILabel *l_title = (UILabel*)[cell.contentView viewWithTag:41];
-            UILabel *desc = (UILabel*)[cell.contentView viewWithTag:42];
-            UILabel *pinglun = (UILabel*)[cell.contentView viewWithTag:44];
+            UILabel *pinpai = (UILabel*)[cell.contentView viewWithTag:42];;
             NSString *imageurl = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:0];
             [worksImage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"CAIliao_img1"]];
-            l_title.text = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:1];
-            desc.text = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2];
-            pinglun.text = [NSString stringWithFormat:@"%@ 评",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:3]];
+            l_title.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:1]];
+            pinpai.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2]];
             return cell;
         }
     }
@@ -412,11 +473,11 @@
 {
     NSInteger row = indexPath.row;
     if (row==0) {
-        return 40;
+        return 190+[self cellHeight:2];
     }else if (row==1){
-        return 120+[self cellHeight:2];
+        return 50+[self cellHeight:3];
     }else if (row==2){
-        return 40;
+        return 100;
     }else{
         if ((row+4)%6==0)
         {
@@ -434,19 +495,22 @@
     NSInteger row = indexPath.row;
     if (row>2) {
         if ((row+4)%6==0) {
-            CompanyLoupanController *lou = [[CompanyLoupanController alloc] init];
-            lou.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
-            lou.buildId = [NSString stringWithFormat:@"%@",[m_array objectAtIndex:1]];
-            [self.navigationController pushViewController:lou animated:YES];
-            [lou release];
+            LoupanZhuantiController *zhuanti = [[LoupanZhuantiController alloc] init];
+            zhuanti.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
+            [self.navigationController pushViewController:zhuanti animated:YES];
+            [zhuanti release];
         }else{
-            CompanyLoupanController *lou = [[CompanyLoupanController alloc] init];
-            lou.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
-            lou.buildId = [NSString stringWithFormat:@"%@",[m_array objectAtIndex:1]];
-            [self.navigationController pushViewController:lou animated:YES];
-            [lou release];
+            LoupanZhuantiController *zhuanti = [[LoupanZhuantiController alloc] init];
+            zhuanti.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
+            [self.navigationController pushViewController:zhuanti animated:YES];
+            [zhuanti release];
         }
     }
+}
+
+-(void)buttonCliked:(UIButton*)btn
+{
+    
 }
 
 -(CGFloat)cellHeight:(NSInteger)index
@@ -460,11 +524,11 @@
 {
     NSInteger n = n_jsonArr.count-1;
     if (n%8==6) {
-        return (n/8*6+n%8)*100+200+[self cellHeight:2];
+        return (n/8*6+n%8)*100+340+[self cellHeight:2]+[self cellHeight:3];
     }else if (n%8==7) {
-        return (n/8*6+n%8-1)*100+200+[self cellHeight:2];
+        return (n/8*6+n%8-1)*100+340+[self cellHeight:2]+[self cellHeight:3];
     }else{
-        return (n/8*6+n%8+1)*100+200+[self cellHeight:2];
+        return (n/8*6+n%8+1)*100+340+[self cellHeight:2]+[self cellHeight:3];
     }
 }
 

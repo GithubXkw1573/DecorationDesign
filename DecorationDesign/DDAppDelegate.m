@@ -41,6 +41,7 @@
     TabBarController=[[UITabBarController alloc]init];
     TabBarController.delegate=self;
     
+    
     self.homeCtrl = [[[HomeViewController alloc] init] autorelease];
     self.distributeCtrl = [[[DistributeController alloc] init] autorelease];
     self.bookingCtrl = [[[BookingController alloc] init] autorelease];
@@ -92,12 +93,14 @@
     [[[self TabBarController] tabBar] insertSubview:barView4 atIndex:9];
     
     //引导动画
-    CoverViewController *covercon=[[CoverViewController alloc]init];
-    [self.window addSubview:covercon.view];
-    [covercon release];
-    
+//    CoverViewController *covercon=[[CoverViewController alloc]init];
+//    [self.window addSubview:covercon.view];
+//    [covercon release];
+
     self.window.backgroundColor = [UIColor whiteColor];
     [self.window makeKeyAndVisible];
+    
+    [self.window setRootViewController:TabBarController];
     return YES;
 }
 

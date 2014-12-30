@@ -182,6 +182,11 @@
                 }
                 page --;
             }
+        }else{
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
         }
         if (reloadormore) {
             [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
@@ -555,7 +560,19 @@
 
 -(void)orderClicked:(UIButton*)btn
 {
-    
+    if ([UserInfo shared].m_isLogin) {
+        BookingViewController *book = [[BookingViewController alloc] init];
+        book.designerId=[m_array objectAtIndex:1];
+        book.designerName = [m_jsonArr objectAtIndex:0];
+        book.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:book animated:YES];
+        [book release];
+    }else{
+        LoginViewController *login = [[LoginViewController alloc] init];
+        login.hidesBottomBarWhenPushed= YES;
+        [self.navigationController pushViewController:login animated:YES];
+        [login release];
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath

@@ -7,13 +7,13 @@
 //
 
 #import "CailiaoDetailController.h"
-
+#import "ShareView.h"
 @interface CailiaoDetailController ()
 
 @end
 
 @implementation CailiaoDetailController
-@synthesize m_array,m_jsonArr;
+@synthesize m_array,m_jsonArr,n_jsonArr,l_jsonArr,productId;
 
 - (void)viewDidLoad
 {
@@ -54,6 +54,21 @@
     [myleftitem release];
     [leftbtnview release];
     
+    UIView *rightbtnview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
+    [rightbtnview setBackgroundColor:[UIColor clearColor]];
+    
+    UIButton *rightbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    rightbtn.frame=CGRectMake(0, 0, 60, 44);
+    rightbtn.tag = 2;
+    [rightbtn setBackgroundImage:[UIImage imageNamed:@"分享.png"] forState:UIControlStateNormal];
+    [rightbtn addTarget:self action:@selector(cailiaodetailViewControllerBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [rightbtnview addSubview:rightbtn];
+    
+    UIBarButtonItem *myrightitem = [[UIBarButtonItem alloc] initWithCustomView:rightbtnview];
+    self.navigationItem.rightBarButtonItem = myrightitem;
+    [myrightitem release];
+    [rightbtnview release];
+    
     m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-50-44) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
@@ -67,7 +82,7 @@
     [MBProgress show:YES];
     [MBProgress setLabelText:@"刷新中"];
     
-    //[self loadRequest];
+    [self loadRequest];
     
     [self initBottom];
 }
@@ -83,50 +98,42 @@
     if (btn.tag == 1) {
         [self.navigationController popViewControllerAnimated:YES];
     }else if (btn.tag ==2){
-        
+        ShareView *shareView = [[ShareView alloc] initWithFrame:CGRectMake(0, applicationheight, applicationwidth, 220)];
+        [self.view addSubview:shareView];
+        [shareView show];
+        [shareView release];
     }
 }
 
-//-(void)loadRequest
-//{
-//    [MBProgress show:YES];
-//    [MBProgress setLabelText:@"获取中"];
-//    NSURL *url = [NSURL URLWithString:MineURL];
-//    self.worksId = [m_array objectAtIndex:0];
-//    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-//    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:self.method,@"JUDGEMETHOD",[m_array objectAtIndex:0],@"WORKSID", nil];
-//    [request setCompletionBlock:^(NSDictionary *result){
-//        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
-//            //调用成功
-//            [MBProgress setHidden:YES];
-//            NSString *resultKey = @"DESIGNERTHREEPAGE";
-//            if ([[UserInfo shared].m_plateType isEqualToString:@"S"]) {
-//                resultKey = @"DESIGNERTHREEPAGE";
-//            }else if ([[UserInfo shared].m_plateType isEqualToString:@"J"]){
-//                resultKey = @"COMPANYTHREEPAGE";
-//            }else if ([[UserInfo shared].m_plateType isEqualToString:@"C"]){
-//                resultKey = @"DESIGNERTHREEPAGE";
-//            }else if ([[UserInfo shared].m_plateType isEqualToString:@"L"]){
-//                resultKey = @"DESIGNERTHREEPAGE";
-//            }
-//            NSArray *infolist = [result objectForKey:resultKey];
-//            self.m_jsonArr = infolist;
-//            UILabel *titleLabel = (UILabel*)self.navigationItem.titleView;
-//            titleLabel.text = [[m_jsonArr objectAtIndex:0] isEqualToString:@"Z"]?@"作品详情":@"博文详情";
-//            UIButton *detailBtn = (UIButton*)[self.view viewWithTag:23];
-//            [detailBtn setTitle:[NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:3]] forState:UIControlStateNormal];
-//        }else {
-//            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
-//            NSLog(@"%@",errrDesc);
-//            [MBProgress settext:errrDesc aftertime:1.0];
-//        }
-//    }];
-//    [request setFailedBlock:^{
-//        NSLog(@"网络错误");
-//        [MBProgress settext:@"网络错误!" aftertime:1.0];
-//    }];
-//    [request startRequest];
-//}
+-(void)loadRequest
+{
+    [MBProgress show:YES];
+    [MBProgress setLabelText:@"获取中"];
+    NSURL *url = [NSURL URLWithString:MineURL];
+    self.productId = [m_array objectAtIndex:1];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"MERCHANT-PRODCUTINFO",@"JUDGEMETHOD",productId,@"PRODUCTID", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            [MBProgress setHidden:YES];
+            
+            self.m_jsonArr = [result objectForKey:@"GOODSBASEINFO"];
+            self.n_jsonArr = [result objectForKey:@"GOODSBASEPARAM"];
+            self.l_jsonArr = [result objectForKey:@"GOODSMANYPICTURE"];
+            
+        }else {
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            [MBProgress settext:errrDesc aftertime:1.0];
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+        [MBProgress settext:@"网络错误!" aftertime:1.0];
+    }];
+    [request startRequest];
+}
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -173,7 +180,7 @@
             [cell.contentView addSubview:lbl];
             [lbl release];
             
-            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(5, 59, 300, 1)];
+            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(5, 59, 310, 1)];
             line.image = [UIImage imageNamed:@"线"];
             [cell.contentView addSubview:line];
             [line release];
@@ -188,19 +195,58 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
-            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 265)];
-            pic.backgroundColor = [UIColor clearColor];
-            pic.tag = 3;
-            [cell.contentView addSubview:pic];
-            [pic release];
+            UILabel *lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, applicationwidth-10, 25)];
+            lbl1.backgroundColor = [UIColor clearColor];
+            lbl1.font = font(16);
+            lbl1.text = @"基本简介";
+            [cell.contentView addSubview:lbl1];
+            [lbl1 release];
             
-            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80, 300, 1)];
+            UILabel *lbl2 = [[UILabel alloc] initWithFrame:CGRectMake(5, 35, 100, 25)];
+            lbl2.backgroundColor = [UIColor clearColor];
+            lbl2.font = font(14);
+            lbl2.tag = 31;
+            lbl2.textColor = [UIColor redColor];
+            [cell.contentView addSubview:lbl2];
+            [lbl2 release];
+            
+            UILabel *lbl3 = [[UILabel alloc] initWithFrame:CGRectMake(105, 35, 80, 25)];
+            lbl3.backgroundColor = [UIColor clearColor];
+            lbl3.font = font(12);
+            lbl3.tag = 32;
+            lbl3.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:lbl3];
+            [lbl3 release];
+            
+            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(105, 47.5, 80, 1)];
             line.image = [UIImage imageNamed:@"线"];
             [cell.contentView addSubview:line];
             [line release];
+            
+            UIImageView *zhixiao = [[UIImageView alloc] initWithFrame:CGRectMake(260, 38, 50, 15)];
+            zhixiao.image = [UIImage imageNamed:@"xlxq_zhixiao_btn"];
+            [cell.contentView addSubview:zhixiao];
+            [zhixiao release];
+            
+            UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(5, 60, applicationwidth-10, 40)];
+            desc.backgroundColor = [UIColor clearColor];
+            desc.font = font(13);
+            desc.tag =33;
+            desc.textColor = [UIColor grayColor];
+            desc.numberOfLines = 0;
+            [cell.contentView addSubview:desc];
+            [desc release];
+            
         }
-        UIImageView *worksImage = (UIImageView*)[cell.contentView viewWithTag:3];
-        [worksImage setImageWithURL:[NSURL URLWithString:[m_jsonArr objectAtIndex:0]] placeholderImage:[UIImage imageNamed:@"CAIxiang_img2"]];
+        UILabel *lbl1 = (UILabel*)[cell.contentView viewWithTag:31];
+        UILabel *lbl2 = (UILabel*)[cell.contentView viewWithTag:32];
+        UILabel *desc = (UILabel*)[cell.contentView viewWithTag:33];
+        lbl1.text = [NSString stringWithFormat:@"￥%@",[m_jsonArr objectAtIndex:2]];
+        lbl2.text = [NSString stringWithFormat:@"￥%@",[m_jsonArr objectAtIndex:3]];
+        desc.text = [m_jsonArr objectAtIndex:4];
+        CGSize size = [desc.text sizeWithFont:font(13) constrainedToSize:CGSizeMake(310, 1000) lineBreakMode:NSLineBreakByWordWrapping];
+        inroduceHeight = size.height;
+        desc.frame = CGRectMake(desc.frame.origin.x, desc.frame.origin.y, 310, inroduceHeight) ;
         return cell;
     }else if (row == 3){
         static NSString *cellIdentific = @"cell3";
@@ -209,19 +255,31 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
-            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 265)];
-            pic.backgroundColor = [UIColor clearColor];
-            pic.tag = 3;
-            [cell.contentView addSubview:pic];
-            [pic release];
-            
-            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80, 300, 1)];
+            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, 310, 1)];
             line.image = [UIImage imageNamed:@"线"];
             [cell.contentView addSubview:line];
             [line release];
+            
+            UILabel *lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, applicationwidth-10, 25)];
+            lbl1.backgroundColor = [UIColor clearColor];
+            lbl1.font = font(16);
+            lbl1.text = @"商品参数";
+            [cell.contentView addSubview:lbl1];
+            [lbl1 release];
+            
+            for (int i=0; i<[n_jsonArr count]; i++) {
+                UILabel *lbl = [[UILabel alloc] initWithFrame:CGRectMake(5, 35+18*i, applicationwidth-10, 18)];
+                lbl.backgroundColor = [UIColor clearColor];
+                lbl.font = font(13);
+                lbl.tag = 40+i;
+                [cell.contentView addSubview:lbl];
+                [lbl release];
+            }
         }
-        UIImageView *worksImage = (UIImageView*)[cell.contentView viewWithTag:3];
-        [worksImage setImageWithURL:[NSURL URLWithString:[m_jsonArr objectAtIndex:0]] placeholderImage:[UIImage imageNamed:@"CAIxiang_img2"]];
+        for (int i=0; i<[n_jsonArr count]; i++) {
+            UILabel *lbl = (UILabel*)[cell.contentView viewWithTag:(40+i)];
+            lbl.text = [NSString stringWithFormat:@"%@",[n_jsonArr objectAtIndex:i]];
+        }
         return cell;
     }else if (row == 4){
         static NSString *cellIdentific = @"cell4";
@@ -230,56 +288,63 @@
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
-            UIImageView *pic = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 265)];
-            pic.backgroundColor = [UIColor clearColor];
-            pic.tag = 3;
-            [cell.contentView addSubview:pic];
-            [pic release];
-            
-            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 80, 300, 1)];
+            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, 310, 1)];
             line.image = [UIImage imageNamed:@"线"];
             [cell.contentView addSubview:line];
             [line release];
+            
+            UILabel *lbl1 = [[UILabel alloc] initWithFrame:CGRectMake(5, 10, 310, 25)];
+            lbl1.backgroundColor = [UIColor clearColor];
+            lbl1.font = font(16);
+            lbl1.text = @"商品图片";
+            [cell.contentView addSubview:lbl1];
+            [lbl1 release];
+            
+            for (int i=0; i<[l_jsonArr count]; i++) {
+                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5+105*i, 40, 100, 70)];
+                imageView.tag = 300+i;
+                imageView.backgroundColor = [UIColor clearColor];
+                [cell.contentView addSubview:imageView];
+                [imageView release];
+            }
+            
+            UIImageView *line2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, 119, 310, 1)];
+            line2.image = [UIImage imageNamed:@"线"];
+            [cell.contentView addSubview:line2];
+            [line2 release];
         }
-        UIImageView *worksImage = (UIImageView*)[cell.contentView viewWithTag:3];
-        [worksImage setImageWithURL:[NSURL URLWithString:[m_jsonArr objectAtIndex:0]] placeholderImage:[UIImage imageNamed:@"CAIxiang_img2"]];
+        for (int i=0; i<[l_jsonArr count]; i++) {
+            UIImageView *lbl = (UIImageView*)[cell.contentView viewWithTag:(300+i)];
+            [lbl setImageWithURL:[NSURL URLWithString:[l_jsonArr objectAtIndex:i]] placeholderImage:[UIImage imageNamed:@"xlxq_img2"]];
+        }
         return cell;
     }
     return nil;
 }
 
--(NSString*)returnFormatTime:(NSString *)timeStr
+-(CGFloat)cellHeight
 {
-    NSString *month = [timeStr substringWithRange:NSMakeRange (4, 2)];
-    NSString *day =[timeStr substringWithRange:NSMakeRange (6, 2)];
-    NSString *hour = [timeStr substringWithRange:NSMakeRange (8, 2)];
-    NSString *minit = [timeStr substringWithRange:NSMakeRange (10, 2)];
-    return [NSString stringWithFormat:@"%@-%@ %@:%@",month,day,hour,minit];
+    NSString *content = [m_jsonArr objectAtIndex:4];
+    CGSize size = [content sizeWithFont:font(13) constrainedToSize:CGSizeMake(310, 1000) lineBreakMode:NSLineBreakByWordWrapping];
+    return size.height;
 }
 
--(BOOL)isShowText:(NSInteger)row
-{
-    if ([[[m_jsonArr objectAtIndex:(row+3)] substringToIndex:1] isEqualToString:@"0"]) {
-        
-        return YES;
-    }else{
-        return NO;
-    }
-}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row =indexPath.row;
     if (row==0) {
-        return 90;
-    }else{
-        if ([self isShowText:row]) {
-            LabelCell *cell = (LabelCell*)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-            return [cell cellHeight];
-        }else{
-            ImageCell *cell = (ImageCell*)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-            return [cell cellHeight];
-        }
+        return 265;
+    }else if (row==1){
+        return 60;
+    }else if (row==2){
+        return 70+[self cellHeight];
+    }
+    else if (row==3){
+        return 40+18*[n_jsonArr count];
+    }
+    else if (row==4){
+        return 120;
     }
     return 0;
 }

@@ -69,7 +69,6 @@
 
 - (void)handleMaxShowTimer:(NSTimer *)theTimer
 {
-    NSLog(@"totleTime:%i",totleTime);
     if (totleTime>=2||netOK==YES) {
         
         [timer invalidate];

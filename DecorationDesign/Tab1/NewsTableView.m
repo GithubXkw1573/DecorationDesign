@@ -99,9 +99,9 @@
         userType = @"USERTYPE";
         resultKey = @"USERLISTINFO";
     }else if (self.shaixuan ==2){
-        methodName=@"USER-LIST-PAGE";
-        userType = @"USERTYPE";
-        resultKey = @"USERLISTINFO";
+        methodName=@"BUILDING-LIST-PAGE";
+        userType = @"BUILDINGTYPE";
+        resultKey = @"BUILDINGLISTINFO";
     }else if (self.shaixuan==3){
         methodName=@"MERCHANT-LIST-PAGE";
         userType = @"COMPANYTYPE";

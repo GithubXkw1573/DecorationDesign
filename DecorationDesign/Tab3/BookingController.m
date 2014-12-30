@@ -7,13 +7,14 @@
 //
 
 #import "BookingController.h"
+#import "FaxianViewController.h"
 
 @interface BookingController ()
 
 @end
 
 @implementation BookingController
-@synthesize othersField,nameField,telField,areaField,typeField,qqField,cityField;
+@synthesize MBProgress;
 
 - (void)viewDidLoad
 {
@@ -44,32 +45,34 @@
     titlelabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:19];
     self.navigationItem.titleView=titlelabel;
     [titlelabel release];
-    
 }
 
 -(void)initComponents
 {
+    UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 268)];
+    backImageView= imageV;
+    imageV.backgroundColor = [UIColor clearColor];
+    imageV.image = [UIImage imageNamed:@"yuyue_img_02"];
+    [self.view addSubview:imageV];
+    [imageV release];
     
-    UILabel *tipLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 40)];
-    tipLabel.text = @"  请留下你的信息，让张三丰联系你";
-    tipLabel.backgroundColor = [UIColor whiteColor];
-    tipLabel.font = font(16);
-    [self.view addSubview:tipLabel];
-    [tipLabel release];
-    
-    
-    
-    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 50, applicationwidth, applicationheight-49-44-50) style:UITableViewStylePlain];
+    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-49-44) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
-    m_tableView.backgroundColor=[UIColor whiteColor];
+    m_tableView.backgroundColor=[UIColor clearColor];
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
+    
+    MBProgress=[[MBProgressHUD alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160)];
+    [MBProgress setCenter:CGPointMake(applicationwidth/2.0, applicationheight/2)];
+    [self.view addSubview:MBProgress];
+    [MBProgress hide:YES];
+    [MBProgress setLabelText:@"加载中"];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 8;
+    return 2;
 }
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -80,74 +83,47 @@
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     int row = indexPath.row;
-    if (row<7) {
+    if (row==0) {
         static NSString *identifierCell = @"cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierCell];
         if (cell==nil) {
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierCell] autorelease];
             cell.backgroundColor = [UIColor clearColor];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 0, 75, 44)];
-            titleLabel.backgroundColor = [UIColor clearColor];
-            titleLabel.font = font(15);
-            titleLabel.tag =11;
-            [cell.contentView addSubview:titleLabel];
-            [titleLabel release];
-            
-            UITextField *contentField = [[UITextField alloc] initWithFrame:CGRectMake(95, 7, 205, 30)];
-            contentField.font = font(15);
-            contentField.tag = 12;
-            contentField.delegate = self;
-            contentField.layer.borderColor = [[UIColor grayColor] CGColor];
-            contentField.layer.borderWidth=0.5f;
-            contentField.backgroundColor = [UIColor clearColor];
-            [cell.contentView addSubview:contentField];
-            [contentField release];
         }
-        UILabel *titleLabel = (UILabel*)[cell.contentView viewWithTag:11];
-        UITextField *contentField = (UITextField*)[cell.contentView viewWithTag:12];
-        if (row==0) {
-            titleLabel.text = @"您的姓名：";
-            self.nameField = contentField;
-            contentField.returnKeyType = UIReturnKeyNext;
-        }else if (row==1){
-            titleLabel.text = @"您的电话：";
-            self.telField = contentField;
-            contentField.returnKeyType = UIReturnKeyNext;
-        }else if (row==2){
-            titleLabel.text = @"您的QQ：";
-            self.qqField = contentField;
-            contentField.returnKeyType = UIReturnKeyNext;
-        }else if (row==3){
-            titleLabel.text = @"装修面积：";
-            self.areaField = contentField;
-            contentField.returnKeyType = UIReturnKeyNext;
-        }else if (row==4){
-            titleLabel.text = @"项目类型：";
-            self.typeField = contentField;
-            contentField.returnKeyType = UIReturnKeyNext;
-        }else if (row==5){
-            titleLabel.text = @"所在城市：";
-            self.cityField = contentField;
-            contentField.returnKeyType = UIReturnKeyNext;
-        }else if (row==6){
-            titleLabel.text = @"其他说明：";
-            self.othersField = contentField;
-            contentField.returnKeyType = UIReturnKeyDone;
-        }
+        
         return cell;
     }else{
         static NSString *identifierCell = @"cell1";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierCell];
         if (cell==nil) {
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierCell] autorelease];
-            cell.backgroundColor = [UIColor clearColor];
-            UIButton *fabuBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 20, 300, 40)];
-            [fabuBtn setImage:[UIImage imageNamed:@"yuyue_btn"] forState:UIControlStateNormal];
-            fabuBtn.backgroundColor = [UIColor clearColor];
-            [fabuBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
-            [cell.contentView addSubview:fabuBtn];
-            [fabuBtn release];
+            cell.backgroundColor = [UIColor colorWithRed:230/255.f green:230/255.f blue:230/255.f alpha:1.f];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            
+            UIButton *shejishiBtn = [[UIButton alloc] initWithFrame:CGRectMake(8, 30, 143, 108)];
+            [shejishiBtn setTitle:@"预约设计师" forState:UIControlStateNormal];
+            [shejishiBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [shejishiBtn setTitleEdgeInsets:UIEdgeInsetsMake(70, 0, 0, 0)];
+            shejishiBtn.titleLabel.font = font(18);
+            [shejishiBtn setBackgroundImage:[UIImage imageNamed:@"yuyue_btn_05"] forState:UIControlStateNormal];
+            shejishiBtn.backgroundColor = [UIColor clearColor];
+            shejishiBtn.tag = 11;
+            [shejishiBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:shejishiBtn];
+            [shejishiBtn release];
+            
+            UIButton *gongsiBtn = [[UIButton alloc] initWithFrame:CGRectMake(169, 30, 143, 108)];
+            [gongsiBtn setTitle:@"预约装修公司" forState:UIControlStateNormal];
+            [gongsiBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+            [gongsiBtn setTitleEdgeInsets:UIEdgeInsetsMake(70, 0, 0, 0)];
+            gongsiBtn.titleLabel.font = font(18);
+            [gongsiBtn setBackgroundImage:[UIImage imageNamed:@"yuyue_btn_07"] forState:UIControlStateNormal];
+            gongsiBtn.backgroundColor = [UIColor clearColor];
+            gongsiBtn.tag = 12;
+            [gongsiBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
+            [cell.contentView addSubview:gongsiBtn];
+            [gongsiBtn release];
         }
         return cell;
     }
@@ -156,69 +132,57 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row<7) {
-        return 44;
+    if (indexPath.row==0) {
+        return 268;
     }else{
-        return 80;
+        return 200;
     }
 }
 
 -(void)buttonClicked:(UIButton*)btn
 {
-    
-}
-
--(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
-{
-    if (textField==self.typeField){
-        [self movoTo:-60];
-    }else if (textField==self.cityField){
-        [self movoTo:-120];
-    }else if (textField==self.othersField){
-        [self movoTo:-150];
-    }
-    return YES;
-}
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField
-{
-    if (textField==self.nameField) {
-        [self.telField becomeFirstResponder];
-        [self movoTo:0];
-    }else if (textField==self.telField){
-        [self.qqField  becomeFirstResponder];
-        [self movoTo:0];
-    }else if (textField==self.qqField){
-        [self.areaField becomeFirstResponder];
-        [self movoTo:0];
-    }else if (textField==self.areaField){
-        [self.typeField becomeFirstResponder];
-        [self movoTo:-20];
-    }else if (textField==self.typeField){
-        [self.cityField becomeFirstResponder];
-        [self movoTo:-60];
-    }else if (textField==self.cityField){
-        [self.othersField becomeFirstResponder];
-        [self movoTo:-120];
-    }else if (textField==self.othersField){
-        [self.view endEditing:YES];
-        [self movoTo:64];
-        return NO;
-    }
-    return YES;
-}
-
--(void)movoTo:(CGFloat)dh
-{
-    [UIView animateWithDuration:0.35f animations:^{
-        self.view.frame = CGRectMake(0, dh, self.view.frame.size.width, self.view.frame.size.height);
+    if (btn.tag ==11) {
+        //设计师
+        [MBProgress show:YES];
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            FaxianViewController *faxian = [[FaxianViewController alloc] init];
+            faxian.contentType = 1;
+            [UserInfo shared].m_plateType = @"S";
+            [self.navigationController pushViewController:faxian animated:YES];
+            [faxian release];
+            [MBProgress hide:YES];
+        });
         
-    }];
+    }else if (btn.tag ==12){
+        //装修公司
+        [MBProgress show:YES];
+        double delayInSeconds = 0.1;
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            FaxianViewController *faxian = [[FaxianViewController alloc] init];
+            faxian.contentType = 4;
+            [UserInfo shared].m_plateType = @"J";
+            [self.navigationController pushViewController:faxian animated:YES];
+            [faxian release];
+            [MBProgress hide:YES];
+        });
+    }
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event{
-    [self.view endEditing:YES];
-    [self movoTo:64];
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    //拖动图片放大效果
+    if (scrollView.contentOffset.y<0) {
+        backImageView.frame=CGRectMake(0+scrollView.contentOffset.y, 0, 320-scrollView.contentOffset.y*2, 268-scrollView.contentOffset.y*2);
+    }
+    else
+    {
+        CGRect frame = backImageView.frame;
+        frame.origin.y = - (scrollView.contentOffset.y);
+        backImageView.frame = frame;
+    }
 }
 
 @end

@@ -9,22 +9,11 @@
 #import <UIKit/UIKit.h>
 #import "common.h"
 
-@interface BookingController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
+@interface BookingController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate,UIScrollViewDelegate>
 {
     UITableView *m_tableView;
-    UITextField *nameField;
-    UITextField *telField;
-    UITextField *qqField;
-    UITextField *areaField;
-    UITextField *typeField;
-    UITextField *cityField;
-    UITextField *othersField;
+    MBProgressHUD *MBProgress;
+    UIImageView *backImageView;
 }
-@property (nonatomic,retain) UITextField *nameField;
-@property (nonatomic,retain) UITextField *telField;
-@property (nonatomic,retain) UITextField *areaField;
-@property (nonatomic,retain) UITextField *typeField;
-@property (nonatomic,retain) UITextField *qqField;
-@property (nonatomic,retain) UITextField *cityField;
-@property (nonatomic,retain) UITextField *othersField;
+@property(nonatomic, retain)MBProgressHUD *MBProgress;
 @end

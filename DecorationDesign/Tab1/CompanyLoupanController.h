@@ -1,15 +1,15 @@
 //
-//  LoupanViewController.h
+//  CompanyLoupanController.h
 //  DecorationDesign
 //
-//  Created by 许开伟 on 14/12/15.
+//  Created by 许开伟 on 14/12/29.
 //  Copyright (c) 2014年 许开伟. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 #import "common.h"
 
-@interface LoupanViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableFooterDelegate,EGORefreshTableHeaderDelegate>
+@interface CompanyLoupanController : UIViewController<UITableViewDataSource,UITableViewDelegate,EGORefreshTableFooterDelegate,EGORefreshTableHeaderDelegate>
 {
     UITableView *m_tableView;
     MBProgressHUD *MBProgress;
@@ -26,8 +26,12 @@
     int page;
     NSString *mytime;
     NSArray *newList;
+    
+    NSString *buildId;
 }
+@property (nonatomic,retain) NSString *buildId;
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSArray *m_jsonArr;
 @property (nonatomic,retain) NSMutableArray *n_jsonArr;
+
 @end

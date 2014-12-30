@@ -17,7 +17,13 @@
     MBProgressHUD *MBProgress;
     NSArray *m_array;
     NSArray *m_jsonArr;
+    NSArray *n_jsonArr;
+    NSArray *l_jsonArr;
+    CGFloat inroduceHeight;
 }
+@property (nonatomic,retain) NSString *productId;
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSArray *m_jsonArr;
+@property (nonatomic,retain) NSArray *n_jsonArr;
+@property (nonatomic,retain) NSArray *l_jsonArr;
 @end
