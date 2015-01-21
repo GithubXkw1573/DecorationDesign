@@ -237,7 +237,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int row=[indexPath row];
+    NSInteger row=[indexPath row];
     
     if (row==0||row==2||row==5||row==8) {
         static NSString *CellIdentifier = @"Cell1";
@@ -407,9 +407,9 @@
     return nil;
 }
 
-- (float)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int row=[indexPath row];
+    NSInteger row=[indexPath row];
     
     if (row==0||row==2||row==5||row==8) {
         return 20;
@@ -427,7 +427,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath;
 {
-    int row=[indexPath row];
+    NSInteger row=[indexPath row];
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     

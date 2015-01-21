@@ -86,7 +86,7 @@
     return self;
 }
 
--(void)setCellData:(NSArray*)item
+-(void)setCellData:(NSArray*)item withSelected:(NSMutableArray*)selectList withIndex:(NSInteger)index
 {
     [self.designerPicView setImageWithURL:[NSURL URLWithString:[item objectAtIndex:0]] placeholderImage:[UIImage imageNamed:@"家装公司小图"]];
     self.titleLabel.text = [NSString stringWithFormat:@"%@",[item objectAtIndex:2]];
@@ -94,6 +94,13 @@
     self.addrLabel.text = [NSString stringWithFormat:@"%@",[item objectAtIndex:4]];
     self.commentLabel.text = [NSString stringWithFormat:@"%@",[item objectAtIndex:5]];
     //    self.signedLabel.text = [NSString stringWithFormat:@"%@",[item objectAtIndex:5]];
+    if ([selectList count]>index) {
+        if ([[selectList objectAtIndex:index] isEqualToString:@"yes"]) {
+            self.titleLabel.textColor = [UIColor grayColor];
+        }else{
+            self.titleLabel.textColor = [UIColor blackColor];
+        }
+    }
 }
 -(void)guanzhuClicked:(UIButton*)btn
 {

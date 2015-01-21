@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "common.h"
+#import "LoginViewController.h"
 
 @interface BookingViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {

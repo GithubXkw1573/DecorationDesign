@@ -167,7 +167,7 @@
     [weixinbtn setImage:[UIImage imageNamed:@"login_btn_weixin"] forState:UIControlStateNormal];
     weixinbtn.backgroundColor = [UIColor clearColor];
     weixinbtn.tag = 82;
-    [qqbtn addTarget:self action:@selector(otherLogin:) forControlEvents:UIControlEventTouchUpInside];
+    [weixinbtn addTarget:self action:@selector(otherLogin:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:weixinbtn];
     [weixinbtn release];
 }
@@ -298,15 +298,96 @@
         case 81:
         {
             //qq登录
+            [QQkongjianApi shared].logindelegate=self;
+            [[QQkongjianApi shared] QQlogin];
         }
             break;
         case 82:
         {
             //微信登录
+            if ([[WXShareApi shared] isWXAppInstalled]) {
+                [WXShareApi shared].logindelegate=self;
+                [[WXShareApi shared] weixinlogin];
+            }
+            else
+            {
+                UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"提示" message:@"请先下载微信客户端" delegate:Nil cancelButtonTitle:@"确定" otherButtonTitles:Nil, nil];
+                [alert show];
+                [alert release];
+            }
         }
             break;
         default:
             break;
+    }
+}
+
+-(void)loginsuccessful:(NSString *)str OAuth:(id)OAuth userinfo:(NSDictionary *)dic
+{
+    [MBProgress show:YES];
+    [MBProgress setLabelText:@"登录中"];
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    
+    NSString *userId = @"";
+    if ([str isEqualToString:@"QQlogin"]) {
+        userId = [NSString stringWithFormat:@"%@",[(TencentOAuth *)OAuth openId]];
+        request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"Other_login",@"JUDGEMETHOD",
+                            @"1",@"clientlogin.loginType",
+                            userId,@"clientlogin.openId",
+                            [(TencentOAuth *)OAuth accessToken],@"clientlogin.accessToken",
+                            [dic objectForKey:@"nickname"],@"clientlogin.name",
+                            [dic objectForKey:@"figureurl_2"],@"clientlogin.imageUrl",nil];
+    }
+    else if([str isEqualToString:@"WXlogin"])
+    {
+        userId = [NSString stringWithFormat:@"%@",[dic objectForKey:@"unionid"]];
+        request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"Other_login",@"JUDGEMETHOD",
+                            @"2",@"clientlogin.loginType",
+                            userId,@"clientlogin.openId",
+                            [(NSDictionary *)OAuth objectForKey:@"access_token"],@"clientlogin.accessToken",
+                            [dic objectForKey:@"nickname"],@"clientlogin.name",
+                            [dic objectForKey:@"headimgurl"],@"clientlogin.imageUrl",nil];
+    }
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            [MBProgress settext:@"登录成功!" aftertime:1.0];
+            [UserInfo shared].m_isLogin = YES;
+            [UserInfo shared].m_Id = userId;
+            [UserInfo shared].m_UserName = userId;
+            [UserInfo shared].m_PassWord = @"";
+            [UserInfo shared].m_session = [result objectForKey:@"SESSION"];
+            double delayInSeconds = 1.0;
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self.navigationController popViewControllerAnimated:YES];
+            });
+        }else {
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            [MBProgress settext:errrDesc aftertime:1.0];
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+        [MBProgress settext:@"网络错误!" aftertime:1.0];
+    }];
+    [request startRequest];
+}
+
+-(void)loginfailed:(NSString *)str
+{
+    if ([str isEqualToString:@"QQlogin"]) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"QQ登陆失败!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
+    }
+    else if([str isEqualToString:@"WXlogin"])
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"微信登陆失败!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+        [alert show];
+        [alert release];
     }
 }
 

@@ -134,7 +134,12 @@
         [self.navigationController popViewControllerAnimated:YES];
     }else{
         //搜索
-        
+        SearchViewController *search = [[SearchViewController alloc] init];
+        search.searchType = self.contentType;
+        UINavigationController *searchNav = [[UINavigationController alloc] initWithRootViewController:search];
+        [self presentViewController:searchNav animated:YES completion:nil];
+        [searchNav release];
+        [search release];
     }
     
 }

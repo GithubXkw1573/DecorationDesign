@@ -29,6 +29,7 @@
     UIView *shuomingView;
     UITextView *contentView;
     UIImageView *zhezhaoView;
+    NSInteger startIndex;
 }
 @property (nonatomic,retain) NSString *method;
 @property (nonatomic,retain) NSString *designer;

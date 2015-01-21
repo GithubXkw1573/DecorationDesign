@@ -8,13 +8,14 @@
 
 #import "LoupanZhuantiController.h"
 #import "ShareView.h"
+#import "DetailViewController.h"
 
 @interface LoupanZhuantiController ()
 
 @end
 
 @implementation LoupanZhuantiController
-@synthesize m_array,m_jsonArr,n_jsonArr;
+@synthesize m_array,m_jsonArr,n_jsonArr,buildingId,companyName,companyId;
 
 
 - (void)viewDidLoad
@@ -33,6 +34,7 @@
     [shadowimage release];
     
     n_jsonArr = [[NSMutableArray alloc] initWithCapacity:1];
+    fangangCount = 0;
     
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
     titlelabel.backgroundColor=[UIColor clearColor];
@@ -70,14 +72,13 @@
     self.navigationItem.rightBarButtonItem = myrightitem;
     [myrightitem release];
     [rightbtnview release];
-    
-    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-49-44) style:UITableViewStylePlain];
+    CGFloat viewHeight = self.hidesBottomBarWhenPushed?applicationheight-44:applicationheight-49-44;
+    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, viewHeight) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
     m_tableView.backgroundColor=[UIColor clearColor];
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
-    [self initEgoRefreshComponent];
     
     MBProgress=[[MBProgressHUD alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160)];
     [MBProgress setCenter:CGPointMake(applicationwidth/2.0, applicationheight/2)];
@@ -87,6 +88,7 @@
     
     [self loadRequest];
     [self loadWorklistRequest];
+    [self loadActivistRequest];
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,38 +109,6 @@
     }
 }
 
--(void)initEgoRefreshComponent
-{
-    UIView *touview=[[UIView alloc]initWithFrame:CGRectMake(0, -460, applicationwidth, 460-65)];
-    touview.backgroundColor=[UIColor beijingcolor];
-    [m_tableView addSubview:touview];
-    [touview release];
-    
-    // 上拉加载视图 － RefreshView
-    _refreshFooterView = [[EGORefreshTableFooterView alloc] initWithFrame:
-                          CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460)];
-    _refreshFooterView.delegate = self;
-    [m_tableView addSubview:_refreshFooterView];
-    
-    // 更新时间
-    [_refreshFooterView refreshLastUpdatedDate];
-    
-    // 下拉加载视图 － RefreshView
-    _refreshHeaderView = [[EGORefreshTableHeaderView alloc] initWithFrame:
-                          CGRectMake(0, -65, applicationwidth, 65)];
-    _refreshHeaderView.delegate = self;
-    [m_tableView addSubview:_refreshHeaderView];
-    
-    // 更新时间
-    [_refreshHeaderView refreshLastUpdatedDate];
-    
-    // 表示是否在加载
-    _Headerreloading = YES;
-    
-    // page = 0;
-    reloadormore = YES;
-    mytime=@"";
-}
 
 -(void)loadRequest
 {
@@ -146,12 +116,12 @@
     [MBProgress setLabelText:@"获取中"];
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"MERCHANT-TWOPAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"COMPANYID", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"BUILDING-TWO-PAGE",@"JUDGEMETHOD",buildingId,@"BUILDINGID", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
             [MBProgress setHidden:YES];
-            NSArray *infolist = [result objectForKey:@"COMPANYTWOPAGE"];
+            NSArray *infolist = [result objectForKey:@"BUILDINGTWOPAGEUP"];
             self.m_jsonArr = infolist;
         }else {
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
@@ -172,61 +142,62 @@
     [MBProgress setLabelText:@"获取中"];
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"MERCHANT-TYPELIST-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:1],@"COMPANYID",[NSString stringWithFormat:@"%d",page++],@"GETTIMES", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"BUILDING-ACT-LIST-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:4],@"CONTENTID",@"0",@"GETTIMES", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
-            newList = [result objectForKey:@"MERCHANTTYPELISTINFO"];
+            newList = [result objectForKey:@"SUBJECTACTLISTINFO"];
+            fangangCount = [newList count];
             if ([newList count] > 0) {
                 [MBProgress hide:YES];
-                if (reloadormore) {
-                    [n_jsonArr removeAllObjects];
-                    [n_jsonArr addObjectsFromArray:newList];
-                    reloadormore = NO;
-                    [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
-                    return;
-                }
-                else{
-                    [n_jsonArr  addObjectsFromArray:newList];
-                    [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
-                    return;
-                }
+                [n_jsonArr removeAllObjects];
+                [n_jsonArr addObjectsFromArray:newList];
             }
             else if([newList count] == 0){
-                if (page>1) {
-                    [MBProgress settext:@"没有更多了！" aftertime:1.0];
-                }
-                else
-                {
-                    [MBProgress settext:@"暂无数据!" aftertime:1.0];
-                    [n_jsonArr removeAllObjects];
-                }
-                page --;
+                [MBProgress settext:@"暂无数据!" aftertime:1.0];
+                [n_jsonArr removeAllObjects];
             }
-        }
-        if (reloadormore) {
-            [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
-            reloadormore=NO;
-        }
-        else
-        {
-            [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
-            reloadormore=NO;
+        }else{
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            [MBProgress settext:errrDesc aftertime:1.0];
         }
     }];
     [request setFailedBlock:^{
         [MBProgress settext:@"网络错误，请检查网络连接！" aftertime:1.0];
-        page--;
         
-        if (reloadormore) {
-            [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
-            reloadormore=NO;
+    }];
+    [request startRequest];
+}
+
+-(void)loadActivistRequest
+{
+    [MBProgress show:YES];
+    [MBProgress setLabelText:@"获取中"];
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"BUILDING-ACTCONT-LIST-PAGE",@"JUDGEMETHOD",[m_array objectAtIndex:4],@"CONTENTID",@"0",@"GETTIMES", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            newList = [result objectForKey:@"SUBJECTACTLISTINFO"];
+            if ([newList count] > 0) {
+                [MBProgress hide:YES];
+                [n_jsonArr addObjectsFromArray:newList];
+            }
+            else if([newList count] == 0){
+                [MBProgress settext:@"暂无数据!" aftertime:1.0];
+                [n_jsonArr removeAllObjects];
+            }
+        }else{
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            [MBProgress settext:errrDesc aftertime:1.0];
         }
-        else
-        {
-            [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
-            reloadormore=NO;
-        }
+    }];
+    [request setFailedBlock:^{
+        [MBProgress settext:@"网络错误，请检查网络连接！" aftertime:1.0];
+        
     }];
     [request startRequest];
 }
@@ -266,7 +237,7 @@
             [banner release];
         }
         UIImageView *imagev = (UIImageView*)[cell.contentView viewWithTag:12];
-        [imagev setImageWithURL:[NSURL URLWithString:@""] placeholderImage:[UIImage imageNamed:@"loup_4_img1"]];
+        [imagev setImageWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@",[m_array objectAtIndex:0]]] placeholderImage:[UIImage imageNamed:@"loup_4_img1"]];
         return cell;
     }else if (row == 1){
         static NSString *cellIdentific = @"cell1";
@@ -285,8 +256,8 @@
             [backView addSubview:zhaiyao];
             [zhaiyao release];
             
-            UILabel *personName = [[UILabel alloc] initWithFrame:CGRectMake(5, 5, 300, 1000)];
-            personName.font = font(13);
+            UILabel *personName = [[UILabel alloc] initWithFrame:CGRectMake(5, 12, 300, 1000)];
+            personName.font = font(14);
             personName.tag = 14;
             personName.numberOfLines = 0;
             [backView addSubview:personName];
@@ -294,12 +265,12 @@
             
         }
         UILabel *lbl1 = (UILabel*)[cell.contentView viewWithTag:14];
-        lbl1.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:0]];
-        CGSize size = [lbl1.text sizeWithFont:font(13) constrainedToSize:CGSizeMake(300, 1000) lineBreakMode:NSLineBreakByWordWrapping];
+        lbl1.text = [NSString stringWithFormat:@"           %@",[m_jsonArr objectAtIndex:2]];
+        CGSize size = [lbl1.text sizeWithFont:font(14) constrainedToSize:CGSizeMake(300, 1000) lineBreakMode:NSLineBreakByWordWrapping];
         inroduceHeight = size.height;
         lbl1.frame = CGRectMake(lbl1.frame.origin.x, lbl1.frame.origin.y, 300, inroduceHeight) ;
         UIView *backView = (UIView*)[cell.contentView viewWithTag:13];
-        backView.frame = CGRectMake(backView.frame.origin.x, backView.frame.origin.y, 310, inroduceHeight+10) ;
+        backView.frame = CGRectMake(backView.frame.origin.x, backView.frame.origin.y, 310, inroduceHeight+20) ;
         return cell;
     }
     else if (row == 2){
@@ -331,6 +302,17 @@
                 [cell.contentView addSubview:line];
                 [line release];
                 
+                UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, applicationwidth, 30)];
+                personTitle.text = @"  热点活动";
+                personTitle.font = font(16);
+                personTitle.hidden = YES;
+                personTitle.tag = 111;
+                personTitle.backgroundColor = [UIColor colorWithRed:241/255.f green:221/255.f blue:223/255.f alpha:1.f];
+                [cell.contentView addSubview:personTitle];
+                [personTitle release];
+                
+                
+                
                 UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 90, 80)];
                 works1.image = [UIImage imageNamed:@"CAIliao_img3"];
                 works1.tag = 50;
@@ -349,6 +331,13 @@
                 [cell.contentView addSubview:works3];
                 [works3 release];
                 
+            }
+            if (fangangCount==(row-3)/6*2+row-2 || fangangCount==(row-3)/6*2+row-1 || fangangCount==(row-3)/6*2+row) {
+                UILabel *titleLabel = (UILabel*)[cell.contentView viewWithTag:111];
+                titleLabel.hidden = NO;
+            }else{
+                UILabel *titleLabel = (UILabel*)[cell.contentView viewWithTag:112];
+                titleLabel.hidden = YES;
             }
             UIImageView *works1Image = (UIImageView*)[cell.contentView viewWithTag:50];
             UIImageView *works2Image = (UIImageView*)[cell.contentView viewWithTag:51];
@@ -378,6 +367,16 @@
                 [cell.contentView addSubview:line];
                 [line release];
                 
+                UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 100, applicationwidth, 30)];
+                personTitle.text = @"  热点活动";
+                personTitle.font = font(16);
+                personTitle.hidden = YES;
+                personTitle.tag =112;
+                personTitle.backgroundColor = [UIColor colorWithRed:241/255.f green:221/255.f blue:223/255.f alpha:1.f];
+                [cell.contentView addSubview:personTitle];
+                [personTitle release];
+                
+                
                 UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 80)];
                 works.image = [UIImage imageNamed:@"CAIliao_img1"];
                 works.tag = 40;
@@ -401,13 +400,20 @@
                 [pinpai release];
                 
             }
+            if (fangangCount==(row-3)/6*2+row-2) {
+                UILabel *titleLabel = (UILabel*)[cell.contentView viewWithTag:112];
+                titleLabel.hidden = NO;
+            }else{
+                UILabel *titleLabel = (UILabel*)[cell.contentView viewWithTag:112];
+                titleLabel.hidden = YES;
+            }
             UIImageView *worksImage = (UIImageView*)[cell.contentView viewWithTag:40];
             UILabel *l_title = (UILabel*)[cell.contentView viewWithTag:41];
             UILabel *pinpai = (UILabel*)[cell.contentView viewWithTag:42];;
             NSString *imageurl = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:0];
             [worksImage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"CAIliao_img1"]];
-            l_title.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2]];
-            pinpai.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:3]];
+            l_title.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:1]];
+            pinpai.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2]];
             return cell;
         }
     }
@@ -420,14 +426,20 @@
     if (row==0) {
         return 60;
     }else if (row==1){
-        return 100+[self cellHeight:2];
+        return 20+[self cellHeight:2];
     }else if (row==2){
-        return 30;
+        return 40;
     }else{
         if ((row+4)%6==0)
         {
+            if (fangangCount==(row-3)/6*2+row-2 || fangangCount==(row-3)/6*2+row-1 || fangangCount==(row-3)/6*2+row) {
+                return 130;
+            }
             return 100;
         }else{
+            if (fangangCount==(row-3)/6*2+row-2) {
+                return 130;
+            }
             return 100;
         }
     }
@@ -440,15 +452,23 @@
     NSInteger row = indexPath.row;
     if (row>2) {
         if ((row+4)%6==0) {
-            //            CailiaoDisplayController *display = [[CailiaoDisplayController alloc] init];
-            //            display.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
-            //            [self.navigationController pushViewController:display animated:YES];
-            //            [display release];
+            DetailViewController *detail = [[DetailViewController alloc] init];
+            detail.hidesBottomBarWhenPushed = YES;
+            detail.method = @"BUILDING-WAYACT-INFO";
+            detail.designer = companyName;
+            detail.designerId = companyId;
+            detail.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
+            [self.navigationController pushViewController:detail animated:YES];
+            [detail release];
         }else{
-            //            CailiaoDisplayController *display = [[CailiaoDisplayController alloc] init];
-            //            display.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
-            //            [self.navigationController pushViewController:display animated:YES];
-            //            [display release];
+            DetailViewController *detail = [[DetailViewController alloc] init];
+            detail.hidesBottomBarWhenPushed = YES;
+            detail.method = @"BUILDING-WAYACT-INFO";
+            detail.designer = companyName;
+            detail.designerId = companyId;
+            detail.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
+            [self.navigationController pushViewController:detail animated:YES];
+            [detail release];
         }
     }
 }
@@ -461,144 +481,8 @@
 -(CGFloat)cellHeight:(NSInteger)index
 {
     NSString *content = [m_jsonArr objectAtIndex:index];
-    CGSize size = [content sizeWithFont:font(13) constrainedToSize:CGSizeMake(300, 1000) lineBreakMode:NSLineBreakByWordWrapping];
+    CGSize size = [content sizeWithFont:font(14) constrainedToSize:CGSizeMake(300, 1000) lineBreakMode:NSLineBreakByWordWrapping];
     return size.height;
-}
-
--(CGFloat)tablewheight
-{
-    NSInteger n = n_jsonArr.count-1;
-    if (n%8==6) {
-        return (n/8*6+n%8)*100+195+[self cellHeight:0]+[self cellHeight:1];
-    }else if (n%8==7) {
-        return (n/8*6+n%8-1)*100+195+[self cellHeight:0]+[self cellHeight:1];
-    }else{
-        return (n/8*6+n%8+1)*100+195+[self cellHeight:0]+[self cellHeight:1];
-    }
-}
-
-- (void)FooterreloadFinish
-{
-    if (_Headerreloading) {
-        [m_tableView reloadData];
-        if ([n_jsonArr count]==0) {
-            m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
-            _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
-        }
-        else
-        {
-            if ([self tablewheight]<m_tableView.frame.size.height) {
-                m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
-                _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
-            }
-            else
-            {
-                m_tableView.contentSize=CGSizeMake(applicationwidth, [self tablewheight]);
-                _refreshFooterView.frame=CGRectMake(0, [self tablewheight], applicationwidth, 460);
-            }
-        }
-        _refreshHeaderView.Frame=CGRectMake(0, -65, applicationwidth, 65);
-        
-    }
-    
-    // 数据加载完成
-	[_refreshFooterView egoRefreshScrollViewDataSourceDidFinishedLoading:m_tableView];
-    
-    _Headerreloading = NO;
-}
-
-- (void)HeaderreloadFinish
-{
-    if (_Headerreloading) {
-        [m_tableView reloadData];
-        if ([n_jsonArr count]==0) {
-            m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
-            _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
-        }
-        else
-        {
-            if ([self tablewheight]<m_tableView.frame.size.height) {
-                m_tableView.contentSize=CGSizeMake(applicationwidth, m_tableView.frame.size.height);
-                _refreshFooterView.frame=CGRectMake(0, m_tableView.frame.size.height, applicationwidth, 460);
-            }
-            else
-            {
-                m_tableView.contentSize=CGSizeMake(applicationwidth, [self tablewheight]);
-                _refreshFooterView.frame=CGRectMake(0, [self tablewheight], applicationwidth, 460);
-            }
-        }
-        _refreshHeaderView.Frame=CGRectMake(0, -65, applicationwidth, 65);
-    }
-    
-    // 数据加载完成
-	[_refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:m_tableView];
-    
-    _Headerreloading = NO;
-}
-
-#pragma mark -
-#pragma mark UIScrollView Delegate Methods
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    [_refreshHeaderView egoRefreshScrollViewDidEndDragging:m_tableView];
-    
-    [_refreshFooterView egoRefreshScrollViewDidEndDragging:m_tableView];
-}
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [_refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
-    
-    [_refreshFooterView egoRefreshScrollViewDidScroll:scrollView];
-}
-
-#pragma mark -
-#pragma mark EGORefreshTableFooter Delegate Methods
-
-// 开始更新
-- (void)egoRefreshTableFooterDidTriggerRefresh:(EGORefreshTableFooterView *)view
-{
-    //    [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:5.f];
-    [self loadWorklistRequest];
-    
-    _Headerreloading = YES;   // 表示正处于加载更多数据状态
-}
-
-// 是否处于更新状态
-- (BOOL)egoRefreshTableFooterDataSourceIsLoading:(EGORefreshTableFooterView *)view {
-    
-	return _Headerreloading; // should return if data source model is reloading
-}
-
-- (NSDate*)egoRefreshTableFooterDataSourceLastUpdated:(EGORefreshTableFooterView *)view {
-    
-	return [NSDate date]; // should return date data source was last changed
-}
-
-#pragma mark -
-#pragma mark EGORefreshTableHeader Delegate Methods
-
-// 开始更新
-- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
-{
-    //    [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:5.f];
-    
-    page=0;
-    reloadormore=YES;
-    [self loadWorklistRequest];
-    _Headerreloading = YES;   // 表示正处于加载更多数据状态
-}
-
-// 是否处于更新状态
-- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view {
-    
-    return _Headerreloading; // should return if data source model is reloading
-}
-
-- (NSDate*)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view {
-    
-	return [NSDate date]; // should return date data source was last changed
 }
 
 @end

@@ -9,8 +9,10 @@
 #import <UIKit/UIKit.h>
 #import "common.h"
 #import "RegisterViewController.h"
+#import "QQkongjianApi.h"
+#import "WXShareApi.h"
 
-@interface LoginViewController : UIViewController<UITextFieldDelegate>
+@interface LoginViewController : UIViewController<UITextFieldDelegate,wxlogindelegate,qqlogindelegate>
 {
     MBProgressHUD *MBProgress;
 }

@@ -24,5 +24,5 @@
 @property (nonatomic,retain) UILabel *bookingLabel;
 @property (nonatomic,retain) UILabel *signedLabel;
 @property (nonatomic,retain) UILabel *titleLabel;
--(void)setCellData:(NSArray*)item;
+-(void)setCellData:(NSArray*)item withSelected:(NSMutableArray*)selectList withIndex:(NSInteger)index;;
 @end

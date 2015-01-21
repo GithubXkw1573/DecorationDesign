@@ -39,6 +39,8 @@
     UILabel *typeLabel;
     NSArray *m_jsonArr;
     NSMutableArray *n_jsonArr;
+    UILabel *detailLabel;
+    CGFloat detailLabelHeight;
 }
 @property (nonatomic,retain) UILabel *titleLabel;
 @property (nonatomic,retain) UIImageView *designerPicView;

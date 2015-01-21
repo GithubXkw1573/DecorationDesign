@@ -36,7 +36,7 @@
     NSString *mytime;
     NSArray *newList;
     MBProgressHUD *MBProgress;
-    
+    NSMutableArray *selectRecordList;
 }
 @property(nonatomic, retain)UITableView *m_tableView;
 @property(nonatomic, retain)NSMutableArray *m_newsArray;

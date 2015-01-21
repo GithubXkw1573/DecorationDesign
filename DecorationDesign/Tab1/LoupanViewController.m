@@ -56,8 +56,8 @@
     self.navigationItem.leftBarButtonItem = myleftitem;
     [myleftitem release];
     [leftbtnview release];
-    
-    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-49-44) style:UITableViewStylePlain];
+    CGFloat viewHeight = self.hidesBottomBarWhenPushed?applicationheight-44:applicationheight-49-44;
+    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, viewHeight) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
     m_tableView.backgroundColor=[UIColor clearColor];
@@ -437,12 +437,14 @@
             CompanyLoupanController *lou = [[CompanyLoupanController alloc] init];
             lou.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
             lou.buildId = [NSString stringWithFormat:@"%@",[m_array objectAtIndex:1]];
+            lou.hidesBottomBarWhenPushed= YES;
             [self.navigationController pushViewController:lou animated:YES];
             [lou release];
         }else{
             CompanyLoupanController *lou = [[CompanyLoupanController alloc] init];
             lou.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
             lou.buildId = [NSString stringWithFormat:@"%@",[m_array objectAtIndex:1]];
+            lou.hidesBottomBarWhenPushed= YES;
             [self.navigationController pushViewController:lou animated:YES];
             [lou release];
         }

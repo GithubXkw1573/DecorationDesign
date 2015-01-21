@@ -23,6 +23,8 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
+    
+    
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"标题栏%i.png",[[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0?7:6]] forBarMetrics:UIBarMetricsDefault];
@@ -75,7 +77,7 @@
 
 -(void)initBottom:(NSString *)type
 {
-    if ([type isEqualToString:@"Z"]) {
+    if ([type isEqualToString:@"Z"] || [type isEqualToString:@"1"]) {
         //作品
         UIView *commentView = [[UIView alloc] initWithFrame:CGRectMake(0, applicationheight-94, applicationwidth, 50)];
         commentView.backgroundColor = [UIColor colorWithRed:245/255.f green:245/255.f blue:245/255.f alpha:1.0];
@@ -376,14 +378,18 @@
     }else if (btn.tag == 201){
         //评论
         if ([UserInfo shared].m_isLogin) {
-            CommentViewController *comment = [[CommentViewController alloc] init];
-            comment.designerId = designerId;
-            comment.designerName = designer;
-            comment.worksId = worksId;
-            comment.m_array = m_jsonArr;
-            comment.worksType = [m_jsonArr objectAtIndex:0];
-            [self.navigationController pushViewController:comment animated:YES];
-            [comment release];
+            if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]) {
+                //
+            }else{
+                CommentViewController *comment = [[CommentViewController alloc] init];
+                comment.designerId = designerId;
+                comment.designerName = designer;
+                comment.worksId = worksId;
+                comment.m_array = m_jsonArr;
+                comment.worksType = [m_jsonArr objectAtIndex:0];
+                [self.navigationController pushViewController:comment animated:YES];
+                [comment release];
+            }
         }else{
             LoginViewController *login = [[LoginViewController alloc] init];
             [self.navigationController pushViewController:login animated:YES];
@@ -435,7 +441,11 @@
     NSURL *url = [NSURL URLWithString:MineURL];
     self.worksId = [m_array objectAtIndex:0];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:self.method,@"JUDGEMETHOD",[m_array objectAtIndex:0],@"WORKSID", nil];
+    if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]) {
+        request.postData = [NSDictionary dictionaryWithObjectsAndKeys:self.method,@"JUDGEMETHOD",[m_array objectAtIndex:3],@"CONTENTID", nil];
+    }else{
+        request.postData = [NSDictionary dictionaryWithObjectsAndKeys:self.method,@"JUDGEMETHOD",[m_array objectAtIndex:0],@"WORKSID", nil];
+    }
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
@@ -450,12 +460,20 @@
             }else if ([[UserInfo shared].m_plateType isEqualToString:@"L"]){
                 resultKey = @"DESIGNERTHREEPAGE";
             }
+            if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]){
+                resultKey = @"BUILDINGWAYACT";
+            }
             NSArray *infolist = [result objectForKey:resultKey];
             self.m_jsonArr = infolist;
             UILabel *titleLabel = (UILabel*)self.navigationItem.titleView;
-            titleLabel.text = [[m_jsonArr objectAtIndex:0] isEqualToString:@"Z"]?@"作品详情":@"博文详情";
-            UIButton *detailBtn = (UIButton*)[self.view viewWithTag:23];
-            [detailBtn setTitle:[NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:3]] forState:UIControlStateNormal];
+            if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]){
+                titleLabel.text = [[m_jsonArr objectAtIndex:0] isEqualToString:@"1"]?@"方案详情":@"活动详情";
+            }else{
+                titleLabel.text = [[m_jsonArr objectAtIndex:0] isEqualToString:@"Z"]?@"作品详情":@"博文详情";
+                UIButton *detailBtn = (UIButton*)[self.view viewWithTag:23];
+                [detailBtn setTitle:[NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:3]] forState:UIControlStateNormal];
+            }
+            
         }else {
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
             NSLog(@"%@",errrDesc);
@@ -476,12 +494,23 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return m_jsonArr.count-3;
+    if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]){
+        
+        return m_jsonArr.count-4;
+    }else{
+        return m_jsonArr.count-3;
+    }
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
+    if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]) {
+        startIndex =row+4;
+    }
+    else{
+        startIndex = row+3;
+    }
     if (row == 0) {
         static NSString *cellIdentific = @"cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
@@ -532,33 +561,38 @@
         UILabel *lbl2 = (UILabel*)[cell.contentView viewWithTag:12];
         UILabel *lbl3 = (UILabel*)[cell.contentView viewWithTag:13];
         NSString *timeStr = [self returnFormatTime:[NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:2]]];
+        lbl3.text = [NSString stringWithFormat:@"%@ 评论",[m_jsonArr objectAtIndex:3]];
+        if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]) {
+            timeStr = [self returnFormatTime:[NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:3]]];
+            lbl3.text = [NSString stringWithFormat:@"%@ 评论",[m_jsonArr objectAtIndex:4]];
+        }
         lbl0.text = [NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:1]];
         CGSize size = [nameLabel.text sizeWithFont:font(13) constrainedToSize:CGSizeMake(150, 20) lineBreakMode:NSLineBreakByWordWrapping];
         nameLabel.frame = CGRectMake(nameLabel.frame.origin.x, nameLabel.frame.origin.y, size.width, nameLabel.frame.size.height);
         lbl2.frame = CGRectMake(20+size.width, lbl2.frame.origin.y, lbl2.frame.size.width, lbl2.frame.size.height);
         lbl3.frame = CGRectMake(100+size.width, lbl3.frame.origin.y, lbl3.frame.size.width, lbl3.frame.size.height);
         lbl2.text = [NSString stringWithFormat:@"%@",timeStr];
-        lbl3.text = [NSString stringWithFormat:@"%@ 评论",[m_jsonArr objectAtIndex:3]];
+        
         return cell;
     }else{
         if ([self isShowText:row]) {
-            static NSString *cellIdentific = @"cell_label";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
+            static NSString *cellIdentific1 = @"cell_label";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific1];
             if (cell == nil) {
-                cell = [[LabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[LabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific1];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
             }
-            [(LabelCell*)cell setContentwithText:[[m_jsonArr objectAtIndex:(row+3)] substringFromIndex:2]];
+            [(LabelCell*)cell setContentwithText:[[m_jsonArr objectAtIndex:startIndex] substringFromIndex:2]];
             return cell;
         }else{
-            NSString *cellIdentific = [NSString stringWithFormat:@"cell%li",row];
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
+            NSString *cellIdentific2 = [NSString stringWithFormat:@"cell%li",row];
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific2];
             if (cell == nil) {
-                cell = [[ImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[ImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific2];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
             }
-            [(ImageCell*)cell setContentImage:[[m_jsonArr objectAtIndex:(row+3)] substringFromIndex:2]];
+            [(ImageCell*)cell setContentImage:[[m_jsonArr objectAtIndex:startIndex] substringFromIndex:2]];
             return cell;
         }
     }
@@ -570,13 +604,22 @@
     NSString *month = [timeStr substringWithRange:NSMakeRange (4, 2)];
     NSString *day =[timeStr substringWithRange:NSMakeRange (6, 2)];
     NSString *hour = [timeStr substringWithRange:NSMakeRange (8, 2)];
-    NSString *minit = [timeStr substringWithRange:NSMakeRange (10, 2)];
+    NSString *minit=@"00";
+    if (timeStr.length>=12) {
+        minit = [timeStr substringWithRange:NSMakeRange (10, 2)];
+    }
     return [NSString stringWithFormat:@"%@-%@ %@:%@",month,day,hour,minit];
 }
 
 -(BOOL)isShowText:(NSInteger)row
 {
-    if ([[[m_jsonArr objectAtIndex:(row+3)] substringToIndex:1] isEqualToString:@"0"]) {
+    if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]) {
+        startIndex =row+4;
+    }
+    else{
+        startIndex = row+3;
+    }
+    if ([[[m_jsonArr objectAtIndex:startIndex] substringToIndex:1] isEqualToString:@"0"]) {
         
         return YES;
     }else{

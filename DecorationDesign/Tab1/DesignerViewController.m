@@ -53,8 +53,8 @@
     self.navigationItem.leftBarButtonItem = myleftitem;
     [myleftitem release];
     [leftbtnview release];
-    
-    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-49-44) style:UITableViewStylePlain];
+    CGFloat viewHeight = self.hidesBottomBarWhenPushed?applicationheight-44:applicationheight-49-44;
+    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, viewHeight) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
     m_tableView.backgroundColor=[UIColor clearColor];
@@ -413,6 +413,7 @@
             
             UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 79, 300, 1)];
             line.image = [UIImage imageNamed:@"线"];
+            line.tag = 29;
             [cell.contentView addSubview:line];
             [line release];
             
@@ -423,13 +424,33 @@
             [detailBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
             [cell.contentView addSubview:detailBtn];
             [detailBtn release];
+            
+            UILabel *desclabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 65, applicationwidth-20, 0)];
+            desclabel.numberOfLines = 0;
+            desclabel.font = font(13);
+            desclabel.tag = 24;
+            [desclabel setHidden:YES];
+            detailLabel = desclabel;
+            desclabel.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:desclabel];
+            [desclabel release];
         }
         UILabel *lbl1 = (UILabel*)[cell.contentView viewWithTag:20];
         UILabel *lbl2 = (UILabel*)[cell.contentView viewWithTag:21];
         UILabel *lbl3 = (UILabel*)[cell.contentView viewWithTag:22];
+        UILabel *lbl4 = (UILabel*)[cell.contentView viewWithTag:24];
+        UIImageView *line = (UIImageView*)[cell.contentView viewWithTag:29];
         lbl1.text = [NSString stringWithFormat:@"姓名：%@",[m_jsonArr objectAtIndex:0]];
         lbl2.text = [NSString stringWithFormat:@"类型：%@",[m_jsonArr objectAtIndex:5]];
         lbl3.text = [NSString stringWithFormat:@"所在地：%@",[m_jsonArr objectAtIndex:7]];
+        lbl4.text = [NSString stringWithFormat:@"详细介绍：%@",[m_jsonArr objectAtIndex:8]];
+        CGSize size = [lbl4.text sizeWithFont:font(13) constrainedToSize:CGSizeMake(applicationwidth-20, 1000) lineBreakMode:NSLineBreakByWordWrapping];
+        lbl4.frame = CGRectMake(lbl4.frame.origin.x, lbl4.frame.origin.y, lbl4.frame.size.width, size.height+20);
+        if (!lbl4.hidden) {
+            line.frame = CGRectMake(line.frame.origin.x, 89+size.height, line.frame.size.width, line.frame.size.height);
+        }else{
+            line.frame = CGRectMake(line.frame.origin.x, 79, line.frame.size.width, line.frame.size.height);
+        }
         return cell;
     }
     else if (row == 2){
@@ -558,7 +579,7 @@
     if (row==0) {
         return 100;
     }else if (row==1){
-        return 80;
+        return 80+[self cellHeight];
     }else if (row==2){
         return 140;
     }else{
@@ -570,6 +591,17 @@
          }
     }
     return 0;
+}
+
+-(CGFloat)cellHeight
+{
+    if (detailLabel.hidden) {
+        return 0;
+    }else{
+        NSString *content = detailLabel.text;
+        CGSize size = [content sizeWithFont:font(13) constrainedToSize:CGSizeMake(applicationwidth-20, 1000) lineBreakMode:NSLineBreakByWordWrapping];
+        return size.height+10;
+    }
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -589,7 +621,15 @@
 
 -(void)buttonClicked:(UIButton*)btn
 {
-    
+    if (btn.tag == 23) {
+        btn.frame = CGRectMake(applicationwidth-60, 10, 50, 25);
+        [btn setImage:[UIImage imageNamed:detailLabel.hidden?@"btn_up_03":@"xiangqing_btn_03"] forState:UIControlStateNormal];
+        //展开设计师描述
+        [detailLabel setHidden:!detailLabel.hidden];
+        [m_tableView reloadData];
+        m_tableView.contentSize=CGSizeMake(applicationwidth, [self tablewheight]);
+        _refreshFooterView.frame=CGRectMake(0, [self tablewheight], applicationwidth, 460);
+    }
 }
 
 
@@ -618,11 +658,11 @@
 {
     NSInteger n = n_jsonArr.count-1;
     if (n%8==6) {
-        return (n/8*6+n%8)*90+320;
+        return (n/8*6+n%8)*90+320+[self cellHeight];
     }else if (n%8==7) {
-        return (n/8*6+n%8-1)*90+320;
+        return (n/8*6+n%8-1)*90+320+[self cellHeight];
     }else{
-        return (n/8*6+n%8+1)*90+320;
+        return (n/8*6+n%8+1)*90+320+[self cellHeight];
     }
 }
 

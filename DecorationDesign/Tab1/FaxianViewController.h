@@ -16,6 +16,7 @@
 #import "CompanyViewController.h"
 #import "CailiaoViewController.h"
 #import "LoupanViewController.h"
+#import "SearchViewController.h"
 
 @interface FaxianViewController : UIViewController<NewsTableViewDelegate>
 {

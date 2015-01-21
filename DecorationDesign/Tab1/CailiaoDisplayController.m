@@ -55,8 +55,8 @@
     [myleftitem release];
     [leftbtnview release];
     
-    
-    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-49-44) style:UITableViewStylePlain];
+    CGFloat viewHeight = self.hidesBottomBarWhenPushed?applicationheight-44:applicationheight-49-44;
+    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, viewHeight) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
     m_tableView.backgroundColor=[UIColor colorWithRed:230/255.f green:230/255.f blue:230/255.f alpha:1.f];
@@ -158,6 +158,7 @@
                 page --;
             }
         }else{
+            [MBProgress hide:YES];
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
             [alert show];

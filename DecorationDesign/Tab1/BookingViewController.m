@@ -126,30 +126,37 @@
         UITextField *contentField = (UITextField*)[cell.contentView viewWithTag:12];
         if (row==0) {
             titleLabel.text = @"您的姓名：";
+            contentField.placeholder = @"必填";
             self.nameField = contentField;
             contentField.returnKeyType = UIReturnKeyNext;
         }else if (row==1){
             titleLabel.text = @"您的电话：";
+            contentField.placeholder = @"必填";
             self.telField = contentField;
             contentField.returnKeyType = UIReturnKeyNext;
         }else if (row==2){
             titleLabel.text = @"您的QQ：";
+            contentField.placeholder = @"可不填";
             self.qqField = contentField;
             contentField.returnKeyType = UIReturnKeyNext;
         }else if (row==3){
             titleLabel.text = @"装修面积：";
+            contentField.placeholder = @"必填";
             self.areaField = contentField;
             contentField.returnKeyType = UIReturnKeyNext;
         }else if (row==4){
             titleLabel.text = @"项目类型：";
+            contentField.placeholder = @"必填";
             self.typeField = contentField;
             contentField.returnKeyType = UIReturnKeyNext;
         }else if (row==5){
             titleLabel.text = @"所在城市：";
+            contentField.placeholder = @"必填";
             self.cityField = contentField;
             contentField.returnKeyType = UIReturnKeyNext;
         }else if (row==6){
             titleLabel.text = @"其他说明：";
+            contentField.placeholder = @"可不填";
             self.othersField = contentField;
             contentField.returnKeyType = UIReturnKeyDone;
         }
@@ -181,9 +188,70 @@
     }
 }
 
+-(BOOL)validateNotNull
+{
+    if ([nameField.text isEqualToString:@""] || [telField.text isEqualToString:@""] || [cityField.text isEqualToString:@""] || [areaField.text isEqualToString:@""] || [typeField.text isEqualToString:@""]) {
+        return NO;
+    }else{
+        return YES;
+    }
+}
+
+-(void)resetFields
+{
+    nameField.text = @"";
+    telField.text = @"";
+    qqField.text = @"";
+    areaField.text = @"";
+    typeField.text = @"";
+    cityField.text = @"";
+    othersField.text = @"";
+}
+
+-(void)startDisappoint
+{
+    if ([UserInfo shared].m_isLogin) {
+        if ([self validateNotNull]) {
+            NSURL *url = [NSURL URLWithString:MineURL];
+            HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+            //NSLog(@"%@_%@__%@___%@___%@___%@__%@",[UserInfo shared].m_Id,@"USERID",nameField.text,telField.text,bugetField.text,areaField.text,[UserInfo shared].m_session);
+            request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"SEND_APPOINTMENT",@"JUDGEMETHOD",[UserInfo shared].m_Id,@"USERID",nameField.text,@"USERNAME",telField.text,@"PHONE",qqField.text,@"QQ", cityField.text,@"CITY",areaField.text,@"AREA",typeField.text,@"PROJECTTYPE",othersField.text,@"REMARK",[UserInfo shared].m_session,@"SESSION",nil];
+            [request setCompletionBlock:^(NSDictionary *result){
+                if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+                    //调用成功
+                    [self resetFields];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"预约成功!" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert release];
+                }else {
+                    NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+                    NSLog(@"%@",errrDesc);
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert release];
+                }
+            }];
+            [request setFailedBlock:^{
+                NSLog(@"网络错误");
+            }];
+            [request startRequest];
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"信息不完整,请填写完整信息再预约!" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+        }
+    }else{
+        //登录
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:login animated:YES];
+        [login release];
+    }
+    
+}
+
 -(void)buttonClicked:(UIButton*)btn
 {
-    
+    [self startDisappoint];
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField

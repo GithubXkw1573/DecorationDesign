@@ -22,6 +22,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         m_newsArray = [[NSMutableArray alloc] initWithCapacity:1];
+        selectRecordList = [[NSMutableArray alloc] init];
         m_array = [[NSArray alloc] init];
         m_recommdArray = [[NSMutableArray alloc] initWithCapacity:0];
         m_Dictionary = [[NSDictionary alloc] init];
@@ -121,7 +122,9 @@
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
             newList = [result objectForKey:resultKey];
-            
+            for (NSInteger i = 0; i<newList.count; i++) {
+                [selectRecordList addObject:@"no"];
+            }
             if ([newList count] > 0) {
                 [MBProgress hide:YES];
                 if (reloadormore) {
@@ -186,6 +189,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    
     return m_newsArray.count*2+1;
 }
 
@@ -227,14 +231,15 @@
                     cell = [[[DesignerListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
                 }
             }
+            
             if (self.shaixuan ==1) {
-                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2] withSelected:selectRecordList withIndex:row/2];
             }else if (self.shaixuan ==2){
-                [(LoupanCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+                [(LoupanCell*)cell setCellData:[m_newsArray objectAtIndex:row/2] withSelected:selectRecordList withIndex:row/2];
             }else if (self.shaixuan==3){
-                [(CailiaoCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+                [(CailiaoCell*)cell setCellData:[m_newsArray objectAtIndex:row/2] withSelected:selectRecordList withIndex:row/2];
             }else if (self.shaixuan ==4){
-                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2]];
+                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2] withSelected:selectRecordList withIndex:row/2];
             }
             
             return cell;
@@ -265,10 +270,13 @@
     }
 }
 
+
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [m_tableView deselectRowAtIndexPath:indexPath animated:NO];
-    //[delegate NewsTableViewBtnPressed:0];
+    NSInteger row = indexPath.row;
+    [selectRecordList replaceObjectAtIndex:row/2 withObject:@"yes"];
+    [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
     [delegate NewsTableViewBtnPressed:[m_newsArray objectAtIndex:indexPath.row/2]];
 }
 

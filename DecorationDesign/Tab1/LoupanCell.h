@@ -22,5 +22,5 @@
 @property (nonatomic,retain) UILabel *addrLabel;
 @property (nonatomic,retain) UILabel *commentLabel;
 @property (nonatomic,retain) UILabel *titleLabel;
--(void)setCellData:(NSArray*)item;
+-(void)setCellData:(NSArray*)item withSelected:(NSMutableArray*)selectList withIndex:(NSInteger)index;
 @end

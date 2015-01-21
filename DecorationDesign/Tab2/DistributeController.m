@@ -7,6 +7,7 @@
 //
 
 #import "DistributeController.h"
+#import "LoginViewController.h"
 
 @interface DistributeController ()
 
@@ -24,28 +25,64 @@
     
 }
 
--(void)loadRequest
+-(void)startDistribute
 {
-    NSURL *url = [NSURL URLWithString:MineURL];
-    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"USER-REGIST",@"JUDGEMETHOD",@"18576440013",@"USERID",@"123456",@"PASSWORD",@"1236",@"YZM", nil];
-    [request setCompletionBlock:^(NSDictionary *result){
-        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
-            //调用成功
-        }else if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0001"]){
-            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
-            NSLog(@"%@",errrDesc);
-        }else if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0002"]){
-            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
-            NSLog(@"%@",errrDesc);
+    if ([UserInfo shared].m_isLogin) {
+        if ([self validateNotNull]) {
+            NSURL *url = [NSURL URLWithString:MineURL];
+            HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+            //NSLog(@"%@_%@__%@___%@___%@___%@__%@",[UserInfo shared].m_Id,@"USERID",nameField.text,telField.text,bugetField.text,areaField.text,[UserInfo shared].m_session);
+            request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"SEND_REQUIRE",@"JUDGEMETHOD",[UserInfo shared].m_Id,@"USERID",nameField.text,@"USERNAME",telField.text,@"PHONE", bugetField.text,@"MONEY",areaField.text,@"AREA",typeField.text,@"PROJECTTYPE",[UserInfo shared].m_session,@"SESSION",nil];
+            [request setCompletionBlock:^(NSDictionary *result){
+                if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+                    //调用成功
+                    [self resetFields];
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"发布成功!" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert release];
+                }else {
+                    NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+                    NSLog(@"%@",errrDesc);
+                    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                    [alert show];
+                    [alert release];
+                }
+            }];
+            [request setFailedBlock:^{
+                NSLog(@"网络错误");
+            }];
+            [request startRequest];
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"信息不完整,请填写完整信息再发布!" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
         }
-    }];
-    [request setFailedBlock:^{
-        NSLog(@"网络错误");
-    }];
-    [request startRequest];
+    }else{
+        //登录
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:login animated:YES];
+        [login release];
+    }
+    
 }
 
+-(BOOL)validateNotNull
+{
+    if ([nameField.text isEqualToString:@""] || [telField.text isEqualToString:@""] || [bugetField.text isEqualToString:@""] || [areaField.text isEqualToString:@""] || [typeField.text isEqualToString:@""]) {
+        return NO;
+    }else{
+        return YES;
+    }
+}
+
+-(void)resetFields
+{
+    nameField.text = @"";
+    telField.text = @"";
+    bugetField.text = @"";
+    areaField.text = @"";
+    typeField.text = @"";
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -131,7 +168,7 @@
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    int row = indexPath.row;
+    NSInteger row = indexPath.row;
     if (row<5) {
         static NSString *identifierCell = @"cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifierCell];
@@ -209,7 +246,7 @@
 
 -(void)buttonClicked:(UIButton*)btn
 {
-    
+    [self startDistribute];
 }
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField

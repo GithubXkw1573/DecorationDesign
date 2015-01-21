@@ -55,8 +55,8 @@
     self.navigationItem.leftBarButtonItem = myleftitem;
     [myleftitem release];
     [leftbtnview release];
-    
-    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-49-44) style:UITableViewStylePlain];
+    CGFloat viewHeight = self.hidesBottomBarWhenPushed?applicationheight-44:applicationheight-49-44;
+    m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, viewHeight) style:UITableViewStylePlain];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
     m_tableView.backgroundColor=[UIColor clearColor];
@@ -495,11 +495,13 @@
         if ((row+4)%6==0) {
             CailiaoDisplayController *display = [[CailiaoDisplayController alloc] init];
             display.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
+            display.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:display animated:YES];
             [display release];
         }else{
             CailiaoDisplayController *display = [[CailiaoDisplayController alloc] init];
             display.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
+            display.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:display animated:YES];
             [display release];
         }
