@@ -27,6 +27,8 @@
     NSArray *m_jsonArr;
     NSMutableArray *n_jsonArr;
 }
+@property (nonatomic,retain) NSString *cailiaomerchantId;
+@property (nonatomic,retain) NSString *cailiaomerchant;
 @property (nonatomic,retain) UILabel *titleLabel;
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSArray *m_jsonArr;

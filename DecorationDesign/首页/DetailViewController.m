@@ -379,7 +379,14 @@
         //评论
         if ([UserInfo shared].m_isLogin) {
             if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]) {
-                //
+                CommentViewController *comment = [[CommentViewController alloc] init];
+                comment.designerId = designerId;
+                comment.designerName = designer;
+                comment.worksId = worksId;
+                comment.m_array = m_jsonArr;
+                comment.worksType = [m_jsonArr objectAtIndex:0];
+                [self.navigationController pushViewController:comment animated:YES];
+                [comment release];
             }else{
                 CommentViewController *comment = [[CommentViewController alloc] init];
                 comment.designerId = designerId;

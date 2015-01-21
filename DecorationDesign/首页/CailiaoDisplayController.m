@@ -13,7 +13,7 @@
 @end
 
 @implementation CailiaoDisplayController
-@synthesize m_array,m_jsonArr,n_jsonArr,titleLabel;
+@synthesize m_array,m_jsonArr,n_jsonArr,titleLabel,cailiaomerchant,cailiaomerchantId;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -270,6 +270,8 @@
     NSInteger index = btn.tag-800;
     CailiaoDetailController *detail = [[CailiaoDetailController alloc] init];
     detail.hidesBottomBarWhenPushed = YES;
+    detail.cailiaomerchantId = self.cailiaomerchantId;
+    detail.cailiaomerchant = self.cailiaomerchant;
     detail.m_array = [n_jsonArr objectAtIndex:index];
     [self.navigationController pushViewController:detail animated:YES];
     [detail release];

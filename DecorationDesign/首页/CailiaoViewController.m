@@ -494,12 +494,16 @@
     if (row>2) {
         if ((row+4)%6==0) {
             CailiaoDisplayController *display = [[CailiaoDisplayController alloc] init];
+            display.cailiaomerchantId = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:1]];
+            display.cailiaomerchant = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:2]];
             display.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
             display.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:display animated:YES];
             [display release];
         }else{
             CailiaoDisplayController *display = [[CailiaoDisplayController alloc] init];
+            display.cailiaomerchantId = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:1]];
+            display.cailiaomerchant = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:2]];
             display.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
             display.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:display animated:YES];

@@ -125,7 +125,7 @@
             //调用成功
             [MBProgress setHidden:YES];
             NSArray *infolist = [result objectForKey:@"COMMENTTIMES"];
-            self.n_jsonArr = infolist;
+            self.n_jsonArr = [NSMutableArray arrayWithArray:infolist];
         }else {
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
             NSLog(@"%@",errrDesc);
@@ -401,11 +401,14 @@
 
 -(NSString*)returnFormatTime:(NSString *)timeStr
 {
-    NSString *month = [timeStr substringWithRange:NSMakeRange (4, 2)];
-    NSString *day =[timeStr substringWithRange:NSMakeRange (6, 2)];
-    NSString *hour = [timeStr substringWithRange:NSMakeRange (8, 2)];
-    NSString *minit = [timeStr substringWithRange:NSMakeRange (10, 2)];
-    return [NSString stringWithFormat:@"%@-%@ %@:%@",month,day,hour,minit];
+    if (timeStr.length>10) {
+        NSString *month = [timeStr substringWithRange:NSMakeRange (4, 2)];
+        NSString *day =[timeStr substringWithRange:NSMakeRange (6, 2)];
+        NSString *hour = [timeStr substringWithRange:NSMakeRange (8, 2)];
+        NSString *minit = [timeStr substringWithRange:NSMakeRange (10, 2)];
+        return [NSString stringWithFormat:@"%@-%@ %@:%@",month,day,hour,minit];
+    }
+    return @"";
 }
 
 -(void)dismissKeyBoard

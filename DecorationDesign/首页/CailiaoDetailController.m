@@ -368,6 +368,7 @@
     inputField.placeholder = @" 我也说两句";
     [inputField setBackground:[UIImage imageNamed:@"PingLun_bg"]];
     inputField.font = font(15);
+    textField = inputField;
     inputField.returnKeyType = UIReturnKeySend;
     inputField.delegate = self;
     [commentView addSubview:inputField];
@@ -385,7 +386,7 @@
     [topView release];
     
     UIButton *detailBtn = [[UIButton alloc] initWithFrame:CGRectMake(250, 10, 60, 30)];
-    [detailBtn setTitle:[NSString stringWithFormat:@"%@",@""] forState:UIControlStateNormal];
+    [detailBtn setTitle:[NSString stringWithFormat:@"%@",@"32"] forState:UIControlStateNormal];
     [detailBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     detailBtn.backgroundColor = [UIColor clearColor];
     detailBtn.titleLabel.font = font(13);
@@ -403,11 +404,11 @@
         //跳转评论页
         if ([UserInfo shared].m_isLogin) {
             CommentViewController *comment = [[CommentViewController alloc] init];
-//            comment.designerId = designerId;
-//            comment.designerName = designer;
-//            comment.worksId = worksId;
+            comment.designerId = self.cailiaomerchantId;
+            comment.designerName = self.cailiaomerchant;
+            comment.worksId = productId;
             comment.m_array = m_jsonArr;
-            comment.worksType = [m_jsonArr objectAtIndex:0];
+            comment.worksType = @"";
             [self.navigationController pushViewController:comment animated:YES];
             [comment release];
         }else{
@@ -426,14 +427,28 @@
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    [self movoTo:-200];
-    return YES;
+    if ([UserInfo shared].m_isLogin) {
+        [self movoTo:-200];
+        return YES;
+    }else{
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:login animated:YES];
+        [login release];
+        return NO;
+    }
 }
 
--(BOOL)textFieldShouldReturn:(UITextField *)textField
+-(BOOL)textFieldShouldReturn:(UITextField *)_textField
 {
     //发送
-    [textField resignFirstResponder];
+    if (![textField.text isEqualToString:@""]) {
+        [self startCommonrequest];
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论不能为空!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+        [alert release];
+    }
+    [_textField resignFirstResponder];
     [self movoTo:64];
     return YES;
 }
@@ -444,6 +459,43 @@
         self.view.frame = CGRectMake(0, dh, self.view.frame.size.width, self.view.frame.size.height);
         
     }];
+}
+
+-(void)startCommonrequest
+{
+    if ([UserInfo shared].m_isLogin) {
+        [MBProgress show:YES];
+        [MBProgress setLabelText:@"评论中..."];
+        NSURL *url = [NSURL URLWithString:MineURL];
+        HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+        request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"CUSTOM-COMMENTTEXT",@"JUDGEMETHOD",productId,@"ID",[UserInfo shared].m_Id,@"USERID",self.cailiaomerchantId,@"COMMENTEDID",@"",@"WORKSTYPE",textField.text,@"COMMENT",[UserInfo shared].m_session,@"SESSION", nil];
+        [request setCompletionBlock:^(NSDictionary *result){
+            if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+                //调用成功
+                [MBProgress hide:YES];
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论成功!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [alert show];
+                [alert release];
+                textField.text = @"";
+            }else {
+                [MBProgress hide:YES];
+                NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+                NSLog(@"%@",errrDesc);
+                UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+                [alert show];
+                [alert release];
+            }
+        }];
+        [request setFailedBlock:^{
+            NSLog(@"网络错误");
+            [MBProgress settext:@"网络错误!" aftertime:1.0];
+        }];
+        [request startRequest];
+    }else{
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:login animated:YES];
+        [login release];
+    }
 }
 
 @end
