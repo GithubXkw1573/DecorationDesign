@@ -15,9 +15,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.zuopingList = [[NSMutableArray alloc] init];
+        self.zuopingList = [[[NSMutableArray alloc] init] autorelease];
         
-        MBProgress=[[MBProgressHUD alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160)];
+        MBProgress=[[[MBProgressHUD alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160)] autorelease];
         [MBProgress setCenter:CGPointMake(applicationwidth/2.0f, applicationheight/2-120)];
         [self addSubview:MBProgress];
         [MBProgress show:YES];

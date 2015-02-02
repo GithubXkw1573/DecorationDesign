@@ -236,7 +236,7 @@
         static NSString *cellIdentific = @"cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             NSString *imageurl = [m_array objectAtIndex:0];
             UIImageView *picView = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 80, 80)];
@@ -367,7 +367,7 @@
         static NSString *cellIdentific = @"cell1";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 120, 30)];
             personTitle.text = @"公司简介";
@@ -403,7 +403,7 @@
         static NSString *cellIdentific = @"cell2";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
             UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
@@ -432,7 +432,7 @@
             static NSString *cellIdentific = @"cell4";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
                 line.image = [UIImage imageNamed:@"线"];
@@ -478,7 +478,7 @@
             static NSString *cellIdentific = @"cell3";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleGray;
                 
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
@@ -502,7 +502,7 @@
                 
                 UILabel *m_desc = [[UILabel alloc] initWithFrame:CGRectMake(130, 30, 180, 50)];
                 m_desc.text = @"本次活动的主题为“微信·思维·智慧”。腾讯公司高级执行副总裁张小龙在开场的视频连线中表示，微信公众平台的口号是“再小的个体也有自己的品牌”，他从八个方面详细阐述了微信对于公众平台的理念和方向。";
-                m_desc.font = font(13);
+                m_desc.font = font(12);
                 m_desc.tag = 42;
                 m_desc.numberOfLines = 0;
                 m_desc.textColor = [UIColor grayColor];
@@ -575,15 +575,17 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    DetailViewController *detail = [[DetailViewController alloc] init];
-    NSInteger row = indexPath.row;
-    detail.hidesBottomBarWhenPushed = YES;
-    detail.method = @"COMPANY-WORKSINFO";
-    detail.designerId =  [m_array objectAtIndex:1];
-    detail.designer = [m_jsonArr objectAtIndex:0];
-    detail.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
-    [self.navigationController pushViewController:detail animated:YES];
-    [detail release];
+    if (indexPath.row>2) {
+        DetailViewController *detail = [[DetailViewController alloc] init];
+        NSInteger row = indexPath.row;
+        detail.hidesBottomBarWhenPushed = YES;
+        detail.method = @"COMPANY-WORKSINFO";
+        detail.designerId =  [m_array objectAtIndex:1];
+        detail.designer = [m_jsonArr objectAtIndex:0];
+        detail.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
+        [self.navigationController pushViewController:detail animated:YES];
+        [detail release];
+    }
 }
 
 

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "common.h"
 #import "LoginViewController.h"
+#import "MyPickerView.h"
 
 @interface BookingViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
@@ -20,6 +21,7 @@
     UITextField *typeField;
     UITextField *cityField;
     UITextField *othersField;
+    MyPickerView *pickerView;
 }
 @property (nonatomic,retain) NSString *designerName;
 @property (nonatomic,retain) NSString *designerId;

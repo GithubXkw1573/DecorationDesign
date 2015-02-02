@@ -240,7 +240,7 @@
         static NSString *cellIdentific = @"cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 120, 30)];
             personTitle.text = @"公司简介";
@@ -278,7 +278,7 @@
         static NSString *cellIdentific = @"cell1";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
             line.image = [UIImage imageNamed:@"线"];
@@ -312,7 +312,7 @@
         static NSString *cellIdentific = @"cell2";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
             UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
@@ -372,7 +372,7 @@
             static NSString *cellIdentific = @"cell4";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
                 line.image = [UIImage imageNamed:@"线"];
@@ -418,7 +418,7 @@
             static NSString *cellIdentific = @"cell3";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleGray;
                 
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
@@ -440,8 +440,8 @@
                 [cell.contentView addSubview:m_title];
                 [m_title release];
                 
-                UILabel *pinpai = [[UILabel alloc] initWithFrame:CGRectMake(130, 30, 180, 50)];
-                pinpai.font = font(14);
+                UILabel *pinpai = [[UILabel alloc] initWithFrame:CGRectMake(130, 40, 180, 50)];
+                pinpai.font = font(12);
                 pinpai.tag = 42;
                 pinpai.numberOfLines = 2;
                 pinpai.textColor = [UIColor grayColor];
@@ -462,7 +462,15 @@
             NSString *imageurl = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:0];
             [worksImage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"CAIliao_img1"]];
             l_title.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:1]];
-            pinpai.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2]];
+            NSString *descString = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2]];
+            NSMutableAttributedString * attributedString1 = [[NSMutableAttributedString alloc] initWithString:descString];
+            NSMutableParagraphStyle * paragraphStyle1 = [[NSMutableParagraphStyle alloc] init];
+            [paragraphStyle1 setLineSpacing:5];
+            [attributedString1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [descString length])];
+            [pinpai setAttributedText:attributedString1];
+            [pinpai sizeToFit];
+            
+            //pinpai.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2]];
             return cell;
         }
     }

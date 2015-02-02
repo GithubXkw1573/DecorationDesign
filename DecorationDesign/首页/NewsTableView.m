@@ -254,16 +254,16 @@
     }
     else{
         if (indexPath.row%2==0) {
-            return  10;
+            return  1;
         }else{
             if (self.shaixuan ==1) {
-                return 80;
+                return 84;
             }else if (self.shaixuan ==2){
                 return 100;
             }else if (self.shaixuan==3){
                 return 100;
             }else if (self.shaixuan ==4){
-                return 80;
+                return 84;
             }
             return 0;
         }
@@ -284,13 +284,13 @@
 {
     if (m_newsArray.count>0) {
         if (self.shaixuan ==1) {
-            return 90*m_newsArray.count+160;
+            return 85*m_newsArray.count+160;
         }else if (self.shaixuan ==2){
             return 110*m_newsArray.count+160;
         }else if (self.shaixuan==3){
             return 110*m_newsArray.count+160;
         }else if (self.shaixuan ==4){
-            return 90*m_newsArray.count+160;
+            return 85*m_newsArray.count+160;
         }
         return 0;
     }else{

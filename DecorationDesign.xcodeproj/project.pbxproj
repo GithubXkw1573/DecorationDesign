@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		50880B6A1A1B798B00BE5FDF /* 家装样图1.png in Resources */ = {isa = PBXBuildFile; fileRef = 50880B691A1B798B00BE5FDF /* 家装样图1.png */; };
+		D2119B201A7F20A6005E7E68 /* MyPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2119B1F1A7F20A6005E7E68 /* MyPickerView.m */; };
 		D21E6FC31A6F8683002B6955 /* QQkongjianApi.m in Sources */ = {isa = PBXBuildFile; fileRef = D21E6FA91A6F8683002B6955 /* QQkongjianApi.m */; };
 		D21E6FC41A6F8683002B6955 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D21E6FAA1A6F8683002B6955 /* TencentOpenApi_IOS_Bundle.bundle */; };
 		D21E6FC51A6F8683002B6955 /* libTCWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D21E6FAC1A6F8683002B6955 /* libTCWeiboSDK.a */; };
@@ -312,6 +313,8 @@
 
 /* Begin PBXFileReference section */
 		50880B691A1B798B00BE5FDF /* 家装样图1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "家装样图1.png"; path = "../家装样图1.png"; sourceTree = "<group>"; };
+		D2119B1E1A7F20A6005E7E68 /* MyPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPickerView.h; sourceTree = "<group>"; };
+		D2119B1F1A7F20A6005E7E68 /* MyPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPickerView.m; sourceTree = "<group>"; };
 		D21E6FA81A6F8683002B6955 /* QQkongjianApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QQkongjianApi.h; sourceTree = "<group>"; };
 		D21E6FA91A6F8683002B6955 /* QQkongjianApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QQkongjianApi.m; sourceTree = "<group>"; };
 		D21E6FAA1A6F8683002B6955 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
@@ -1320,6 +1323,8 @@
 				D2A48C611A19AA0800E37852 /* VerticallyAlignedLabel.m */,
 				D2548F4A1A3FE2E500A54A02 /* myLabel.h */,
 				D2548F4B1A3FE2E500A54A02 /* myLabel.m */,
+				D2119B1E1A7F20A6005E7E68 /* MyPickerView.h */,
+				D2119B1F1A7F20A6005E7E68 /* MyPickerView.m */,
 			);
 			path = "自定义控件";
 			sourceTree = "<group>";
@@ -1884,6 +1889,7 @@
 				D2F8B5001A6F832F0042C2CF /* ImageCell.m in Sources */,
 				D2C0BEE41A6F847E00C42311 /* DetailViewController.m in Sources */,
 				D2A2869B1A6F883F0009E48E /* Reachability.m in Sources */,
+				D2119B201A7F20A6005E7E68 /* MyPickerView.m in Sources */,
 				D2F8B5041A6F832F0042C2CF /* PicTextButton.m in Sources */,
 				D2A286A11A6F8B9E0009E48E /* ZiliaoDetaillViewController.m in Sources */,
 				D2F222801A270AD7008295D3 /* CWDistantHessianObject+Private.m in Sources */,

@@ -175,6 +175,7 @@ static WXShareApi *weixin;
                         NSStringEncoding encoding = CFStringConvertEncodingToNSStringEncoding(kCFStringEncodingUTF8);
                         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:encoding];
                         NSDictionary *dicc=[jsonString JSONValue];
+                        [jsonString release];
                         if (dicc) {
                             NSLog(@"requestFinished:%@",dicc);
                             

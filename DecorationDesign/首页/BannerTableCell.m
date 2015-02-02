@@ -33,7 +33,7 @@
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
             NSArray *list = [result objectForKey:@"PLATEADLISTINFO"];
-            self.guanggaoArray = [[NSMutableArray alloc] initWithArray:list];
+            self.guanggaoArray = [[[NSMutableArray alloc] initWithArray:list] autorelease];
             [self reloadComponent];
         }else {
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
@@ -118,7 +118,7 @@
     }
 }
 
-- (void)loadScrollViewWithPage:(int)page2 {
+- (void)loadScrollViewWithPage:(NSInteger)page2 {
     if (page2 < 0) return;
     if (page2 >= kNumberOfPages) return;
     
@@ -170,7 +170,7 @@
 }
 
 - (void)changePage:(id)sender {
-    int page2 = pageControl.currentPage;
+    NSInteger page2 = pageControl.currentPage;
     // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
     [self loadScrollViewWithPage:page2 - 1];
     [self loadScrollViewWithPage:page2];

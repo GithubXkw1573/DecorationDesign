@@ -522,7 +522,7 @@
         static NSString *cellIdentific = @"cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
             personTitle.text = @"设计没有好坏之分";
@@ -586,7 +586,7 @@
             static NSString *cellIdentific1 = @"cell_label";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific1];
             if (cell == nil) {
-                cell = [[LabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific1];
+                cell = [[[LabelCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific1] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
             }
@@ -596,7 +596,7 @@
             NSString *cellIdentific2 = [NSString stringWithFormat:@"cell%li",row];
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific2];
             if (cell == nil) {
-                cell = [[ImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific2];
+                cell = [[[ImageCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific2] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
             }
             [(ImageCell*)cell setContentImage:[[m_jsonArr objectAtIndex:startIndex] substringFromIndex:2]];

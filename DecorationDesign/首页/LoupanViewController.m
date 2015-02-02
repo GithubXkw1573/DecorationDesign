@@ -240,7 +240,7 @@
         static NSString *cellIdentific = @"cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 120, 30)];
             personTitle.text = @"楼盘介绍";
@@ -253,7 +253,7 @@
         static NSString *cellIdentific = @"cell1";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UIImageView *fengmian = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 110)];
             fengmian.backgroundColor = [UIColor clearColor];
@@ -285,7 +285,7 @@
         static NSString *cellIdentific = @"cell2";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
             UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 300, 1)];
@@ -307,7 +307,7 @@
             static NSString *cellIdentific = @"cell4";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 
                 UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 90, 80)];
@@ -354,7 +354,7 @@
             static NSString *cellIdentific = @"cell3";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleGray;
                 
                 UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 80)];
@@ -371,8 +371,8 @@
                 [cell.contentView addSubview:m_title];
                 [m_title release];
                 
-                UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(130, 35, 180, 40)];
-                desc.font = font(14);
+                UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(130, 40, 180, 40)];
+                desc.font = font(12);
                 desc.tag = 42;
                 desc.numberOfLines = 2;
                 desc.textColor = [UIColor grayColor];
@@ -381,7 +381,7 @@
                 
                 
                 UILabel *pinglun = [[UILabel alloc] initWithFrame:CGRectMake(130, 75, 180, 15)];
-                pinglun.font = font(14);
+                pinglun.font = font(12);
                 pinglun.tag = 44;
                 pinglun.textAlignment = UITextAlignmentRight;
                 pinglun.textColor = [UIColor grayColor];
@@ -400,7 +400,15 @@
             NSString *imageurl = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:0];
             [worksImage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"CAIliao_img1"]];
             l_title.text = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:1];
-            desc.text = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2];
+            NSString *descString = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:2];
+            NSMutableAttributedString * attributedString1 = [[NSMutableAttributedString alloc] initWithString:descString];
+            NSMutableParagraphStyle * paragraphStyle1 = [[NSMutableParagraphStyle alloc] init];
+            [paragraphStyle1 setLineSpacing:5];
+            [attributedString1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [descString length])];
+            [desc setAttributedText:attributedString1];
+            [desc sizeToFit];
+            
+            //desc.text = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2];
             pinglun.text = [NSString stringWithFormat:@"%@ 评",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:3]];
             return cell;
         }

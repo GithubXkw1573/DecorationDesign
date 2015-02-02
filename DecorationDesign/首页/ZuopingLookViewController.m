@@ -33,7 +33,7 @@
     if (iOS7Later) {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
-    self.zuopingList = [[NSMutableArray alloc] init];
+    self.zuopingList = [[[NSMutableArray alloc] init] autorelease];
     
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"背景"]];
     

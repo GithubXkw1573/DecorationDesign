@@ -34,7 +34,7 @@
             [imageView release];
         }
         
-        UIImage *originImage=[[UIImage alloc]initWithCGImage:_image.CGImage];
+        UIImage *originImage=[[[UIImage alloc]initWithCGImage:_image.CGImage] autorelease];
         [myImageView setImage:originImage];
         
         [self addSubview:self.myImageView];

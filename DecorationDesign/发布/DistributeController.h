@@ -11,6 +11,7 @@
 #import "common.h"
 #import "HessianKit.h"
 #import "HessianFormDataRequest.h"
+#import "MyPickerView.h"
 
 @interface DistributeController : UIViewController<UITableViewDataSource,UITableViewDelegate,UITextFieldDelegate>
 {
@@ -20,6 +21,7 @@
     UITextField *bugetField;
     UITextField *areaField;
     UITextField *typeField;
+    MyPickerView *pickerView;
 }
 @property (nonatomic,retain) UILabel *onlineNum;
 @property (nonatomic,retain) UITextField *nameField;

@@ -239,7 +239,7 @@
         static NSString *cellIdentific = @"cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 120, 30)];
             personTitle.text = @"公司简介";
@@ -267,7 +267,7 @@
         static NSString *cellIdentific = @"cell1";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
             line.image = [UIImage imageNamed:@"线"];
@@ -301,7 +301,7 @@
         static NSString *cellIdentific = @"cell2";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             
             UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
@@ -361,7 +361,7 @@
             static NSString *cellIdentific = @"cell4";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
                 line.image = [UIImage imageNamed:@"线"];
@@ -407,7 +407,7 @@
             static NSString *cellIdentific = @"cell3";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
             if (cell == nil) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleGray;
                 
                 UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
@@ -430,21 +430,21 @@
                 [m_title release];
                 
                 UILabel *pinpai = [[UILabel alloc] initWithFrame:CGRectMake(130, 35, 180, 17)];
-                pinpai.font = font(14);
+                pinpai.font = font(12);
                 pinpai.tag = 42;
                 pinpai.textColor = [UIColor grayColor];
                 [cell.contentView addSubview:pinpai];
                 [pinpai release];
                 
                 UILabel *type = [[UILabel alloc] initWithFrame:CGRectMake(130, 52, 180, 17)];
-                type.font = font(14);
+                type.font = font(12);
                 type.tag = 43;
                 type.textColor = [UIColor grayColor];
                 [cell.contentView addSubview:type];
                 [type release];
                 
                 UILabel *chandi = [[UILabel alloc] initWithFrame:CGRectMake(130, 69, 180, 17)];
-                chandi.font = font(14);
+                chandi.font = font(12);
                 chandi.tag = 44;
                 chandi.textColor = [UIColor grayColor];
                 [cell.contentView addSubview:chandi];

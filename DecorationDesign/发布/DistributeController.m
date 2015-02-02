@@ -154,6 +154,19 @@
     m_tableView.backgroundColor=[UIColor whiteColor];
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
+    
+    MyPickerView *pickerr = [[MyPickerView alloc] initWithFrame:CGRectMake(0, applicationheight-64, applicationwidth, 220)];
+    pickerr.backgroundColor = [UIColor whiteColor];
+    pickerr.dataList = @[@"普通住宅",@"单身公寓",@"花园别墅",@"家庭住宅"];
+    pickerr.selectItemAtIndex = ^(NSInteger index){
+        NSLog(@"%li",index);
+        if (self.typeField) {
+            self.typeField.text = [NSString stringWithFormat:@"%@",[pickerr.dataList objectAtIndex:index]];
+        }
+    };
+    pickerView = pickerr;
+    [self.view addSubview:pickerr];
+    [pickerr release];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -210,7 +223,7 @@
         }else if (row==3){
             titleLabel.text = @"面积：";
             self.areaField = contentField;
-            contentField.returnKeyType = UIReturnKeyNext;
+            contentField.returnKeyType = UIReturnKeyDone;
         }else if (row==4){
             titleLabel.text = @"类型：";
             self.typeField = contentField;
@@ -256,7 +269,8 @@
     }else if (textField==self.areaField){
         [self movoTo:-120];
     }else if (textField==self.typeField){
-        [self movoTo:-150];
+        [pickerView show];
+        return NO;
     }
     return YES;
 }
@@ -273,8 +287,8 @@
         [self.areaField becomeFirstResponder];
         [self movoTo:-60];
     }else if (textField==self.areaField){
-        [self.typeField becomeFirstResponder];
-        [self movoTo:-120];
+        [self.areaField resignFirstResponder];
+        [self movoTo:64];
     }else if (textField==self.typeField){
         [self.view endEditing:YES];
         [self movoTo:64];

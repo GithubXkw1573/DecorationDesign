@@ -54,7 +54,7 @@
 
 -(void)initComponents
 {
-    self.m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-28.5) style:UITableViewStylePlain];
+    self.m_tableView =[[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-28.5) style:UITableViewStylePlain] autorelease];
     m_tableView.delegate =self;
     m_tableView.dataSource =self;
     m_tableView.backgroundColor=[UIColor clearColor];
@@ -65,6 +65,7 @@
     [backImageView release];
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
+    [m_tableView release];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section

@@ -17,7 +17,7 @@
     if (self) {
         self.backgroundColor = [UIColor whiteColor];
         
-        UIImageView *picView = [[UIImageView alloc] initWithFrame:CGRectMake(6, 10, 80, 60)];
+        UIImageView *picView = [[UIImageView alloc] initWithFrame:CGRectMake(8, 10, 78, 62)];
         picView.backgroundColor = [UIColor clearColor];
         picView.image = [UIImage imageNamed:@"家装公司小图"];
         self.designerPicView = picView;
@@ -35,14 +35,14 @@
         UILabel *zuoping = [[UILabel alloc] initWithFrame:CGRectMake(96, 36, 60, 18)];
         zuoping.text = @"设计作品:";
         zuoping.backgroundColor = [UIColor clearColor];
-        zuoping.font = font(13);
+        zuoping.font = font(12);
         zuoping.textColor = [UIColor grayColor];
         [self.contentView addSubview:zuoping];
         [zuoping release];
         UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(156, 36, 50, 18)];
         zuopingValue.text = @"5236";
         zuopingValue.backgroundColor = [UIColor clearColor];
-        zuopingValue.font = font(13);
+        zuopingValue.font = font(12);
         self.worksLabel = zuopingValue;
         zuopingValue.textColor = [UIColor grayColor];
         [self.contentView addSubview:zuopingValue];
@@ -51,14 +51,14 @@
         UILabel *jingping = [[UILabel alloc] initWithFrame:CGRectMake(216, 36, 50, 18)];
         jingping.text = @"精品:";
         jingping.backgroundColor = [UIColor clearColor];
-        jingping.font = font(13);
+        jingping.font = font(12);
         jingping.textColor = [UIColor grayColor];
         [self.contentView addSubview:jingping];
         [jingping release];
         UILabel *jingpingValue = [[UILabel alloc] initWithFrame:CGRectMake(266, 36, 50, 18)];
         jingpingValue.text = @"88";
         jingpingValue.backgroundColor = [UIColor clearColor];
-        jingpingValue.font = font(13);
+        jingpingValue.font = font(12);
         self.boutiqueLabel = jingpingValue;
         jingpingValue.textColor = [UIColor grayColor];
         [self.contentView addSubview:jingpingValue];
@@ -67,14 +67,14 @@
         UILabel *yuyuecishu = [[UILabel alloc] initWithFrame:CGRectMake(96, 54, 40, 18)];
         yuyuecishu.text = @"评论:";
         yuyuecishu.backgroundColor = [UIColor clearColor];
-        yuyuecishu.font = font(13);
+        yuyuecishu.font = font(12);
         yuyuecishu.textColor = [UIColor grayColor];
         [self.contentView addSubview:yuyuecishu];
         [yuyuecishu release];
         UILabel *yuyuecishuValue = [[UILabel alloc] initWithFrame:CGRectMake(136, 54, 60, 18)];
         yuyuecishuValue.text = @"87";
         yuyuecishuValue.backgroundColor = [UIColor clearColor];
-        yuyuecishuValue.font = font(13);
+        yuyuecishuValue.font = font(12);
         self.bookingLabel = yuyuecishuValue;
         yuyuecishuValue.textColor = [UIColor grayColor];
         [self.contentView addSubview:yuyuecishuValue];

@@ -213,7 +213,7 @@
         static NSString *cellIdentific = @"cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.backgroundColor = [UIColor clearColor];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UIImageView *picView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 320, 125)];
@@ -228,7 +228,7 @@
         static NSString *cellIdentific = @"cell4";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
         if (cell == nil) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific];
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.backgroundColor = [UIColor clearColor];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             DisplayBtn *btn1 = [[DisplayBtn alloc] initWithFrame:CGRectMake(8, 3, 148, 200)];

@@ -78,6 +78,19 @@
     m_tableView.backgroundColor=[UIColor whiteColor];
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
+    
+    MyPickerView *pickerr = [[MyPickerView alloc] initWithFrame:CGRectMake(0, applicationheight-44, applicationwidth, 220)];
+    pickerr.backgroundColor = [UIColor whiteColor];
+    pickerr.dataList = @[@"普通住宅",@"单身公寓",@"花园别墅",@"家庭住宅"];
+    pickerr.selectItemAtIndex = ^(NSInteger index){
+        NSLog(@"%li",index);
+        if (self.typeField) {
+            self.typeField.text = [NSString stringWithFormat:@"%@",[pickerr.dataList objectAtIndex:index]];
+        }
+    };
+    pickerView = pickerr;
+    [self.view addSubview:pickerr];
+    [pickerr release];
 }
 
 -(void)yuyueViewControllerBtnPressed:(UIButton*)btn
@@ -143,12 +156,12 @@
             titleLabel.text = @"装修面积：";
             contentField.placeholder = @"必填";
             self.areaField = contentField;
-            contentField.returnKeyType = UIReturnKeyNext;
+            contentField.returnKeyType = UIReturnKeyDone;
         }else if (row==4){
             titleLabel.text = @"项目类型：";
             contentField.placeholder = @"必填";
             self.typeField = contentField;
-            contentField.returnKeyType = UIReturnKeyNext;
+            contentField.returnKeyType = UIReturnKeyDone;
         }else if (row==5){
             titleLabel.text = @"所在城市：";
             contentField.placeholder = @"必填";
@@ -257,7 +270,8 @@
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
     if (textField==self.typeField){
-        [self movoTo:-60];
+        [pickerView show];
+        return NO;
     }else if (textField==self.cityField){
         [self movoTo:-120];
     }else if (textField==self.othersField){
@@ -278,8 +292,8 @@
         [self.areaField becomeFirstResponder];
         [self movoTo:0];
     }else if (textField==self.areaField){
-        [self.typeField becomeFirstResponder];
-        [self movoTo:-20];
+        [self.areaField resignFirstResponder];
+        [self movoTo:64];
     }else if (textField==self.typeField){
         [self.cityField becomeFirstResponder];
         [self movoTo:-60];

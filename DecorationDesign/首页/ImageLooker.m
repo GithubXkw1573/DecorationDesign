@@ -42,7 +42,7 @@
         
         //    [myImageView setImage:_image];
         
-        UIImage *originImage=[[UIImage alloc]initWithCGImage:_image.CGImage];
+        UIImage *originImage=[[[UIImage alloc]initWithCGImage:_image.CGImage] autorelease];
         [myImageView setImage:originImage];
         //    [myImageView setFrame:CGRectMake(0, 0, _image.size.width, _image.size.height)];
         
