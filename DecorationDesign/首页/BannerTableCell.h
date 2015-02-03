@@ -26,6 +26,7 @@
 @property(nonatomic, retain)UIPageControl *pageControl;
 @property(nonatomic, retain)NSString *plateType;
 @property(nonatomic, retain)NSString *plateCode;
+@property(nonatomic, retain)UIViewController *currController;
 - (void)setCell:(NSDictionary *)dic row:(int)row;
 -(void)loadContent;
 @end

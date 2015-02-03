@@ -45,5 +45,6 @@
 @property (nonatomic,assign) int shaixuan;
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSDictionary *m_Dictionary;
+@property(nonatomic, retain)UIViewController *currController;
 -(void)ViewFrashData;
 @end

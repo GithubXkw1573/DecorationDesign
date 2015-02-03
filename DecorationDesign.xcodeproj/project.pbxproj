@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		50880B6A1A1B798B00BE5FDF /* 家装样图1.png in Resources */ = {isa = PBXBuildFile; fileRef = 50880B691A1B798B00BE5FDF /* 家装样图1.png */; };
 		D2119B201A7F20A6005E7E68 /* MyPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2119B1F1A7F20A6005E7E68 /* MyPickerView.m */; };
+		D2119B241A7F6461005E7E68 /* AdvertisingController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2119B231A7F6461005E7E68 /* AdvertisingController.m */; };
 		D21E6FC31A6F8683002B6955 /* QQkongjianApi.m in Sources */ = {isa = PBXBuildFile; fileRef = D21E6FA91A6F8683002B6955 /* QQkongjianApi.m */; };
 		D21E6FC41A6F8683002B6955 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D21E6FAA1A6F8683002B6955 /* TencentOpenApi_IOS_Bundle.bundle */; };
 		D21E6FC51A6F8683002B6955 /* libTCWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D21E6FAC1A6F8683002B6955 /* libTCWeiboSDK.a */; };
@@ -315,6 +316,8 @@
 		50880B691A1B798B00BE5FDF /* 家装样图1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "家装样图1.png"; path = "../家装样图1.png"; sourceTree = "<group>"; };
 		D2119B1E1A7F20A6005E7E68 /* MyPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPickerView.h; sourceTree = "<group>"; };
 		D2119B1F1A7F20A6005E7E68 /* MyPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPickerView.m; sourceTree = "<group>"; };
+		D2119B221A7F6461005E7E68 /* AdvertisingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvertisingController.h; sourceTree = SOURCE_ROOT; };
+		D2119B231A7F6461005E7E68 /* AdvertisingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AdvertisingController.m; sourceTree = SOURCE_ROOT; };
 		D21E6FA81A6F8683002B6955 /* QQkongjianApi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QQkongjianApi.h; sourceTree = "<group>"; };
 		D21E6FA91A6F8683002B6955 /* QQkongjianApi.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QQkongjianApi.m; sourceTree = "<group>"; };
 		D21E6FAA1A6F8683002B6955 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
@@ -779,6 +782,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D2119B211A7F63D0005E7E68 /* 广告页面 */ = {
+			isa = PBXGroup;
+			children = (
+				D2119B221A7F6461005E7E68 /* AdvertisingController.h */,
+				D2119B231A7F6461005E7E68 /* AdvertisingController.m */,
+			);
+			name = "广告页面";
+			sourceTree = "<group>";
+		};
 		D21E6FA61A6F8683002B6955 /* TXSharedApi */ = {
 			isa = PBXGroup;
 			children = (
@@ -1045,6 +1057,7 @@
 		D26021B01A19E1760072A021 /* 首页 */ = {
 			isa = PBXGroup;
 			children = (
+				D2119B211A7F63D0005E7E68 /* 广告页面 */,
 				D2A286A51A6F8C290009E48E /* 热点楼盘 */,
 				D2A286A41A6F8C1D0009E48E /* 材料商 */,
 				D2A286A31A6F8C100009E48E /* 装饰公司 */,
@@ -1856,6 +1869,7 @@
 				D2A2860A1A6F87080009E48E /* RegisterViewController.m in Sources */,
 				D2C0BEE71A6F847E00C42311 /* ZuopingLookViewController.m in Sources */,
 				D2A48C661A19AA0800E37852 /* TabbarView.m in Sources */,
+				D2119B241A7F6461005E7E68 /* AdvertisingController.m in Sources */,
 				D2F222871A270AD7008295D3 /* CWHessianUnarchiver.m in Sources */,
 				D2A2862D1A6F87750009E48E /* Myprogress.m in Sources */,
 				D2F8B5031A6F832F0042C2CF /* NewsScrollView.m in Sources */,

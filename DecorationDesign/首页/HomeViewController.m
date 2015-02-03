@@ -7,6 +7,7 @@
 //
 
 #import "HomeViewController.h"
+#import "AdvertisingController.h"
 
 @interface HomeViewController ()
 
@@ -446,17 +447,24 @@
 //    [self.navigationController pushViewController:zuopingLookViewController animated:YES];
 //    [ZuopingLookViewController release];
     
-    UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    
-    ImageLooker *looker = [[ImageLooker alloc] initWithFrame:window.frame withImage:[UIImage imageNamed:[[guanggaoArray objectAtIndex:pageControl.currentPage] objectForKey:@"imagename"]]];
-    [window addSubview:looker];
-    looker.backgroundColor = [UIColor blackColor];
-    
-    looker.transform = CGAffineTransformMakeScale(0, 0);
-    [UIView animateWithDuration:0.35f animations:^{
-        looker.transform = CGAffineTransformMakeScale(1, 1);
-    }];
-    [looker release];
+    AdvertisingController *adver = [[AdvertisingController alloc] init];
+    adver.hidesBottomBarWhenPushed = YES;
+    adver.plateCode = @"0";
+    adver.plateType = @"0";
+    adver.pageMark = @"0";
+    [self.navigationController pushViewController:adver animated:YES];
+    [adver release];
+//    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+//    
+//    ImageLooker *looker = [[ImageLooker alloc] initWithFrame:window.frame withImage:[UIImage imageNamed:[[guanggaoArray objectAtIndex:pageControl.currentPage] objectForKey:@"imagename"]]];
+//    [window addSubview:looker];
+//    looker.backgroundColor = [UIColor blackColor];
+//    
+//    looker.transform = CGAffineTransformMakeScale(0, 0);
+//    [UIView animateWithDuration:0.35f animations:^{
+//        looker.transform = CGAffineTransformMakeScale(1, 1);
+//    }];
+//    [looker release];
 }
 
 -(void)buttonClicked2:(UIButton*)btn

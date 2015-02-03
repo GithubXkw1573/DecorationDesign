@@ -22,5 +22,6 @@
 @property(nonatomic,retain)NSMutableArray *zixunleibieused;
 @property (nonatomic,retain) ScrollMenu *navigationScrollView;
 @property (nonatomic,assign) id<NewsTableViewDelegate> t_delegate;
+@property(nonatomic, retain)UIViewController *currController;
 -(void)reloadscrollview:(NSMutableArray*)menuList;
 @end

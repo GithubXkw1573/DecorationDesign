@@ -89,6 +89,7 @@
         newsTableView.tag=99;
         [controller addSubview:newsTableView];
         newsTableView.delegate=self;
+        [newsTableView setCurrController:self.currController];
         newsTableView.shaixuan = self.shaixuan;
         newsTableView.m_array = [zixunleibieused objectAtIndex:page];
         //        [newsTableView informationrequest];

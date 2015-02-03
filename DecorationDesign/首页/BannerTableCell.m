@@ -9,6 +9,7 @@
 #import "BannerTableCell.h"
 #import "ImageLooker.h"
 #import "UIImageView+WebCache.h"
+#import "AdvertisingController.h"
 
 @implementation BannerTableCell
 @synthesize m_dictionary,guanggaoArray,imagescrollView,pageControl,viewControllers,plateType,plateCode;
@@ -129,7 +130,11 @@
         
         UIImageView *mypageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
         mypageview.tag = 33;
+        mypageview.userInteractionEnabled = YES;
         [mypageview setImageWithURL:[NSURL URLWithString:[[guanggaoArray objectAtIndex:page2] objectAtIndex:1]] placeholderImage:[UIImage imageNamed:@"首页切换图1.png"]];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
+        [mypageview addGestureRecognizer:tap];
+        [tap release];
         [controller addSubview:mypageview];
         [mypageview release];
         
@@ -208,6 +213,19 @@
     //NSString *distance = [NSString stringWithFormat:@"%.2f",[[PublicFunction getSubDictionaryValue:dic withKey:@"coupons" subKey:@"metre"] floatValue]/1000];
     NSString *distance = [PublicFunction getSubDictionaryValue:dic withKey:@"coupons" subKey:@"metre"];
     distanceLabel.text = [NSString stringWithFormat:@"%@",distance];
+}
+
+-(void)tapClick:(UITapGestureRecognizer*)tap
+{
+    if (tap.view.tag == 33) {
+        AdvertisingController *adver = [[AdvertisingController alloc] init];
+        adver.hidesBottomBarWhenPushed = YES;
+        adver.plateCode = self.plateCode;
+        adver.plateType = self.plateType;
+        adver.pageMark = [NSString stringWithFormat:@"%li",self.pageControl.currentPage];
+        [self.currController.navigationController pushViewController:adver animated:YES];
+        [adver release];
+    }
 }
 
 @end

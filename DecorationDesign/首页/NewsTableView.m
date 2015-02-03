@@ -7,6 +7,7 @@
 //
 
 #import "NewsTableView.h"
+#import "AdvertisingController.h"
 
 @implementation NewsTableView
 @synthesize m_newsArray;
@@ -202,6 +203,7 @@
         if (cell == nil) {
             cell = [[[BannerTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3] autorelease];
         }
+        [(BannerTableCell*)cell setCurrController:self.currController];
         [(BannerTableCell*)cell setPlateType:[UserInfo shared].m_plateType];
         [(BannerTableCell*)cell setPlateCode:[self.m_array objectAtIndex:0]];
         [(BannerTableCell*)cell loadContent];
@@ -274,10 +276,17 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [m_tableView deselectRowAtIndexPath:indexPath animated:NO];
-    NSInteger row = indexPath.row;
-    [selectRecordList replaceObjectAtIndex:row/2 withObject:@"yes"];
-    [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-    [delegate NewsTableViewBtnPressed:[m_newsArray objectAtIndex:indexPath.row/2]];
+    if (indexPath.row==0) {
+        //广告
+        AdvertisingController *adver = [[AdvertisingController alloc] init];
+        adver.hidesBottomBarWhenPushed = YES;
+        
+    }else{
+        NSInteger row = indexPath.row;
+        [selectRecordList replaceObjectAtIndex:row/2 withObject:@"yes"];
+        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        [delegate NewsTableViewBtnPressed:[m_newsArray objectAtIndex:indexPath.row/2]];
+    }
 }
 
 -(NSInteger)tablewheight

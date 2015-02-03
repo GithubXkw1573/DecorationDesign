@@ -102,6 +102,7 @@
     newsScrollView = [[NewsScrollView alloc] initWithFrame:CGRectMake(0, 82-37.5, applicationwidth, applicationheight-44-44-49)];
     newsScrollView.navigationScrollView = scrollMenu;
     newsScrollView.t_delegate = self;
+    newsScrollView.currController = self;
     //[self.view addSubview:newsScrollView];
     [self.view insertSubview:newsScrollView atIndex:97];
     scrollMenu.newsScrollView = newsScrollView;
