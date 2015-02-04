@@ -13,15 +13,11 @@
 @end
 
 @implementation CommentViewController
-@synthesize m_array,m_jsonArr,n_jsonArr,worksId,worksType,designerId,designerName;
+@synthesize m_array,m_jsonArr,n_jsonArr,worksId,worksType,designerId,designerName,commentNums,worksDate,commentTitle;
 
-- (void)viewDidLoad
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-    if (iOS7Later) {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
-    
+    [super viewWillAppear:animated];
     self.view.backgroundColor=[UIColor colorWithRed:240/255.f green:240/255.f blue:240/255.f alpha:1.0];
     [self.navigationController.navigationBar setHidden:NO];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"标题栏%i.png",[[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0?7:6]] forBarMetrics:UIBarMetricsDefault];
@@ -29,6 +25,14 @@
     UIImage *shadowimage=[[UIImage alloc]init];
     self.navigationController.navigationBar.shadowImage = shadowimage;//去掉navigationBar阴影黑线
     [shadowimage release];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    if (iOS7Later) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
     
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
     titlelabel.backgroundColor=[UIColor clearColor];
@@ -82,8 +86,6 @@
     MBProgress=[[MBProgressHUD alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160)];
     [MBProgress setCenter:CGPointMake(applicationwidth/2.0, applicationheight/2)];
     [self.view addSubview:MBProgress];
-//    [MBProgress show:YES];
-//    [MBProgress setLabelText:@"刷新中"];
 }
 
 -(void)loadRequest
@@ -97,7 +99,8 @@
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
             [MBProgress setHidden:YES];
-            commentNums = [NSString stringWithFormat:@"%@",[result objectForKey:@"COMMENTTEXTNUMS"]];
+            lastcommentNums = [NSString stringWithFormat:@"%@",[result objectForKey:@"COMMENTTEXTNUMS"]];
+            [lastcommentNums retain];
             NSArray *infolist = [result objectForKey:@"COMMENTTEXTINFO"];
             self.m_jsonArr = infolist;
         }else {
@@ -176,6 +179,7 @@
     [detailBtn setTitle:@"评 论" forState:UIControlStateNormal];
     [detailBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     detailBtn.backgroundColor = [UIColor clearColor];
+    detailBtn.titleLabel.font = font(15);
     [detailBtn setBackgroundImage:[UIImage imageNamed:@"PingLun_bg_btn"] forState:UIControlStateNormal];
     detailBtn.tag = 23;
     [detailBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];
@@ -221,7 +225,7 @@
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
             cell.selectionStyle=UITableViewCellSelectionStyleNone;
             UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)];
-            personTitle.text = [NSString stringWithFormat:@"%@",[m_array objectAtIndex:1]];
+            personTitle.text = [NSString stringWithFormat:@"%@",commentTitle];
             personTitle.font = font(18);
             [cell.contentView addSubview:personTitle];
             [personTitle release];
@@ -235,7 +239,7 @@
             [zuoping release];
             
             UILabel *zuopingValue = [[UILabel alloc] initWithFrame:CGRectMake(100, 50, 120, 20)];
-            NSString *timeStr = [self returnFormatTime:[NSString stringWithFormat:@"%@",[m_array objectAtIndex:2]]];
+            NSString *timeStr = [self returnFormatTime:[NSString stringWithFormat:@"%@",worksDate]];
             zuopingValue.text = [NSString stringWithFormat:@"%@",timeStr];
             zuopingValue.textColor = [UIColor grayColor];
             zuopingValue.tag = 11;
@@ -245,7 +249,7 @@
             [zuopingValue release];
             
             UILabel *jingping = [[UILabel alloc] initWithFrame:CGRectMake(220, 50, 90, 20)];
-            jingping.text = [NSString stringWithFormat:@"%@ 评论",[m_array objectAtIndex:3]];
+            jingping.text = [NSString stringWithFormat:@"%@ 评论",commentNums];
             jingping.backgroundColor = [UIColor clearColor];
             jingping.font = font(13);
             jingping.textColor = [UIColor grayColor];
@@ -343,7 +347,7 @@
             [logo release];
             
             UILabel *personTitle = [[UILabel alloc] initWithFrame:CGRectMake(28, 10, 160, 20)];
-            personTitle.text =[NSString stringWithFormat:@"最新评论(%@)",commentNums];
+            personTitle.text =[NSString stringWithFormat:@"最新评论(%@)",lastcommentNums];
             personTitle.font = font(18);
             personTitle.textColor = [UIColor grayColor];
             [cell.contentView addSubview:personTitle];

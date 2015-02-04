@@ -23,8 +23,6 @@
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
-    
-    
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
     
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"标题栏%i.png",[[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0?7:6]] forBarMetrics:UIBarMetricsDefault];
@@ -77,7 +75,7 @@
 
 -(void)initBottom:(NSString *)type
 {
-    if ([type isEqualToString:@"Z"] || [type isEqualToString:@"1"]) {
+    if ([type isEqualToString:@"Z"] || [type isEqualToString:@"z"] || [type isEqualToString:@"1"]) {
         //作品
         UIView *commentView = [[UIView alloc] initWithFrame:CGRectMake(0, applicationheight-94, applicationwidth, 50)];
         commentView.backgroundColor = [UIColor colorWithRed:245/255.f green:245/255.f blue:245/255.f alpha:1.0];
@@ -113,6 +111,7 @@
         inputField.font = font(15);
         inputField.returnKeyType = UIReturnKeySend;
         inputField.delegate = self;
+        commentField = inputField;
         [commentView addSubview:inputField];
         [inputField release];
         //在弹出的键盘上面加一个view来放置退出键盘的Done按钮
@@ -128,7 +127,7 @@
         [topView release];
         
         UIButton *detailBtn = [[UIButton alloc] initWithFrame:CGRectMake(250, 10, 60, 30)];
-        [detailBtn setTitle:[NSString stringWithFormat:@"%@",@""] forState:UIControlStateNormal];
+        [detailBtn setTitle:[NSString stringWithFormat:@"%@",[m_jsonArr objectAtIndex:4]] forState:UIControlStateNormal];
         [detailBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
         detailBtn.backgroundColor = [UIColor clearColor];
         detailBtn.titleLabel.font = font(13);
@@ -378,25 +377,16 @@
     }else if (btn.tag == 201){
         //评论
         if ([UserInfo shared].m_isLogin) {
-            if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]) {
-                CommentViewController *comment = [[CommentViewController alloc] init];
-                comment.designerId = designerId;
-                comment.designerName = designer;
-                comment.worksId = worksId;
-                comment.m_array = m_jsonArr;
-                comment.worksType = [m_jsonArr objectAtIndex:0];
-                [self.navigationController pushViewController:comment animated:YES];
-                [comment release];
-            }else{
-                CommentViewController *comment = [[CommentViewController alloc] init];
-                comment.designerId = designerId;
-                comment.designerName = designer;
-                comment.worksId = worksId;
-                comment.m_array = m_jsonArr;
-                comment.worksType = [m_jsonArr objectAtIndex:0];
-                [self.navigationController pushViewController:comment animated:YES];
-                [comment release];
-            }
+            CommentViewController *comment = [[CommentViewController alloc] init];
+            comment.designerId = designerId;
+            comment.designerName = designer;
+            comment.worksId = worksId;
+            comment.commentNums = [m_jsonArr objectAtIndex:4];
+            comment.worksDate = [m_jsonArr objectAtIndex:3];
+            comment.commentTitle = [m_jsonArr objectAtIndex:1];
+            comment.worksType = [m_jsonArr objectAtIndex:0];
+            [self.navigationController pushViewController:comment animated:YES];
+            [comment release];
         }else{
             LoginViewController *login = [[LoginViewController alloc] init];
             [self.navigationController pushViewController:login animated:YES];
@@ -429,7 +419,9 @@
             comment.designerId = designerId;
             comment.designerName = designer;
             comment.worksId = worksId;
-            comment.m_array = m_jsonArr;
+            comment.commentNums = [m_jsonArr objectAtIndex:4];
+            comment.worksDate = [m_jsonArr objectAtIndex:3];
+            comment.commentTitle = [m_jsonArr objectAtIndex:1];
             comment.worksType = [m_jsonArr objectAtIndex:0];
             [self.navigationController pushViewController:comment animated:YES];
             [comment release];
@@ -446,12 +438,13 @@
     [MBProgress show:YES];
     [MBProgress setLabelText:@"获取中"];
     NSURL *url = [NSURL URLWithString:MineURL];
-    self.worksId = [m_array objectAtIndex:0];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
     if ([self.method isEqualToString:@"BUILDING-WAYACT-INFO"]) {
         request.postData = [NSDictionary dictionaryWithObjectsAndKeys:self.method,@"JUDGEMETHOD",[m_array objectAtIndex:3],@"CONTENTID", nil];
+        self.worksId = [m_array objectAtIndex:3];
     }else{
         request.postData = [NSDictionary dictionaryWithObjectsAndKeys:self.method,@"JUDGEMETHOD",[m_array objectAtIndex:0],@"WORKSID", nil];
+        self.worksId = [m_array objectAtIndex:0];
     }
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
@@ -659,16 +652,64 @@
 
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)textField
 {
-    [self movoTo:-200];
-    return YES;
+    if ([UserInfo shared].m_isLogin) {
+        [self movoTo:-200];
+        return YES;
+    }else{
+        LoginViewController *login = [[LoginViewController alloc] init];
+        [self.navigationController pushViewController:login animated:YES];
+        [login release];
+        return NO;
+    }
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     //发送
-    [textField resignFirstResponder];
-    [self movoTo:64];
-    return YES;
+    if (![commentField.text isEqualToString:@""]) {
+        [self startCommonrequest];
+        [textField resignFirstResponder];
+        [self movoTo:64];
+        return YES;
+    }else{
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"请输入评论内容!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+        [alert show];
+        [alert release];
+        return NO;
+    }
+}
+
+-(void)startCommonrequest
+{
+    [MBProgress show:YES];
+    [MBProgress setLabelText:@"评论中..."];
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"CUSTOM-COMMENTTEXT",@"JUDGEMETHOD",worksId,@"ID",[UserInfo shared].m_Id,@"USERID",designerId,@"COMMENTEDID",[m_jsonArr objectAtIndex:0],@"WORKSTYPE",commentField.text,@"COMMENT",[UserInfo shared].m_session,@"SESSION", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            [MBProgress hide:YES];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:@"评论成功!" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+            [self loadRequest];
+            [m_tableView reloadData];
+            commentField.text = @"";
+        }else {
+            [MBProgress hide:YES];
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"提示" message:errrDesc delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+            [alert release];
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+        [MBProgress settext:@"网络错误!" aftertime:1.0];
+    }];
+    [request startRequest];
 }
 
 -(void)movoTo:(CGFloat)dh

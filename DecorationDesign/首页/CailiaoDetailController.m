@@ -407,8 +407,10 @@
             comment.designerId = self.cailiaomerchantId;
             comment.designerName = self.cailiaomerchant;
             comment.worksId = productId;
-            comment.m_array = m_jsonArr;
-            comment.worksType = @"";
+            comment.worksDate = @"20150215102323";
+            comment.commentTitle = [m_jsonArr objectAtIndex:1];
+            comment.commentNums = @"32";
+            comment.worksType = @"C";
             [self.navigationController pushViewController:comment animated:YES];
             [comment release];
         }else{

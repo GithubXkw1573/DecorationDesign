@@ -27,14 +27,9 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewDidLoad
+-(void)viewWillAppear:(BOOL)animated
 {
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    if (iOS7Later) {
-        self.automaticallyAdjustsScrollViewInsets = NO;
-    }
-    
+    [super viewWillAppear:animated];
     self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
     [self.navigationController.navigationBar setHidden:NO];
     [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"标题栏%i.png",[[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0?7:6]] forBarMetrics:UIBarMetricsDefault];
@@ -42,6 +37,20 @@
     UIImage *shadowimage=[[UIImage alloc]init];
     self.navigationController.navigationBar.shadowImage = shadowimage;//去掉navigationBar阴影黑线
     [shadowimage release];
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"reloadfaxianview"]) {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"reloadfaxianview"];
+        [self reloadMenuRequest];
+    }
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	// Do any additional setup after loading the view.
+    if (iOS7Later) {
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
     
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
     titlelabel.backgroundColor=[UIColor clearColor];
@@ -143,16 +152,6 @@
         [search release];
     }
     
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"reloadfaxianview"]) {
-        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"reloadfaxianview"];
-        [self reloadMenuRequest];
-    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated

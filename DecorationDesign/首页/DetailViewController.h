@@ -25,7 +25,7 @@
     NSString *designer;
     NSString *designerId;
     NSString *worksId;
-    
+    UITextField *commentField;
     UIView *shuomingView;
     UITextView *contentView;
     UIImageView *zhezhaoView;

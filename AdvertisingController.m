@@ -35,20 +35,24 @@
     [super didReceiveMemoryWarning];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    self.view.backgroundColor=[UIColor blackColor];
+    [self.navigationController.navigationBar setHidden:NO];
+    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"nav_black_bg.png"] forBarMetrics:UIBarMetricsDefault];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    UIImage *shadowimage=[[UIImage alloc]init];
+    self.navigationController.navigationBar.shadowImage = shadowimage;//去掉navigationBar阴影黑线
+    [shadowimage release];
+}
+
 -(void)initNaviTitle
 {
     if (iOS7Later) {
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
-    
-    self.view.backgroundColor=[UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
-    [self.navigationController.navigationBar setHidden:NO];
-    [self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"标题栏%i.png",[[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0?7:6]] forBarMetrics:UIBarMetricsDefault];
-    
-    UIImage *shadowimage=[[UIImage alloc]init];
-    self.navigationController.navigationBar.shadowImage = shadowimage;//去掉navigationBar阴影黑线
-    [shadowimage release];
-    
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
     titlelabel.backgroundColor=[UIColor clearColor];
     titlelabel.textColor=[UIColor whiteColor];
@@ -72,6 +76,22 @@
     self.navigationItem.leftBarButtonItem = myleftitem;
     [myleftitem release];
     [leftbtnview release];
+    
+    
+    UIView *rightbtnview = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 50, 44)];
+    [rightbtnview setBackgroundColor:[UIColor clearColor]];
+    
+    UIButton *rightbtn=[UIButton buttonWithType:UIButtonTypeCustom];
+    rightbtn.frame=CGRectMake(0, 0, 60, 44);
+    rightbtn.tag = 3;
+    [rightbtn setBackgroundImage:[UIImage imageNamed:@"loup_4_btn.png"] forState:UIControlStateNormal];
+    [rightbtn addTarget:self action:@selector(AdvertiingBackBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
+    [rightbtnview addSubview:rightbtn];
+    
+    UIBarButtonItem *myrightitem = [[UIBarButtonItem alloc] initWithCustomView:rightbtnview];
+    self.navigationItem.rightBarButtonItem = myrightitem;
+    [myrightitem release];
+    [rightbtnview release];
 }
 
 -(void)loadData
@@ -123,7 +143,7 @@
     pageLabel.text = [NSString stringWithFormat:@"%li/%li",kNumberOfPages==0?kCurrentPage : kCurrentPage+1,kNumberOfPages];
     NSString *descString = [NSString stringWithFormat:@"         %@",[[guanggaoArray objectAtIndex:kCurrentPage] objectForKey:@"desc"]];
     NSMutableAttributedString * attributedString1 = [[NSMutableAttributedString alloc] initWithString:descString];
-    [attributedString1 addAttribute:NSForegroundColorAttributeName value:[UIColor grayColor] range:NSMakeRange(0, [descString length])];
+    [attributedString1 addAttribute:NSForegroundColorAttributeName value:[UIColor whiteColor] range:NSMakeRange(0, [descString length])];
     NSMutableParagraphStyle * paragraphStyle1 = [[NSMutableParagraphStyle alloc] init];
     [paragraphStyle1 setLineSpacing:8];
     [attributedString1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [descString length])];
@@ -174,9 +194,9 @@
     self.guanggaoArray = [NSMutableArray array];
     kNumberOfPages=[guanggaoArray count];
     kCurrentPage = 0;
-    CGFloat imageHeight = 200-50;
+    CGFloat imageHeight = 340-88;
     if (IS_IPHONE5) {
-        imageHeight = 200;
+        imageHeight = 340;
     }
     UIScrollView *guanggaoscrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, imageHeight*widthRate)];
     guanggaoscrollView.backgroundColor=[UIColor clearColor];
@@ -226,18 +246,18 @@
 {
     UILabel *angelLabel = [[UILabel alloc] initWithFrame:CGRectMake(8, imagescrollView.frame.size.height+15, 60, 30)];
     angelLabel.textAlignment = UITextAlignmentLeft;
-    angelLabel.textColor = [UIColor grayColor];
+    angelLabel.textColor = [UIColor whiteColor];
     angelLabel.font = font(18);
     angelLabel.backgroundColor = [UIColor clearColor];
     pageLabel = angelLabel;
     [self.view addSubview:angelLabel];
     [angelLabel release];
     
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(8, imagescrollView.frame.size.height+15, applicationwidth-16, 195)];
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(8, imagescrollView.frame.size.height+15, applicationwidth-16, 95)];
     textView.backgroundColor = [UIColor clearColor];
     textView.font = font(13);
     textView.editable = NO;
-    textView.textColor = [UIColor grayColor];
+    textView.textColor = [UIColor whiteColor];
     descTextView = textView;
     [self.view addSubview:textView];
     [textView release];
@@ -246,7 +266,7 @@
 -(void)initBottomView
 {
     UIView *commentView = [[UIView alloc] initWithFrame:CGRectMake(0, applicationheight-94, applicationwidth, 150)];
-    commentView.backgroundColor = [UIColor colorWithRed:245/255.f green:245/255.f blue:245/255.f alpha:1.0];
+    commentView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:commentView];
     [commentView release];
     
@@ -294,7 +314,7 @@
     if ([UserInfo shared].m_isLogin) {
         NSURL *url = [NSURL URLWithString:MineURL];
         HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-        request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"CUSTOM-COMMENTTEXT",@"JUDGEMETHOD",self.productId,@"ID",[UserInfo shared].m_Id,@"USERID",self.productId,@"COMMENTEDID",@"",@"WORKSTYPE",textField.text,@"COMMENT",[UserInfo shared].m_session,@"SESSION", nil];
+        request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"CUSTOM-COMMENTTEXT",@"JUDGEMETHOD",self.productId,@"ID",[UserInfo shared].m_Id,@"USERID",@"6666688888",@"COMMENTEDID",@"A",@"WORKSTYPE",textField.text,@"COMMENT",[UserInfo shared].m_session,@"SESSION", nil];
         [request setCompletionBlock:^(NSDictionary *result){
             if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
                 //调用成功
@@ -330,11 +350,13 @@
         //评论页
         if ([UserInfo shared].m_isLogin) {
             CommentViewController *comment = [[CommentViewController alloc] init];
-            comment.designerId = productId;
-            comment.designerName = produceName;
+            comment.designerId = @"6666688888";
+            comment.designerName = @"广告";
             comment.worksId = productId;
-            comment.m_array = nil;
-            comment.worksType = @"";
+            comment.commentNums = commentNum;
+            comment.worksDate = [[productId componentsSeparatedByString:@":"] objectAtIndex:1];
+            comment.commentTitle = produceName;
+            comment.worksType = @"A";
             [self.navigationController pushViewController:comment animated:YES];
             [comment release];
         }else{
@@ -350,6 +372,11 @@
     if (sender.tag ==2) {
         //返回
         [self.navigationController popViewControllerAnimated:YES];
+    }else if (sender.tag ==3){
+        ShareView *shareView = [[ShareView alloc] initWithFrame:CGRectMake(0, applicationheight, applicationwidth, 220)];
+        [self.view addSubview:shareView];
+        [shareView show];
+        [shareView release];
     }
 }
 
@@ -376,11 +403,14 @@
     if ((NSNull *)controller == [NSNull null]) {
         controller = [[UIView alloc] init];
         
-        UIImageView *mypageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
+        UIImageView *mypageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, (imagescrollView.frame.size.height-160*widthRate)/2+20, applicationwidth, 160*widthRate)];
         NSLog(@"image:%@",[[guanggaoArray objectAtIndex:page2] objectForKey:@"imagename"]);
         [mypageview setImageWithURL:[NSURL URLWithString:[[guanggaoArray objectAtIndex:page2] objectForKey:@"imagename"]] placeholderImage:[UIImage imageNamed:@"首页切换图1.png"]];
         mypageview.tag = 33;
-        //[mypageview setImageWithURL:[NSURL URLWithString:[[guanggaoArray objectAtIndex:page2] objectForKey:@"imageUrl"]] placeholderImage:[UIImage imageNamed:@"默认大.png"]];
+        mypageview.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
+        [mypageview addGestureRecognizer:tap];
+        [tap release];
         [controller addSubview:mypageview];
         [mypageview release];
         
@@ -395,6 +425,24 @@
         frame.origin.y = 0;
         controller.frame = frame;
         [imagescrollView addSubview:controller];
+    }
+}
+
+-(void)tapClick:(UITapGestureRecognizer*)tap
+{
+    if (tap.view.tag == 33) {
+        UIWindow *window = [UIApplication sharedApplication].keyWindow;
+        UIView *currController = [viewControllers objectAtIndex:kCurrentPage];
+        UIImageView *currImageView = (UIImageView*)[currController viewWithTag:33];
+        ImageLooker *looker = [[ImageLooker alloc] initWithFrame:window.frame withImage:currImageView.image];
+        [window addSubview:looker];
+        looker.backgroundColor = [UIColor blackColor];
+        
+        looker.transform = CGAffineTransformMakeScale(0, 0);
+        [UIView animateWithDuration:0.35f animations:^{
+            looker.transform = CGAffineTransformMakeScale(1, 1);
+        }];
+        [looker release];
     }
 }
 

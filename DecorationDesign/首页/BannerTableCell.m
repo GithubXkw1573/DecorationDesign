@@ -68,6 +68,8 @@
     guanggaoscrollView.showsVerticalScrollIndicator = NO;
     guanggaoscrollView.scrollsToTop = NO;
     guanggaoscrollView.delegate = self;
+    //新建一个定时器
+    [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(changePic) userInfo:nil repeats:YES];
     
     UIPageControl *pageCon=[[UIPageControl alloc]initWithFrame:CGRectMake(135*widthRate, 140, 50, 20)];
     pageCon.backgroundColor = [UIColor clearColor];
@@ -226,6 +228,21 @@
         [self.currController.navigationController pushViewController:adver animated:YES];
         [adver release];
     }
+}
+
+-(void)changePic
+{
+    kCurrentPage ++;
+    if (kCurrentPage>guanggaoArray.count-1) {
+        kCurrentPage=0;
+    }
+    [self loadScrollViewWithPage:kCurrentPage - 1];
+    [self loadScrollViewWithPage:kCurrentPage];
+    [self loadScrollViewWithPage:kCurrentPage + 1];
+    CGRect frame = imagescrollView.frame;
+    frame.origin.x = frame.size.width * kCurrentPage;
+    frame.origin.y = 0;
+    [imagescrollView scrollRectToVisible:frame animated:YES];
 }
 
 @end

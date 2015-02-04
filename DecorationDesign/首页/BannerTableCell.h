@@ -17,6 +17,7 @@
     UIScrollView *imagescrollView;
     UIPageControl *pageControl;
     NSMutableArray *viewControllers;
+    NSUInteger kCurrentPage;
     
 }
 @property(nonatomic, retain)NSMutableArray *viewControllers;

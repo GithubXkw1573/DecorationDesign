@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		50880B6A1A1B798B00BE5FDF /* 家装样图1.png in Resources */ = {isa = PBXBuildFile; fileRef = 50880B691A1B798B00BE5FDF /* 家装样图1.png */; };
+		D20CBA4E1A81C86200EA7EBE /* nav_black_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = D20CBA4D1A81C86200EA7EBE /* nav_black_bg.png */; };
 		D2119B201A7F20A6005E7E68 /* MyPickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2119B1F1A7F20A6005E7E68 /* MyPickerView.m */; };
 		D2119B241A7F6461005E7E68 /* AdvertisingController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2119B231A7F6461005E7E68 /* AdvertisingController.m */; };
 		D21E6FC31A6F8683002B6955 /* QQkongjianApi.m in Sources */ = {isa = PBXBuildFile; fileRef = D21E6FA91A6F8683002B6955 /* QQkongjianApi.m */; };
@@ -314,6 +315,7 @@
 
 /* Begin PBXFileReference section */
 		50880B691A1B798B00BE5FDF /* 家装样图1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "家装样图1.png"; path = "../家装样图1.png"; sourceTree = "<group>"; };
+		D20CBA4D1A81C86200EA7EBE /* nav_black_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = nav_black_bg.png; sourceTree = "<group>"; };
 		D2119B1E1A7F20A6005E7E68 /* MyPickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyPickerView.h; sourceTree = "<group>"; };
 		D2119B1F1A7F20A6005E7E68 /* MyPickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyPickerView.m; sourceTree = "<group>"; };
 		D2119B221A7F6461005E7E68 /* AdvertisingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AdvertisingController.h; sourceTree = SOURCE_ROOT; };
@@ -925,6 +927,7 @@
 		D2325A681A35938400C7BA63 /* 1206切图 */ = {
 			isa = PBXGroup;
 			children = (
+				D20CBA4D1A81C86200EA7EBE /* nav_black_bg.png */,
 				D27DD33B1A6CB8E500CAEC5B /* search_btn.png */,
 				D27DD3391A6CB8DF00CAEC5B /* search_03.png */,
 				D2E158A21A52462B0044DB13 /* yuyue_btn_05.png */,
@@ -1787,6 +1790,7 @@
 				D2BF66871A1EE031001DAFBC /* touxiang.png in Resources */,
 				D2BF66621A1EE031001DAFBC /* GR_icon2.png in Resources */,
 				D2A286551A6F87BD0009E48E /* blueArrow@2x.png in Resources */,
+				D20CBA4E1A81C86200EA7EBE /* nav_black_bg.png in Resources */,
 				D2325B911A3598D300C7BA63 /* search.png in Resources */,
 				D21EC4A71A19EB7400317D0C /* 我的选中.png in Resources */,
 				D2325B561A35938500C7BA63 /* regsiter_bg_huoqu.png in Resources */,
