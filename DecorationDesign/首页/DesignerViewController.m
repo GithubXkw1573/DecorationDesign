@@ -489,19 +489,19 @@
                 [cell.contentView addSubview:line];
                 [line release];
                 
-                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 90, 80)];
+                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 93.3, 70)];
                 works1.image = [UIImage imageNamed:@"Sjs-xiangqing_img2"];
                 works1.tag = 50;
                 [cell.contentView addSubview:works1];
                 [works1 release];
                 
-                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(115, 5, 90, 80)];
+                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(113.6, 5, 93.3, 70)];
                 works2.image = [UIImage imageNamed:@"Sjs-xiangqing_img2"];
                 works2.tag = 51;
                 [cell.contentView addSubview:works2];
                 [works2 release];
                 
-                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(220, 5, 90, 80)];
+                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(216.6, 5, 93.3, 70)];
                 works3.image = [UIImage imageNamed:@"Sjs-xiangqing_img2"];
                 works3.tag = 52;
                 [cell.contentView addSubview:works3];
@@ -536,13 +536,13 @@
                 [cell.contentView addSubview:line];
                 [line release];
                 
-                UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 70)];
+                UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 78, 62)];
                 works.image = [UIImage imageNamed:@"Sjs_xiangqing_img1"];
                 works.tag = 40;
                 [cell.contentView addSubview:works];
                 [works release];
                 
-                UILabel *m_title = [[UILabel alloc] initWithFrame:CGRectMake(130, 10, 180, 20)];
+                UILabel *m_title = [[UILabel alloc] initWithFrame:CGRectMake(98, 10, 212, 20)];
                 m_title.text = @"玉树临风--卓越威刚明珠";
                 m_title.font = font(15);
                 m_title.tag = 41;
@@ -550,11 +550,11 @@
                 [cell.contentView addSubview:m_title];
                 [m_title release];
                 
-                UILabel *m_desc = [[UILabel alloc] initWithFrame:CGRectMake(130, 30, 180, 50)];
+                UILabel *m_desc = [[UILabel alloc] initWithFrame:CGRectMake(98, 26, 212, 50)];
                 m_desc.text = @"本次活动的主题为“微信·思维·智慧”。腾讯公司高级执行副总裁张小龙在开场的视频连线中表示，微信公众平台的口号是“再小的个体也有自己的品牌”，他从八个方面详细阐述了微信对于公众平台的理念和方向。";
                 m_desc.font = font(12);
                 m_desc.tag = 42;
-                m_desc.numberOfLines = 0;
+                m_desc.numberOfLines = 2;
                 m_desc.textColor = [UIColor grayColor];
                 [cell.contentView addSubview:m_desc];
                 [m_desc release];
@@ -585,9 +585,9 @@
     }else{
          if ((row+4)%6==0)
          {
-             return 90;
+             return 80;
          }else{
-             return 90;
+             return 80;
          }
     }
     return 0;
@@ -660,11 +660,11 @@
 {
     NSInteger n = n_jsonArr.count-1;
     if (n%8==6) {
-        return (n/8*6+n%8)*90+320+[self cellHeight];
+        return (n/8*6+n%8)*80+320+[self cellHeight];
     }else if (n%8==7) {
-        return (n/8*6+n%8-1)*90+320+[self cellHeight];
+        return (n/8*6+n%8-1)*80+320+[self cellHeight];
     }else{
-        return (n/8*6+n%8+1)*90+320+[self cellHeight];
+        return (n/8*6+n%8+1)*80+320+[self cellHeight];
     }
 }
 

@@ -310,25 +310,25 @@
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleNone;
                 
-                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 90, 80)];
+                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 93.3, 70)];
                 works1.image = [UIImage imageNamed:@"CAIliao_img3"];
                 works1.tag = 50;
                 [cell.contentView addSubview:works1];
                 [works1 release];
                 
-                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(115, 10, 90, 80)];
+                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(113.3, 5, 93.3, 70)];
                 works2.image = [UIImage imageNamed:@"CAIliao_img4"];
                 works2.tag = 51;
                 [cell.contentView addSubview:works2];
                 [works2 release];
                 
-                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(220, 10, 90, 80)];
+                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(216.7, 5, 93.3, 70)];
                 works3.image = [UIImage imageNamed:@"CAIliao_img5"];
                 works3.tag = 52;
                 [cell.contentView addSubview:works3];
                 [works3 release];
                 
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 99, 300, 1)];
+                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 79, 300, 1)];
                 line.image = [UIImage imageNamed:@"线"];
                 [cell.contentView addSubview:line];
                 [line release];
@@ -357,13 +357,13 @@
                 cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
                 cell.selectionStyle=UITableViewCellSelectionStyleGray;
                 
-                UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 80)];
+                UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 78, 62)];
                 works.image = [UIImage imageNamed:@"loup_2_img2"];
                 works.tag = 40;
                 [cell.contentView addSubview:works];
                 [works release];
                 
-                UILabel *m_title = [[UILabel alloc] initWithFrame:CGRectMake(130, 10, 180, 25)];
+                UILabel *m_title = [[UILabel alloc] initWithFrame:CGRectMake(98, 8, 212, 25)];
                 m_title.text = @"玉树临风--卓越威刚明珠";
                 m_title.font = font(15);
                 m_title.tag = 41;
@@ -371,7 +371,7 @@
                 [cell.contentView addSubview:m_title];
                 [m_title release];
                 
-                UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(130, 40, 180, 40)];
+                UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(98, 36, 212, 40)];
                 desc.font = font(12);
                 desc.tag = 42;
                 desc.numberOfLines = 2;
@@ -380,7 +380,7 @@
                 [desc release];
                 
                 
-                UILabel *pinglun = [[UILabel alloc] initWithFrame:CGRectMake(130, 75, 180, 15)];
+                UILabel *pinglun = [[UILabel alloc] initWithFrame:CGRectMake(98, 60, 212, 15)];
                 pinglun.font = font(12);
                 pinglun.tag = 44;
                 pinglun.textAlignment = UITextAlignmentRight;
@@ -388,7 +388,7 @@
                 [cell.contentView addSubview:pinglun];
                 [pinglun release];
                 
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 99, 300, 1)];
+                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 79, 300, 1)];
                 line.image = [UIImage imageNamed:@"线"];
                 [cell.contentView addSubview:line];
                 [line release];
@@ -428,9 +428,9 @@
     }else{
         if ((row+4)%6==0)
         {
-            return 100;
+            return 80;
         }else{
-            return 100;
+            return 80;
         }
     }
     return 0;
@@ -470,11 +470,11 @@
 {
     NSInteger n = n_jsonArr.count-1;
     if (n%8==6) {
-        return (n/8*6+n%8)*100+200+[self cellHeight:2];
+        return (n/8*6+n%8)*80+200+[self cellHeight:2];
     }else if (n%8==7) {
-        return (n/8*6+n%8-1)*100+200+[self cellHeight:2];
+        return (n/8*6+n%8-1)*80+200+[self cellHeight:2];
     }else{
-        return (n/8*6+n%8+1)*100+200+[self cellHeight:2];
+        return (n/8*6+n%8+1)*80+200+[self cellHeight:2];
     }
 }
 

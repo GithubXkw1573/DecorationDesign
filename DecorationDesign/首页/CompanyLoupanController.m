@@ -379,19 +379,19 @@
                 [cell.contentView addSubview:line];
                 [line release];
                 
-                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 90, 80)];
+                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 5, 93.3, 70)];
                 works1.image = [UIImage imageNamed:@"CAIliao_img3"];
                 works1.tag = 50;
                 [cell.contentView addSubview:works1];
                 [works1 release];
                 
-                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(115, 10, 90, 80)];
+                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(113.3, 5, 93.3, 70)];
                 works2.image = [UIImage imageNamed:@"CAIliao_img4"];
                 works2.tag = 51;
                 [cell.contentView addSubview:works2];
                 [works2 release];
                 
-                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(220, 10, 90, 80)];
+                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(216.6, 5, 93.3, 70)];
                 works3.image = [UIImage imageNamed:@"CAIliao_img5"];
                 works3.tag = 52;
                 [cell.contentView addSubview:works3];
@@ -426,13 +426,13 @@
                 [cell.contentView addSubview:line];
                 [line release];
                 
-                UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 80)];
+                UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 8, 78, 62)];
                 works.image = [UIImage imageNamed:@"CAIliao_img1"];
                 works.tag = 40;
                 [cell.contentView addSubview:works];
                 [works release];
                 
-                UILabel *m_title = [[UILabel alloc] initWithFrame:CGRectMake(130, 10, 180, 25)];
+                UILabel *m_title = [[UILabel alloc] initWithFrame:CGRectMake(98, 8, 212, 25)];
                 m_title.text = @"玉树临风--卓越威刚明珠";
                 m_title.font = font(15);
                 m_title.tag = 41;
@@ -440,7 +440,7 @@
                 [cell.contentView addSubview:m_title];
                 [m_title release];
                 
-                UILabel *pinpai = [[UILabel alloc] initWithFrame:CGRectMake(130, 40, 180, 50)];
+                UILabel *pinpai = [[UILabel alloc] initWithFrame:CGRectMake(98, 36, 212, 50)];
                 pinpai.font = font(12);
                 pinpai.tag = 42;
                 pinpai.numberOfLines = 2;
@@ -448,7 +448,7 @@
                 [cell.contentView addSubview:pinpai];
                 [pinpai release];
                 
-                UIButton *zhuanti = [[UIButton alloc] initWithFrame:CGRectMake(applicationwidth-40, 75, 30, 15)];
+                UIButton *zhuanti = [[UIButton alloc] initWithFrame:CGRectMake(applicationwidth-40, 60, 30, 15)];
                 [zhuanti setImage:[UIImage imageNamed:@"loup_3_zt"] forState:UIControlStateNormal];
                 zhuanti.backgroundColor = [UIColor clearColor];
                 zhuanti.tag = 55;
@@ -489,9 +489,9 @@
     }else{
         if ((row+4)%6==0)
         {
-            return 100;
+            return 80;
         }else{
-            return 100;
+            return 80;
         }
     }
     return 0;
@@ -540,11 +540,11 @@
 {
     NSInteger n = n_jsonArr.count-1;
     if (n%8==6) {
-        return (n/8*6+n%8)*100+340+[self cellHeight:2]+[self cellHeight:3];
+        return (n/8*6+n%8)*80+340+[self cellHeight:2]+[self cellHeight:3];
     }else if (n%8==7) {
-        return (n/8*6+n%8-1)*100+340+[self cellHeight:2]+[self cellHeight:3];
+        return (n/8*6+n%8-1)*80+340+[self cellHeight:2]+[self cellHeight:3];
     }else{
-        return (n/8*6+n%8+1)*100+340+[self cellHeight:2]+[self cellHeight:3];
+        return (n/8*6+n%8+1)*80+340+[self cellHeight:2]+[self cellHeight:3];
     }
 }
 
