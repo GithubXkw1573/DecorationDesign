@@ -17,6 +17,8 @@
 @synthesize m_tableView;
 @synthesize m_Dictionary;
 @synthesize m_recommdArray;
+@synthesize adverArray;
+@synthesize newAdverList;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -24,6 +26,8 @@
     if (self) {
         m_newsArray = [[NSMutableArray alloc] initWithCapacity:1];
         selectRecordList = [[NSMutableArray alloc] init];
+        adverArray = [[NSMutableArray alloc] init];
+        newAdverList = [[NSArray alloc] init];
         m_array = [[NSArray alloc] init];
         m_recommdArray = [[NSMutableArray alloc] initWithCapacity:0];
         m_Dictionary = [[NSDictionary alloc] init];
@@ -88,11 +92,82 @@
     mytime=@"";
 }
 
+-(void)loadAdvertisimentList:(NSArray*)m_newList
+{
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"GET_ADVERTMENT",@"JUDGEMETHOD",[UserInfo shared].m_plateType,@"PLATETYPE",[self.m_array objectAtIndex:0],@"PLATECODE",@"1",@"PAGEMARK",[NSString stringWithFormat:@"%d",page],@"GETTIMES", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            self.newAdverList = [result objectForKey:@"ADVERTLISTINFO"];
+            [MBProgress setHidden:YES];
+            if (reloadormore) {
+                [adverArray removeAllObjects];
+                if (m_newList.count==10) {
+                    if (newAdverList.count==2) {
+                        [adverArray addObjectsFromArray:newAdverList];
+                    }else{
+                        [adverArray addObject:[newAdverList objectAtIndex:0]];
+                        [adverArray addObject:[newAdverList objectAtIndex:0]];
+                    }
+                }else if (m_newList.count>5){
+                    [adverArray addObject:[newAdverList objectAtIndex:0]];
+                }
+                [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
+                return;
+            }
+            else{
+                if (m_newList.count==10) {
+                    if (newAdverList.count==2) {
+                        [adverArray addObjectsFromArray:newAdverList];
+                    }else{
+                        [adverArray addObject:[newAdverList objectAtIndex:0]];
+                        [adverArray addObject:[newAdverList objectAtIndex:0]];
+                    }
+                }else if (m_newList.count>5){
+                    [adverArray addObject:[newAdverList objectAtIndex:0]];
+                }
+                [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
+                return;
+            }
+        }else {
+            if (m_newList.count==10) {
+                if (newAdverList.count==2) {
+                    [adverArray addObjectsFromArray:newAdverList];
+                }else{
+                    [adverArray addObject:[newAdverList objectAtIndex:0]];
+                    [adverArray addObject:[newAdverList objectAtIndex:0]];
+                }
+            }else if (m_newList.count>5){
+                [adverArray addObject:[newAdverList objectAtIndex:0]];
+            }
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+            [MBProgress settext:errrDesc aftertime:1.0];
+        }
+    }];
+    [request setFailedBlock:^{
+        if (m_newList.count==10) {
+            if (newAdverList.count==2) {
+                [adverArray addObjectsFromArray:newAdverList];
+            }else{
+                [adverArray addObject:[newAdverList objectAtIndex:0]];
+                [adverArray addObject:[newAdverList objectAtIndex:0]];
+            }
+        }else if (m_newList.count>5){
+            [adverArray addObject:[newAdverList objectAtIndex:0]];
+        }
+        NSLog(@"网络错误");
+        [MBProgress settext:@"网络错误" aftertime:1.0];
+    }];
+    [request startRequest];
+}
+
 -(void)reloadrequest
 {
     NSURL *url=[NSURL URLWithString:[MineURL stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     HessianFormDataRequest *hessianrequest=[[HessianFormDataRequest alloc] initWithURL:url];
-//    NSLog(@"HHH:%@",[Dictionary objectForKey:@"id"]);
     NSString *methodName = @"USER-LIST-PAGE";
     NSString *userType = @"USERTYPE";
     NSString *resultKey = @"USERLISTINFO";
@@ -116,44 +191,35 @@
     NSMutableDictionary *params= [NSMutableDictionary dictionary];
     [params setValue:[NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:0]] forKey:userType];
     [params setValue:methodName forKey:@"JUDGEMETHOD"];
-    [params setValue:[NSString stringWithFormat:@"%d",page++] forKey:@"GETTIMES"];
+    [params setValue:[NSString stringWithFormat:@"%d",page] forKey:@"GETTIMES"];
     hessianrequest.postData =  params;
-    myrequest = hessianrequest;
     [hessianrequest setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
             newList = [result objectForKey:resultKey];
-            for (NSInteger i = 0; i<newList.count; i++) {
+            for (NSInteger i=0; i<newList.count; i++) {
                 [selectRecordList addObject:@"no"];
             }
-            if ([newList count] > 0) {
-                [MBProgress hide:YES];
-                if (reloadormore) {
-                    [m_newsArray removeAllObjects];
-                    [m_newsArray addObjectsFromArray:newList];
-                    reloadormore = NO;
-                    [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
-                    return;
-                }
-                else{
-                    [m_newsArray  addObjectsFromArray:newList];
-                    [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
-                    return;
-                }
+            //加载广告列表
+            [self loadAdvertisimentList:newList];
+            page++;
+            [MBProgress hide:YES];
+            if (reloadormore) {
+                nonAdverCount = 0;
+                nonAdverCount+=newList.count;
+                [m_newsArray removeAllObjects];
+                [m_newsArray addObjectsFromArray:newList];
+                reloadormore = NO;
+                [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
+                return;
             }
-            else if([newList count] == 0){
-                if (page>1) {
-                    [MBProgress settext:@"没有更多了！" aftertime:1.0];
-                }
-                else
-                {
-                    [MBProgress settext:@"暂无数据!" aftertime:1.0];
-                    [m_newsArray removeAllObjects];
-                }
-                page --;
+            else{
+                nonAdverCount+=newList.count;
+                [m_newsArray addObjectsFromArray:newList];
+                [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
+                return;
             }
         }
-        
         if (reloadormore) {
             [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
             reloadormore=NO;
@@ -166,10 +232,8 @@
     }];
     [hessianrequest setFailedBlock:^{
         
-        [MBProgress settext:@"网络错误，请检查网络连接！" aftertime:1.0];
-        page--;
+        [MBProgress settext:@"网络错误，请检查网络连接！" aftertime:1.0];page--;
         NSLog(@"informationrequestFailed");
-        
         if (reloadormore) {
             [self performSelector:@selector(HeaderreloadFinish) withObject:nil afterDelay:0.f];
             reloadormore=NO;
@@ -179,10 +243,13 @@
             [self performSelector:@selector(FooterreloadFinish) withObject:nil afterDelay:0.f];
             reloadormore=NO;
         }
+        
     }];
     [hessianrequest startRequest];
     [hessianrequest release];
 }
+
+
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
@@ -191,14 +258,14 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    return m_newsArray.count*2+1;
+    return m_newsArray.count+adverArray.count+1;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSInteger row = indexPath.row;
     if (row==0) {
-        static NSString *CellIdentifier3 = @"Cell2";
+        static NSString *CellIdentifier3 = @"Cell0";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
         if (cell == nil) {
             cell = [[[BannerTableCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3] autorelease];
@@ -210,16 +277,8 @@
         cell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
         return cell;
     }else{
-        if (row%2==0) {
-            static NSString *CellIdentifier3 = @"Cell0";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier3];
-            if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier3] autorelease];
-            }
-            cell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"背景.png"]];
-            return cell;
-        }
-        else{
+        if (row%6!=0) {
+            NSInteger dataIndex = row-(row/6+1);
             static NSString *CellIdentifier1 = @"Cell1";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier1];
             if (cell == nil) {
@@ -233,17 +292,60 @@
                     cell = [[[DesignerListCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier1] autorelease];
                 }
             }
-            
             if (self.shaixuan ==1) {
-                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2] withSelected:selectRecordList withIndex:row/2];
+                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:dataIndex] withSelected:selectRecordList withIndex:dataIndex];
             }else if (self.shaixuan ==2){
-                [(LoupanCell*)cell setCellData:[m_newsArray objectAtIndex:row/2] withSelected:selectRecordList withIndex:row/2];
+                [(LoupanCell*)cell setCellData:[m_newsArray objectAtIndex:dataIndex] withSelected:selectRecordList withIndex:dataIndex];
             }else if (self.shaixuan==3){
-                [(CailiaoCell*)cell setCellData:[m_newsArray objectAtIndex:row/2] withSelected:selectRecordList withIndex:row/2];
+                [(CailiaoCell*)cell setCellData:[m_newsArray objectAtIndex:dataIndex] withSelected:selectRecordList withIndex:dataIndex];
             }else if (self.shaixuan ==4){
-                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:row/2] withSelected:selectRecordList withIndex:row/2];
+                [(DesignerListCell*)cell setCellData:[m_newsArray objectAtIndex:dataIndex] withSelected:selectRecordList withIndex:dataIndex];
             }
-            
+            return cell;
+        }else{
+            //广告位
+            NSInteger dataIndex = row/6-1;
+            static NSString *cellIdentific = @"cell2";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
+            if (cell == nil) {
+                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
+                cell.selectionStyle=UITableViewCellSelectionStyleGray;
+                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(8, 114, applicationwidth-16, 0.5)];
+                line.image = [UIImage imageNamed:@"线"];
+                [cell.contentView addSubview:line];
+                [line release];
+                
+                UILabel *slogenLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 8, 300, 25)];
+                slogenLabel.font = font(14);
+                slogenLabel.tag = 49;
+                slogenLabel.backgroundColor = [UIColor clearColor];
+                [cell.contentView addSubview:slogenLabel];
+                [slogenLabel release];
+                
+                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 35, 93.3, 70)];
+                works1.tag = 50;
+                [cell.contentView addSubview:works1];
+                [works1 release];
+                
+                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(113.3, 35, 93.3, 70)];
+                works2.tag = 51;
+                [cell.contentView addSubview:works2];
+                [works2 release];
+                
+                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(216.6, 35, 93.3, 70)];
+                works3.tag = 52;
+                [cell.contentView addSubview:works3];
+                [works3 release];
+                
+            }
+            UILabel *slogen = (UILabel*)[cell.contentView viewWithTag:49];
+            slogen.text = [NSString stringWithFormat:@"%@",[[adverArray objectAtIndex:dataIndex] objectAtIndex:1]];
+            for(NSInteger i=0;i<3;i++){
+                UIImageView *worksImage = (UIImageView*)[cell.contentView viewWithTag:(50+i)];
+                NSArray *picArray = [[[adverArray objectAtIndex:dataIndex] objectAtIndex:3] componentsSeparatedByString:@"&::&"];
+                NSString *imageurl=[NSString stringWithFormat:@"%@",[picArray objectAtIndex:i]];
+                [worksImage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"Sjs_xiangqing_img2"]];
+            }
             return cell;
         }
     }
@@ -255,23 +357,22 @@
         return 160;
     }
     else{
-        if (indexPath.row%2==0) {
-            return  1;
+        if (indexPath.row%6==0) {
+            return  115;
         }else{
             if (self.shaixuan ==1) {
-                return 84;
+                return 85;
             }else if (self.shaixuan ==2){
                 return 100;
             }else if (self.shaixuan==3){
                 return 100;
             }else if (self.shaixuan ==4){
-                return 84;
+                return 85;
             }
             return 0;
         }
     }
 }
-
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -283,9 +384,16 @@
         
     }else{
         NSInteger row = indexPath.row;
-        [selectRecordList replaceObjectAtIndex:row/2 withObject:@"yes"];
-        [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
-        [delegate NewsTableViewBtnPressed:[m_newsArray objectAtIndex:indexPath.row/2]];
+        if (row%6!=0) {
+            [selectRecordList replaceObjectAtIndex:(row-(row/6+1)) withObject:@"yes"];
+            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [delegate NewsTableViewBtnPressed:[m_newsArray objectAtIndex:(row-(row/6+1))] isAdver:NO];
+        }else{
+//            [selectRecordList replaceObjectAtIndex:(row/6-1) withObject:@"yes"];
+//            [tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationNone];
+            [delegate NewsTableViewBtnPressed:[adverArray objectAtIndex:(row/6-1)] isAdver:YES];
+        }
+        
     }
 }
 
@@ -293,13 +401,13 @@
 {
     if (m_newsArray.count>0) {
         if (self.shaixuan ==1) {
-            return 85*m_newsArray.count+160;
+            return 85*nonAdverCount+115*adverArray.count+160;
         }else if (self.shaixuan ==2){
-            return 110*m_newsArray.count+160;
+            return 100*nonAdverCount+115*adverArray.count+160;
         }else if (self.shaixuan==3){
-            return 110*m_newsArray.count+160;
+            return 100*nonAdverCount+115*adverArray.count+160;
         }else if (self.shaixuan ==4){
-            return 85*m_newsArray.count+160;
+            return 85*nonAdverCount+115*adverArray.count+160;
         }
         return 0;
     }else{

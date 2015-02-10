@@ -9,7 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "common.h"
 #import "PersonIntroduceView.h"
-#import "ZuopingView.h"
 #import "ArticleView.h"
 #import "DetailViewController.h"
 #import "BookingViewController.h"

@@ -26,6 +26,7 @@
     NSString *productId;
     NSString *produceName;
     NSString *commentNum;
+    NSArray *m_array;
 }
 
 @property(nonatomic, retain)UIScrollView *imagescrollView;
@@ -37,4 +38,5 @@
 @property(nonatomic, retain) NSString *productId;
 @property(nonatomic, retain) NSString *produceName;
 @property(nonatomic, retain) NSString *commentNum;
+@property(nonatomic, retain) NSArray *m_array;
 @end

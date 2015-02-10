@@ -81,7 +81,10 @@
         [self.contentView addSubview:yuyuecishuValue];
         [yuyuecishuValue release];
         
-        
+        UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(8, 99, applicationwidth-16, 0.5)];
+        line.image = [UIImage imageNamed:@"线"];
+        [self.contentView addSubview:line];
+        [line release];
     }
     return self;
 }

@@ -381,8 +381,8 @@
             comment.designerId = designerId;
             comment.designerName = designer;
             comment.worksId = worksId;
-            comment.commentNums = [m_jsonArr objectAtIndex:4];
-            comment.worksDate = [m_jsonArr objectAtIndex:3];
+            comment.commentNums = [m_jsonArr objectAtIndex:3];
+            comment.worksDate = [m_jsonArr objectAtIndex:2];
             comment.commentTitle = [m_jsonArr objectAtIndex:1];
             comment.worksType = [m_jsonArr objectAtIndex:0];
             [self.navigationController pushViewController:comment animated:YES];
@@ -419,8 +419,8 @@
             comment.designerId = designerId;
             comment.designerName = designer;
             comment.worksId = worksId;
-            comment.commentNums = [m_jsonArr objectAtIndex:4];
-            comment.worksDate = [m_jsonArr objectAtIndex:3];
+            comment.commentNums = [m_jsonArr objectAtIndex:3];
+            comment.worksDate = [m_jsonArr objectAtIndex:2];
             comment.commentTitle = [m_jsonArr objectAtIndex:1];
             comment.worksType = [m_jsonArr objectAtIndex:0];
             [self.navigationController pushViewController:comment animated:YES];

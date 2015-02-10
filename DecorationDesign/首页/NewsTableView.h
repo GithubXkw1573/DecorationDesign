@@ -10,7 +10,7 @@
 
 @protocol NewsTableViewDelegate <NSObject>
 
--(void)NewsTableViewBtnPressed:(NSArray *)dic;
+-(void)NewsTableViewBtnPressed:(NSArray *)dic isAdver:(BOOL)adver;
 
 @end
 
@@ -26,7 +26,6 @@
 {
     UITableView *m_tableView;
     NSMutableArray *m_newsArray;
-    //UITableView *m_tableview;
     HessianFormDataRequest *myrequest;
     EGORefreshTableFooterView *_refreshFooterView;
     EGORefreshTableHeaderView *_refreshHeaderView;
@@ -35,8 +34,10 @@
     int page;
     NSString *mytime;
     NSArray *newList;
+    NSArray *newAdverList;
     MBProgressHUD *MBProgress;
     NSMutableArray *selectRecordList;
+    NSInteger nonAdverCount;
 }
 @property(nonatomic, retain)UITableView *m_tableView;
 @property(nonatomic, retain)NSMutableArray *m_newsArray;
@@ -46,5 +47,7 @@
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSDictionary *m_Dictionary;
 @property(nonatomic, retain)UIViewController *currController;
+@property (nonatomic,retain) NSMutableArray *adverArray;
+@property (nonatomic,retain) NSArray *newAdverList;
 -(void)ViewFrashData;
 @end

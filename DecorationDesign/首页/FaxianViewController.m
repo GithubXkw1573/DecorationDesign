@@ -7,6 +7,7 @@
 //
 
 #import "FaxianViewController.h"
+#import "AdvertisingController.h"
 
 @interface FaxianViewController ()
 
@@ -290,28 +291,36 @@
     }
 }
 
--(void)NewsTableViewBtnPressed:(NSArray *)dic
+-(void)NewsTableViewBtnPressed:(NSArray *)dic isAdver:(BOOL)adver
 {
-    if ([[UserInfo shared].m_plateType isEqualToString:@"S"]) {
-        DesignerViewController *designer = [[DesignerViewController alloc] init];
-        designer.m_array = dic;
-        [self.navigationController pushViewController:designer animated:YES];
-        [designer release];
-    }else if ([[UserInfo shared].m_plateType isEqualToString:@"J"]){
-        CompanyViewController *company = [[CompanyViewController alloc] init];
-        company.m_array = dic;
-        [self.navigationController pushViewController:company animated:YES];
-        [company release];
-    }else if ([[UserInfo shared].m_plateType isEqualToString:@"C"]){
-        CailiaoViewController *cailiao = [[CailiaoViewController alloc] init];
-        cailiao.m_array = dic;
-        [self.navigationController pushViewController:cailiao animated:YES];
-        [cailiao release];
-    }else if ([[UserInfo shared].m_plateType isEqualToString:@"L"]){
-        LoupanViewController *loupan = [[LoupanViewController alloc]init];
-        loupan.m_array = dic;
-        [self.navigationController pushViewController:loupan animated:YES];
-        [loupan release];
+    if (adver) {
+        AdvertisingController *adver = [[AdvertisingController alloc] init];
+        adver.m_array = dic;
+        adver.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:adver animated:YES];
+        [adver release];
+    }else{
+        if ([[UserInfo shared].m_plateType isEqualToString:@"S"]) {
+            DesignerViewController *designer = [[DesignerViewController alloc] init];
+            designer.m_array = dic;
+            [self.navigationController pushViewController:designer animated:YES];
+            [designer release];
+        }else if ([[UserInfo shared].m_plateType isEqualToString:@"J"]){
+            CompanyViewController *company = [[CompanyViewController alloc] init];
+            company.m_array = dic;
+            [self.navigationController pushViewController:company animated:YES];
+            [company release];
+        }else if ([[UserInfo shared].m_plateType isEqualToString:@"C"]){
+            CailiaoViewController *cailiao = [[CailiaoViewController alloc] init];
+            cailiao.m_array = dic;
+            [self.navigationController pushViewController:cailiao animated:YES];
+            [cailiao release];
+        }else if ([[UserInfo shared].m_plateType isEqualToString:@"L"]){
+            LoupanViewController *loupan = [[LoupanViewController alloc]init];
+            loupan.m_array = dic;
+            [self.navigationController pushViewController:loupan animated:YES];
+            [loupan release];
+        }
     }
     
 }

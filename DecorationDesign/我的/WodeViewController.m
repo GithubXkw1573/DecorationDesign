@@ -59,7 +59,7 @@
     m_tableView.dataSource =self;
     m_tableView.backgroundColor=[UIColor clearColor];
     UIImageView *backImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 178)];
-    backImageView.image = [UIImage imageNamed:@"gr_bg_02.png"];
+    backImageView.image = [UIImage imageNamed:@"GR_bg.png"];
     backImageView.backgroundColor = [UIColor clearColor];
     m_tableView.backgroundView =backImageView;
     [backImageView release];

@@ -29,12 +29,13 @@
 {
     NSURL *url = [NSURL URLWithString:MineURL];
     HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
-    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"PLATE-COLUMN-AD",@"JUDGEMETHOD",self.plateType,@"PLATETYPE",self.plateCode,@"PLATECODE", nil];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"GET_ADVERTMENT",@"JUDGEMETHOD",self.plateType,@"PLATETYPE",self.plateCode,@"PLATECODE",@"1",@"PAGEMARK",@"0",@"GETTIMES", nil];
     [request setCompletionBlock:^(NSDictionary *result){
         if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
             //调用成功
-            NSArray *list = [result objectForKey:@"PLATEADLISTINFO"];
-            self.guanggaoArray = [[[NSMutableArray alloc] initWithArray:list] autorelease];
+            NSArray *list = [result objectForKey:@"ADVERTLISTINFO"];
+            self.guanggaoArray = [[[NSMutableArray alloc] init] autorelease];
+            [self doWithData:list];
             [self reloadComponent];
         }else {
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
@@ -45,6 +46,20 @@
         NSLog(@"网络错误");
     }];
     [request startRequest];
+}
+
+-(void)doWithData:(NSArray*)list
+{
+    for (NSInteger i=0; i<list.count; i++) {
+        NSArray *arr = [list objectAtIndex:i];
+        NSString *urlStings = [[list objectAtIndex:i] objectAtIndex:3];
+        NSString *textStrigs = [[list objectAtIndex:i] objectAtIndex:4];
+        NSArray *aArray = [urlStings componentsSeparatedByString:@"&::&"];
+        NSArray *bArray = [textStrigs componentsSeparatedByString:@"&::&"];
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[aArray objectAtIndex:0],@"imagename",[bArray objectAtIndex:0],@"desc",arr,@"arr", nil];
+        [self.guanggaoArray addObject:dic];
+    }
+    
 }
 
 -(void)initComponent
@@ -133,7 +148,7 @@
         UIImageView *mypageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
         mypageview.tag = 33;
         mypageview.userInteractionEnabled = YES;
-        [mypageview setImageWithURL:[NSURL URLWithString:[[guanggaoArray objectAtIndex:page2] objectAtIndex:1]] placeholderImage:[UIImage imageNamed:@"首页切换图1.png"]];
+        [mypageview setImageWithURL:[NSURL URLWithString:[[guanggaoArray objectAtIndex:page2] objectForKey:@"imagename"]] placeholderImage:[UIImage imageNamed:@"首页切换图1.png"]];
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
         [mypageview addGestureRecognizer:tap];
         [tap release];
@@ -222,9 +237,7 @@
     if (tap.view.tag == 33) {
         AdvertisingController *adver = [[AdvertisingController alloc] init];
         adver.hidesBottomBarWhenPushed = YES;
-        adver.plateCode = self.plateCode;
-        adver.plateType = self.plateType;
-        adver.pageMark = [NSString stringWithFormat:@"%li",self.pageControl.currentPage];
+        adver.m_array = [[guanggaoArray objectAtIndex:self.pageControl.currentPage] objectForKey:@"arr"];
         [self.currController.navigationController pushViewController:adver animated:YES];
         [adver release];
     }

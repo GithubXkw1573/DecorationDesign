@@ -11,7 +11,6 @@
 #import "FaxianViewController.h"
 #import "PicTextButton.h"
 #import "DesignerViewController.h"
-#import "ZuopingLookViewController.h"
 #import "ImageLooker.h"
 #import "LoginViewController.h"
 #import "ShareView.h"

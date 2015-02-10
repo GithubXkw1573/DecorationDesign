@@ -13,7 +13,7 @@
 @end
 
 @implementation AdvertisingController
-@synthesize imagescrollView,viewControllers,guanggaoArray,productId,produceName,commentNum;
+@synthesize imagescrollView,viewControllers,guanggaoArray,productId,produceName,commentNum,m_array;
 
 - (void)viewDidLoad
 {
@@ -25,7 +25,9 @@
     
     [self initDescView];
     
-    [self loadData];
+    [self doWithData:m_array];
+    [self reloadComponent];
+    [self initBottomView];
     
     
 }

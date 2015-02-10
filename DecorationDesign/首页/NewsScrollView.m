@@ -77,7 +77,7 @@
     }
 }
 
--(void)loadScrollViewWithPage:(int)page
+-(void)loadScrollViewWithPage:(NSInteger)page
 {
     if (page < 0) return;
     if (page >= kNumberOfPages) return;
@@ -110,9 +110,9 @@
     }
 }
 
--(void)NewsTableViewBtnPressed:(NSArray *)dic
+-(void)NewsTableViewBtnPressed:(NSArray *)dic isAdver:(BOOL)adver
 {
-    [t_delegate NewsTableViewBtnPressed:dic];
+    [t_delegate NewsTableViewBtnPressed:dic isAdver:adver];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -160,7 +160,7 @@
 }
 
 - (void)changePage:(id)sender {
-    int page = pageControl.currentPage;
+    NSInteger page = pageControl.currentPage;
     // load the visible page and the page on either side of it (to avoid flashes when the user starts scrolling)
     [self loadScrollViewWithPage:page - 1];
     [self loadScrollViewWithPage:page];

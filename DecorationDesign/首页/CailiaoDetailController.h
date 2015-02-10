@@ -21,6 +21,7 @@
     NSArray *l_jsonArr;
     CGFloat inroduceHeight;
     UITextField *textField;
+    NSString *commentNum;
 }
 @property (nonatomic,retain) NSString *cailiaomerchantId;
 @property (nonatomic,retain) NSString *cailiaomerchant;
@@ -29,4 +30,5 @@
 @property (nonatomic,retain) NSArray *m_jsonArr;
 @property (nonatomic,retain) NSArray *n_jsonArr;
 @property (nonatomic,retain) NSArray *l_jsonArr;
+@property (nonatomic,retain) NSString *commentNum;
 @end

@@ -80,29 +80,11 @@
         [self.contentView addSubview:yuyuecishuValue];
         [yuyuecishuValue release];
         
-//        UILabel *qiandancishu = [[UILabel alloc] initWithFrame:CGRectMake(206, 54, 60, 18)];
-//        qiandancishu.text = @"签单次数:";
-//        qiandancishu.backgroundColor = [UIColor clearColor];
-//        qiandancishu.font = font(13);
-//        qiandancishu.textColor = [UIColor grayColor];
-//        [self.contentView addSubview:qiandancishu];
-//        [qiandancishu release];
-//        UILabel *qiandancishuValue = [[UILabel alloc] initWithFrame:CGRectMake(266, 54, 50, 18)];
-//        qiandancishuValue.text = @"88";
-//        qiandancishuValue.backgroundColor = [UIColor clearColor];
-//        qiandancishuValue.font = font(13);
-//        self.signedLabel = qiandancishuValue;
-//        qiandancishuValue.textColor = [UIColor grayColor];
-//        [self.contentView addSubview:qiandancishuValue];
-//        [qiandancishuValue release];
+        UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(8, 84, applicationwidth-16, 0.5)];
+        line.image = [UIImage imageNamed:@"线"];
+        [self.contentView addSubview:line];
+        [line release];
         
-        
-//        UIButton *guanzhu = [[UIButton alloc] initWithFrame:CGRectMake(250, 10, 60, 25)];
-//        guanzhu.backgroundColor = [UIColor clearColor];
-//        [guanzhu setImage:[UIImage imageNamed:@"guanzhu_btn2"] forState:UIControlStateNormal];
-//        [guanzhu addTarget:self action:@selector(guanzhuClicked:) forControlEvents:UIControlEventTouchUpInside];
-//        [self.contentView addSubview:guanzhu];
-//        [guanzhu release];
     }
     return self;
 }

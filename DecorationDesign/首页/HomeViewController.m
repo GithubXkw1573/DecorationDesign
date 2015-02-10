@@ -73,18 +73,8 @@
 {
     self.view.backgroundColor=[UIColor colorWithRed:35/255.f green:11/255.f blue:114/255.f alpha:1.0f];
     
-    NSDictionary *dic1 = [NSDictionary dictionaryWithObjectsAndKeys:@"家装样图1",@"imagename",@"高端大气，舒适，温馨",@"desc",@"许开伟",@"author", nil];
-    NSDictionary *dic4 = [NSDictionary dictionaryWithObjectsAndKeys:@"首页切换图1",@"imagename",@"低调奢华，有内涵",@"desc",@"周星星",@"author", nil];
-    NSDictionary *dic2 = [NSDictionary dictionaryWithObjectsAndKeys:@"首页切换图2",@"imagename",@"活泼乱动，真可爱",@"desc",@"余文乐",@"author", nil];
-    NSDictionary *dic3 = [NSDictionary dictionaryWithObjectsAndKeys:@"首页切换图3",@"imagename",@"简约委婉，小清新",@"desc",@"陈奕迅",@"author", nil];
-    NSDictionary *dic5 = [NSDictionary dictionaryWithObjectsAndKeys:@"首页切换图4",@"imagename",@"霸气侧漏，小清新",@"desc",@"斯琴高娃",@"author", nil];
-    self.guanggaoArray = [NSMutableArray arrayWithObjects:dic1,dic2,dic3,dic4,dic5, nil];
-    kNumberOfPages=[guanggaoArray count];
-    self.designerArray = [[NSMutableArray alloc] init];
-    for (int i=0; i<10; i++) {
-        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"周新星",@"name",@"设计师头像1",@"image",@"1202",@"id", nil];
-        [self.designerArray addObject:dic];
-    }
+    kNumberOfPages = 0;
+    currPage = 0;
     
     m_tableView =[[UITableView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, applicationheight-29) style:UITableViewStylePlain];
     m_tableView.delegate =self;
@@ -93,8 +83,6 @@
     m_tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
     [self.view addSubview:m_tableView];
     
-    
-    
     MBProgressHUD *mbprogress = [[MBProgressHUD alloc] initWithWindow:[UIApplication sharedApplication].keyWindow];
     mbprogress.tag = 5666;
     self.homeMBProgress = mbprogress;
@@ -102,7 +90,84 @@
     [[UIApplication sharedApplication].keyWindow addSubview:mbprogress];
     [mbprogress hide:YES];
     [mbprogress setLabelText:@"加载中"];
+
+    [self loadContent];
+}
+
+-(void)loadContent
+{
+    NSURL *url = [NSURL URLWithString:MineURL];
+    HessianFormDataRequest *request = [[[HessianFormDataRequest alloc] initWithURL:url] autorelease];
+    request.postData = [NSDictionary dictionaryWithObjectsAndKeys:@"GET_ADVERTMENT",@"JUDGEMETHOD",@"0",@"PLATETYPE",@"0",@"PLATECODE",@"1",@"PAGEMARK",@"0",@"GETTIMES", nil];
+    [request setCompletionBlock:^(NSDictionary *result){
+        if ([[result objectForKey:@"ERRORCODE"] isEqualToString:@"0000"]) {
+            //调用成功
+            NSArray *list = [result objectForKey:@"ADVERTLISTINFO"];
+            self.guanggaoArray = [[[NSMutableArray alloc] init] autorelease];
+            [self doWithData:list];
+            [self reloadComponent];
+        }else {
+            NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
+            NSLog(@"%@",errrDesc);
+        }
+    }];
+    [request setFailedBlock:^{
+        NSLog(@"网络错误");
+    }];
+    [request startRequest];
+}
+
+-(void)doWithData:(NSArray*)list
+{
+    for (NSInteger i=0; i<list.count; i++) {
+        NSArray *arr = [list objectAtIndex:i];
+        NSString *urlStings = [[list objectAtIndex:i] objectAtIndex:3];
+        NSString *textStrigs = [[list objectAtIndex:i] objectAtIndex:4];
+        NSArray *aArray = [urlStings componentsSeparatedByString:@"&::&"];
+        NSArray *bArray = [textStrigs componentsSeparatedByString:@"&::&"];
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:[aArray objectAtIndex:0],@"imagename",[bArray objectAtIndex:0],@"desc",arr,@"arr", nil];
+        [self.guanggaoArray addObject:dic];
+    }
     
+}
+
+-(void)reloadComponent
+{
+    kNumberOfPages=[guanggaoArray count];
+    
+    NSMutableArray *controllers = [[NSMutableArray alloc] init];
+    for (int i = 0; i < kNumberOfPages; i++) {
+        [controllers addObject:[NSNull null]];
+    }
+    self.viewControllers = controllers;
+    [controllers release];
+    
+    for (int i=0; i<[viewControllers count]; i++) {
+        UIView *controller = [viewControllers objectAtIndex:i];
+        if ((NSNull *)controller == [NSNull null]) {
+            
+        }
+        else
+        {
+            [controller removeFromSuperview];
+            controller=nil;
+        }
+    }
+    
+    imagescrollView.contentSize = CGSizeMake(imagescrollView.frame.size.width * kNumberOfPages, imagescrollView.frame.size.height);
+    
+    pageControl.numberOfPages = kNumberOfPages;
+    pageControl.currentPage = 0;
+    
+    if (kNumberOfPages>=2) {
+        [imagescrollView scrollRectToVisible:CGRectMake(0, 0, applicationwidth, imagescrollView.frame.size.height) animated:YES];
+        [self loadScrollViewWithPage:0];
+        [self loadScrollViewWithPage:1];
+    }
+    else if(kNumberOfPages==1){
+        [imagescrollView scrollRectToVisible:CGRectMake(0, 0, applicationwidth, imagescrollView.frame.size.height) animated:YES];
+        [self loadScrollViewWithPage:0];
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -144,7 +209,6 @@
             
             //新建一个定时器
             [NSTimer scheduledTimerWithTimeInterval:3 target:self selector:@selector(changePic) userInfo:nil repeats:YES];
-            
             
             UIPageControl *pageCon=[[UIPageControl alloc]initWithFrame:CGRectMake(135*widthRate, 60, 50, 20)];
             pageCon.backgroundColor = [UIColor clearColor];
@@ -337,12 +401,13 @@
     if ((NSNull *)controller == [NSNull null]) {
         controller = [[UIView alloc] init];
         
-        UIButton *mypageview=[[UIButton alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
-        NSLog(@"image:%@",[[guanggaoArray objectAtIndex:page2] objectForKey:@"imagename"]);
-        [mypageview setImage:[UIImage imageNamed:[[guanggaoArray objectAtIndex:page2] objectForKey:@"imagename"]] forState:UIControlStateNormal];
+        UIImageView *mypageview=[[UIImageView alloc]initWithFrame:CGRectMake(0, 0, applicationwidth, 160*widthRate)];
         mypageview.tag = 33;
-        [mypageview addTarget:self action:@selector(buttonClicked3:) forControlEvents:UIControlEventTouchUpInside];
-        //[mypageview setImageWithURL:[NSURL URLWithString:[[guanggaoArray objectAtIndex:page2] objectForKey:@"imageUrl"]] placeholderImage:[UIImage imageNamed:@"默认大.png"]];
+        mypageview.userInteractionEnabled = YES;
+        [mypageview setImageWithURL:[NSURL URLWithString:[[guanggaoArray objectAtIndex:page2] objectForKey:@"imagename"]] placeholderImage:[UIImage imageNamed:@"首页切换图1.png"]];
+        UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClick:)];
+        [mypageview addGestureRecognizer:tap];
+        [tap release];
         [controller addSubview:mypageview];
         [mypageview release];
         
@@ -359,15 +424,15 @@
         descLabel.textColor = [UIColor whiteColor];
         [zhezhaoView addSubview:descLabel];
         [descLabel release];
-        
-        UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.4*applicationwidth+10, 0, 0.3*applicationwidth, 30)];
-        authorLabel.backgroundColor = [UIColor clearColor];
-        authorLabel.text = [NSString stringWithFormat:@"--%@",[[guanggaoArray objectAtIndex:page2] objectForKey:@"author"]];
-        authorLabel.font = font(12);
-        authorLabel.textAlignment = UITextAlignmentCenter;
-        authorLabel.textColor = [UIColor whiteColor];
-        [zhezhaoView addSubview:authorLabel];
-        [authorLabel release];
+//        
+//        UILabel *authorLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.4*applicationwidth+10, 0, 0.3*applicationwidth, 30)];
+//        authorLabel.backgroundColor = [UIColor clearColor];
+//        authorLabel.text = [NSString stringWithFormat:@"--%@",[[guanggaoArray objectAtIndex:page2] objectForKey:@"author"]];
+//        authorLabel.font = font(12);
+//        authorLabel.textAlignment = UITextAlignmentCenter;
+//        authorLabel.textColor = [UIColor whiteColor];
+//        [zhezhaoView addSubview:authorLabel];
+//        [authorLabel release];
         
         [viewControllers replaceObjectAtIndex:page2 withObject:controller];
         [controller release];
@@ -416,6 +481,7 @@
     if (currPage>guanggaoArray.count-1) {
         currPage=0;
     }
+    pageControl.currentPage = currPage;
     [self loadScrollViewWithPage:currPage - 1];
     [self loadScrollViewWithPage:currPage];
     [self loadScrollViewWithPage:currPage + 1];
@@ -440,7 +506,7 @@
     pageControlUsed = YES;
 }
 
--(void)buttonClicked3:(UIButton*)btn
+-(void)tapClick:(UITapGestureRecognizer*)tap
 {
     //图片浏览点击事件
 //    ZuopingLookViewController *zuopingLookViewController = [[ZuopingLookViewController alloc] init];
@@ -449,9 +515,7 @@
     
     AdvertisingController *adver = [[AdvertisingController alloc] init];
     adver.hidesBottomBarWhenPushed = YES;
-    adver.plateCode = @"0";
-    adver.plateType = @"0";
-    adver.pageMark = @"0";
+    adver.m_array = [[guanggaoArray objectAtIndex:self.pageControl.currentPage] objectForKey:@"arr"];
     [self.navigationController pushViewController:adver animated:YES];
     [adver release];
     

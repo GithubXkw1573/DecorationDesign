@@ -16,7 +16,7 @@
 @end
 
 @implementation CailiaoDetailController
-@synthesize m_array,m_jsonArr,n_jsonArr,l_jsonArr,productId;
+@synthesize m_array,m_jsonArr,n_jsonArr,l_jsonArr,productId,commentNum;
 
 - (void)viewDidLoad
 {
@@ -124,7 +124,7 @@
             self.m_jsonArr = [result objectForKey:@"GOODSBASEINFO"];
             self.n_jsonArr = [result objectForKey:@"GOODSBASEPARAM"];
             self.l_jsonArr = [result objectForKey:@"GOODSMANYPICTURE"];
-            
+            self.commentNum = [result objectForKey:@"COMMENTNUMS"];
         }else {
             NSString *errrDesc = [result objectForKey:@"ERRORDESTRIPTION"];
             NSLog(@"%@",errrDesc);
@@ -386,7 +386,7 @@
     [topView release];
     
     UIButton *detailBtn = [[UIButton alloc] initWithFrame:CGRectMake(250, 10, 60, 30)];
-    [detailBtn setTitle:[NSString stringWithFormat:@"%@",@"32"] forState:UIControlStateNormal];
+    [detailBtn setTitle:[NSString stringWithFormat:@"%@",commentNum] forState:UIControlStateNormal];
     [detailBtn setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     detailBtn.backgroundColor = [UIColor clearColor];
     detailBtn.titleLabel.font = font(13);
@@ -409,7 +409,7 @@
             comment.worksId = productId;
             comment.worksDate = @"20150215102323";
             comment.commentTitle = [m_jsonArr objectAtIndex:1];
-            comment.commentNums = @"32";
+            comment.commentNums = commentNum;
             comment.worksType = @"C";
             [self.navigationController pushViewController:comment animated:YES];
             [comment release];
