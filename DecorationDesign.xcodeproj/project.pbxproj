@@ -251,7 +251,6 @@
 		D2EA1C6A1A89EB460059B7E4 /* ZP_tab_icon2.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EA1C661A89EB460059B7E4 /* ZP_tab_icon2.png */; };
 		D2EA1C6B1A89EB460059B7E4 /* ZP_tab_icon3.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EA1C671A89EB460059B7E4 /* ZP_tab_icon3.png */; };
 		D2EA1C6C1A89EB460059B7E4 /* ZP_tab_icon4.png in Resources */ = {isa = PBXBuildFile; fileRef = D2EA1C681A89EB460059B7E4 /* ZP_tab_icon4.png */; };
-		D2ED0BB71A1C2D7C0026EB4F /* 黑色半透明.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ED0BB61A1C2D7C0026EB4F /* 黑色半透明.png */; };
 		D2ED0BCB1A1C34400026EB4F /* 首页切换图1.png in Resources */ = {isa = PBXBuildFile; fileRef = D2ED0BC01A1C34400026EB4F /* 首页切换图1.png */; };
 		D2F222801A270AD7008295D3 /* CWDistantHessianObject+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2226C1A270AD7008295D3 /* CWDistantHessianObject+Private.m */; };
 		D2F222811A270AD7008295D3 /* CWDistantHessianObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D2F2226E1A270AD7008295D3 /* CWDistantHessianObject.m */; };
@@ -627,7 +626,6 @@
 		D2EA1C661A89EB460059B7E4 /* ZP_tab_icon2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZP_tab_icon2.png; sourceTree = "<group>"; };
 		D2EA1C671A89EB460059B7E4 /* ZP_tab_icon3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZP_tab_icon3.png; sourceTree = "<group>"; };
 		D2EA1C681A89EB460059B7E4 /* ZP_tab_icon4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ZP_tab_icon4.png; sourceTree = "<group>"; };
-		D2ED0BB61A1C2D7C0026EB4F /* 黑色半透明.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "黑色半透明.png"; sourceTree = "<group>"; };
 		D2ED0BC01A1C34400026EB4F /* 首页切换图1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "首页切换图1.png"; sourceTree = "<group>"; };
 		D2F2226B1A270AD7008295D3 /* CWDistantHessianObject+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CWDistantHessianObject+Private.h"; sourceTree = "<group>"; };
 		D2F2226C1A270AD7008295D3 /* CWDistantHessianObject+Private.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CWDistantHessianObject+Private.m"; sourceTree = "<group>"; };
@@ -858,7 +856,6 @@
 				D22EB7B11A43D76B00B65F62 /* 关闭.png */,
 				D27907091A1F169F0094971D /* 返回.png */,
 				D279070A1A1F169F0094971D /* 导航搜索.png */,
-				D2ED0BB61A1C2D7C0026EB4F /* 黑色半透明.png */,
 				D2501DAE1A1ADF3300B18DD7 /* 上箭头.png */,
 				D2501DAF1A1ADF3300B18DD7 /* 下箭头.png */,
 				D21EC4851A19EB7400317D0C /* beep-beep.caf */,
@@ -1678,7 +1675,6 @@
 				D2325B531A35938500C7BA63 /* Pinglun_img4.png in Resources */,
 				D2EA1C691A89EB460059B7E4 /* ZP_tab_icon1.png in Resources */,
 				D21EC49E1A19EB7400317D0C /* 初次登录4长.png in Resources */,
-				D2ED0BB71A1C2D7C0026EB4F /* 黑色半透明.png in Resources */,
 				D2BF66631A1EE031001DAFBC /* GR_icon3.png in Resources */,
 				D21EC4971A19EB7400317D0C /* 初次登录1.png in Resources */,
 				D2325B5D1A35938500C7BA63 /* Sjs_img1.png in Resources */,

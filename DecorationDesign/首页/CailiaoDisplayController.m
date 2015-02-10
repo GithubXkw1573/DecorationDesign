@@ -45,7 +45,7 @@
     [leftbtnview setBackgroundColor:[UIColor clearColor]];
     
     UIButton *leftbtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    leftbtn.frame=CGRectMake(-10, 0, 60, 44);
+    leftbtn.frame=CGRectMake(-20, 0, 60, 44);
     leftbtn.tag=1;
     [leftbtn setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
     [leftbtn addTarget:self action:@selector(designerbackViewControllerBtnPressed:) forControlEvents:UIControlEventTouchUpInside];

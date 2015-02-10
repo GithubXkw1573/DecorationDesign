@@ -68,7 +68,7 @@
     [leftbtnview setBackgroundColor:[UIColor clearColor]];
     
     UIButton *leftbtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    leftbtn.frame=CGRectMake(-10, 0, 60, 44);
+    leftbtn.frame=CGRectMake(-20, 0, 60, 44);
     leftbtn.tag =2;
     [leftbtn setBackgroundImage:[UIImage imageNamed:@"返回.png"] forState:UIControlStateNormal];
     [leftbtn addTarget:self action:@selector(AdvertiingBackBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -84,7 +84,7 @@
     [rightbtnview setBackgroundColor:[UIColor clearColor]];
     
     UIButton *rightbtn=[UIButton buttonWithType:UIButtonTypeCustom];
-    rightbtn.frame=CGRectMake(0, 0, 60, 44);
+    rightbtn.frame=CGRectMake(10, 0, 60, 44);
     rightbtn.tag = 3;
     [rightbtn setBackgroundImage:[UIImage imageNamed:@"loup_4_btn.png"] forState:UIControlStateNormal];
     [rightbtn addTarget:self action:@selector(AdvertiingBackBtnPressed:) forControlEvents:UIControlEventTouchUpInside];
