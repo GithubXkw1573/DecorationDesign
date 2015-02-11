@@ -39,7 +39,7 @@
     UILabel *titlelabel=[[UILabel alloc]initWithFrame:CGRectMake(0, 0, 100, 44)];
     titlelabel.backgroundColor=[UIColor clearColor];
     titlelabel.textColor=[UIColor whiteColor];
-    titlelabel.text=[NSString stringWithFormat:@"%@",@"楼盘专题"];
+    titlelabel.text=[NSString stringWithFormat:@"%@",[[m_array objectAtIndex:3] isEqualToString:@"0"]?@"楼盘专题":@"楼盘方案"];
     titlelabel.textAlignment=UITextAlignmentCenter;
     titlelabel.font=[UIFont fontWithName:@"Helvetica-Bold" size:19];
     self.navigationItem.titleView=titlelabel;

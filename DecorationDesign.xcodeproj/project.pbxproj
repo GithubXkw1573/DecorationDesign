@@ -241,6 +241,7 @@
 		D2C0BEE51A6F847E00C42311 /* HomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C0BED11A6F847E00C42311 /* HomeViewController.m */; };
 		D2C912681A19D90400394076 /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2C912671A19D90400394076 /* libz.1.1.3.dylib */; };
 		D2CC66481A4A58D800608604 /* xiangqing_btn_03.png in Resources */ = {isa = PBXBuildFile; fileRef = D2CC66471A4A58D800608604 /* xiangqing_btn_03.png */; };
+		D2D539C81A8AFF8200FA4896 /* fangan_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = D2D539C71A8AFF8200FA4896 /* fangan_icon.png */; };
 		D2DD97B51A50F00E00BFD5D8 /* 分享.png in Resources */ = {isa = PBXBuildFile; fileRef = D2DD97B41A50F00E00BFD5D8 /* 分享.png */; };
 		D2DF94A21A6F850F0065EBCF /* DistributeController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DF94A11A6F850F0065EBCF /* DistributeController.m */; };
 		D2E158A01A5235510044DB13 /* UIView+NameTag.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E1589F1A5235510044DB13 /* UIView+NameTag.m */; };
@@ -614,6 +615,7 @@
 		D2C0BED31A6F847E00C42311 /* LoupanZhuantiController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoupanZhuantiController.h; path = "DecorationDesign/首页/LoupanZhuantiController.h"; sourceTree = SOURCE_ROOT; };
 		D2C912671A19D90400394076 /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
 		D2CC66471A4A58D800608604 /* xiangqing_btn_03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xiangqing_btn_03.png; sourceTree = "<group>"; };
+		D2D539C71A8AFF8200FA4896 /* fangan_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fangan_icon.png; sourceTree = "<group>"; };
 		D2DD97B41A50F00E00BFD5D8 /* 分享.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "分享.png"; sourceTree = "<group>"; };
 		D2DF94A01A6F850F0065EBCF /* DistributeController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DistributeController.h; path = "DecorationDesign/发布/DistributeController.h"; sourceTree = SOURCE_ROOT; };
 		D2DF94A11A6F850F0065EBCF /* DistributeController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DistributeController.m; path = "DecorationDesign/发布/DistributeController.m"; sourceTree = SOURCE_ROOT; };
@@ -910,6 +912,7 @@
 				D2325A9F1A35938400C7BA63 /* loup_2_img1.png */,
 				D2325AA01A35938400C7BA63 /* loup_2_img2.png */,
 				D2325AA21A35938400C7BA63 /* loup_3_img1.png */,
+				D2D539C71A8AFF8200FA4896 /* fangan_icon.png */,
 				D2325AA71A35938400C7BA63 /* loup_3_zt.png */,
 				D2325AA81A35938400C7BA63 /* loup_4_btn.png */,
 				D2325AA91A35938400C7BA63 /* loup_4_btn2.png */,
@@ -1712,6 +1715,7 @@
 				D2325AFF1A35938500C7BA63 /* CAIxiang_img1.png in Resources */,
 				D2A286531A6F87BD0009E48E /* blackArrow@2x.png in Resources */,
 				D27DD33C1A6CB8E500CAEC5B /* search_btn.png in Resources */,
+				D2D539C81A8AFF8200FA4896 /* fangan_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

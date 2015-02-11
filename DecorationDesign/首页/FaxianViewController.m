@@ -303,21 +303,25 @@
         if ([[UserInfo shared].m_plateType isEqualToString:@"S"]) {
             DesignerViewController *designer = [[DesignerViewController alloc] init];
             designer.m_array = dic;
+            designer.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:designer animated:YES];
             [designer release];
         }else if ([[UserInfo shared].m_plateType isEqualToString:@"J"]){
             CompanyViewController *company = [[CompanyViewController alloc] init];
             company.m_array = dic;
+            company.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:company animated:YES];
             [company release];
         }else if ([[UserInfo shared].m_plateType isEqualToString:@"C"]){
             CailiaoViewController *cailiao = [[CailiaoViewController alloc] init];
             cailiao.m_array = dic;
+            cailiao.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:cailiao animated:YES];
             [cailiao release];
         }else if ([[UserInfo shared].m_plateType isEqualToString:@"L"]){
             LoupanViewController *loupan = [[LoupanViewController alloc]init];
             loupan.m_array = dic;
+            loupan.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:loupan animated:YES];
             [loupan release];
         }

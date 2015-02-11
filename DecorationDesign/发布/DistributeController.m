@@ -236,7 +236,7 @@
         if (cell==nil) {
             cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifierCell] autorelease];
             cell.backgroundColor = [UIColor clearColor];
-            UIButton *fabuBtn = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 300, 40)];
+            UIButton *fabuBtn = [[UIButton alloc] initWithFrame:CGRectMake(20, 10, 280, 40)];
             [fabuBtn setImage:[UIImage imageNamed:@"fabu_btn"] forState:UIControlStateNormal];
             fabuBtn.backgroundColor = [UIColor clearColor];
             [fabuBtn addTarget:self action:@selector(buttonClicked:) forControlEvents:UIControlEventTouchUpInside];

@@ -31,6 +31,8 @@
         if(_image.size.width > self.frame.size.width){
             origin = self.frame.size.width/_image.size.width;
             imageView_Y = _image.size.height*origin;
+        }else{
+            imageView_Y = _image.size.height;
         }
         myImageView = [[UIImageView alloc]initWithFrame:CGRectMake((self.frame.size.width-imageView_X)/2, (self.frame.size.height-imageView_Y)/2, imageView_X, imageView_Y)];
         if(self.myImageView==nil)

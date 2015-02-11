@@ -252,6 +252,7 @@
             jingping.text = [NSString stringWithFormat:@"%@ 评论",commentNums];
             jingping.backgroundColor = [UIColor clearColor];
             jingping.font = font(13);
+            totalCommentLabel = jingping;
             jingping.textColor = [UIColor grayColor];
             [cell.contentView addSubview:jingping];
             [jingping release];
@@ -554,6 +555,7 @@
                 [n_jsonArr replaceObjectAtIndex:2 withObject:[NSString stringWithFormat:@"%li",num]];
                 support3.text = [NSString stringWithFormat:@"%li 不满意",num];
             }
+            totalCommentLabel.text = [NSString stringWithFormat:@"%li 评论",[commentNums integerValue]+1];
             [self startSupportComment:commentSectect];
         }];
     }

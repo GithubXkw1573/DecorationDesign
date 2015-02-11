@@ -29,6 +29,7 @@
     UILabel *support1;
     UILabel *support2;
     UILabel *support3;
+    UILabel *totalCommentLabel;
 }
 @property (nonatomic,retain) NSArray *m_array;
 @property (nonatomic,retain) NSArray *m_jsonArr;

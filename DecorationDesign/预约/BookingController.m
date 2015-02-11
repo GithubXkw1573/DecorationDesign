@@ -49,7 +49,13 @@
 
 -(void)initComponents
 {
-    UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, 268)];
+    CGFloat backHeight = 0;
+    if (IS_IPHONE5) {
+        backHeight = 268;
+    }else{
+        backHeight = 268-88;
+    }
+    UIImageView *imageV = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, applicationwidth, backHeight)];
     backImageView= imageV;
     imageV.backgroundColor = [UIColor clearColor];
     imageV.image = [UIImage imageNamed:@"yuyue_img_02"];
@@ -105,7 +111,7 @@
             [shejishiBtn setTitle:@"预约设计师" forState:UIControlStateNormal];
             [shejishiBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [shejishiBtn setTitleEdgeInsets:UIEdgeInsetsMake(70, 0, 0, 0)];
-            shejishiBtn.titleLabel.font = font(18);
+            shejishiBtn.titleLabel.font = font(16);
             [shejishiBtn setBackgroundImage:[UIImage imageNamed:@"yuyue_btn_05"] forState:UIControlStateNormal];
             shejishiBtn.backgroundColor = [UIColor clearColor];
             shejishiBtn.tag = 11;
@@ -117,7 +123,7 @@
             [gongsiBtn setTitle:@"预约装修公司" forState:UIControlStateNormal];
             [gongsiBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
             [gongsiBtn setTitleEdgeInsets:UIEdgeInsetsMake(70, 0, 0, 0)];
-            gongsiBtn.titleLabel.font = font(18);
+            gongsiBtn.titleLabel.font = font(16);
             [gongsiBtn setBackgroundImage:[UIImage imageNamed:@"yuyue_btn_07"] forState:UIControlStateNormal];
             gongsiBtn.backgroundColor = [UIColor clearColor];
             gongsiBtn.tag = 12;
@@ -133,7 +139,7 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row==0) {
-        return 268;
+        return IS_IPHONE5?268:268-88;
     }else{
         return 200;
     }

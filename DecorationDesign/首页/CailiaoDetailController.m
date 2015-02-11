@@ -10,6 +10,7 @@
 #import "ShareView.h"
 #import "CommentViewController.h"
 #import "LoginViewController.h"
+#import "ImageLooker.h"
 
 @interface CailiaoDetailController ()
 
@@ -303,26 +304,56 @@
             [cell.contentView addSubview:lbl1];
             [lbl1 release];
             
+            UIScrollView *picScrollView=[[UIScrollView alloc] initWithFrame:CGRectMake(0, 40, applicationwidth, 70)];
+            picScrollView.backgroundColor=[UIColor clearColor];
+            myscrollView = picScrollView;
+            [cell.contentView addSubview:picScrollView];
+            [picScrollView release];
+            picScrollView.bounces=NO;
+            picScrollView.showsHorizontalScrollIndicator = NO;
+            picScrollView.showsVerticalScrollIndicator = NO;
+            picScrollView.scrollsToTop = NO;
+            picScrollView.delegate = self;
+            
             for (int i=0; i<[l_jsonArr count]; i++) {
-                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5+105*i, 40, 100, 70)];
+                UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5+105*i, 0, 100, 70)];
                 imageView.tag = 300+i;
+                imageView.userInteractionEnabled = YES;
                 imageView.backgroundColor = [UIColor clearColor];
-                [cell.contentView addSubview:imageView];
+                UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapClicked:)];
+                [imageView addGestureRecognizer:tap];
+                [tap release];
+                [picScrollView addSubview:imageView];
                 [imageView release];
             }
-            
+            picScrollView.contentSize = CGSizeMake(l_jsonArr.count*105+5, 70);
             UIImageView *line2 = [[UIImageView alloc] initWithFrame:CGRectMake(5, 119, 310, 1)];
             line2.image = [UIImage imageNamed:@"线"];
             [cell.contentView addSubview:line2];
             [line2 release];
         }
         for (int i=0; i<[l_jsonArr count]; i++) {
-            UIImageView *lbl = (UIImageView*)[cell.contentView viewWithTag:(300+i)];
+            UIImageView *lbl = (UIImageView*)[myscrollView viewWithTag:(300+i)];
             [lbl setImageWithURL:[NSURL URLWithString:[l_jsonArr objectAtIndex:i]] placeholderImage:[UIImage imageNamed:@"xlxq_img2"]];
         }
         return cell;
     }
     return nil;
+}
+
+-(void)tapClicked:(UITapGestureRecognizer *)tap
+{
+    NSInteger index = tap.view.tag;
+    UIImageView *lbl = (UIImageView*)[myscrollView viewWithTag:index];
+    UIWindow *window = [UIApplication sharedApplication].keyWindow;
+    ImageLooker *imgLooker = [[ImageLooker alloc] initWithFrame:window.frame withImage:lbl.image];
+    imgLooker.backgroundColor = [UIColor blackColor];
+    [window addSubview:imgLooker];
+    imgLooker.transform = CGAffineTransformMakeScale(0, 0);
+    [UIView animateWithDuration:0.35f animations:^{
+        imgLooker.transform = CGAffineTransformMakeScale(1, 1);
+    }];
+    [imgLooker release];
 }
 
 -(CGFloat)cellHeight

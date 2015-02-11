@@ -350,12 +350,12 @@
             addrTitle.font = bold_font(15);
             [cell.contentView addSubview:addrTitle];
             [addrTitle release];
-            myLabel *addr = [[myLabel alloc] initWithFrame:CGRectMake(90, 53, 240, 40)];
+            myLabel *addr = [[myLabel alloc] initWithFrame:CGRectMake(90, 53, 240, 20)];
             addr.font = font(14);
             addr.tag = 33;
             addr.verticalAlignment = VerticalAlignmentTop_m;
             addr.textColor = [UIColor grayColor];
-            addr.numberOfLines = 0;
+            addr.numberOfLines = 1;
             [cell.contentView addSubview:addr];
             [addr release];
         }
@@ -458,7 +458,8 @@
             }
             UIImageView *worksImage = (UIImageView*)[cell.contentView viewWithTag:40];
             UILabel *l_title = (UILabel*)[cell.contentView viewWithTag:41];
-            UILabel *pinpai = (UILabel*)[cell.contentView viewWithTag:42];;
+            UILabel *pinpai = (UILabel*)[cell.contentView viewWithTag:42];
+            UIButton *zhuantiBtn = (UIButton*)[cell.contentView viewWithTag:55];
             NSString *imageurl = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:0];
             [worksImage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"CAIliao_img1"]];
             l_title.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:1]];
@@ -469,7 +470,8 @@
             [attributedString1 addAttribute:NSParagraphStyleAttributeName value:paragraphStyle1 range:NSMakeRange(0, [descString length])];
             [pinpai setAttributedText:attributedString1];
             [pinpai sizeToFit];
-            
+            NSString *flag = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:3];
+            [zhuantiBtn setImage:[UIImage imageNamed:[flag isEqualToString:@"0"]?@"loup_3_zt":@"fangan_icon"] forState:UIControlStateNormal];
             //pinpai.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2]];
             return cell;
         }
@@ -485,7 +487,7 @@
     }else if (row==1){
         return 50+[self cellHeight:3];
     }else if (row==2){
-        return 100;
+        return 80;
     }else{
         if ((row+4)%6==0)
         {

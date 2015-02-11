@@ -22,6 +22,7 @@
     CGFloat inroduceHeight;
     UITextField *textField;
     NSString *commentNum;
+    UIScrollView *myscrollView;
 }
 @property (nonatomic,retain) NSString *cailiaomerchantId;
 @property (nonatomic,retain) NSString *cailiaomerchant;

@@ -222,14 +222,7 @@
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSInteger n = n_jsonArr.count-1;
-    if (n%8==6) {
-        return n/8*6+n%8+3;
-    }else if (n%8==7) {
-        return n/8*6+n%8+2;
-    }else{
-        return n/8*6+n%8+4;
-    }
+    return n_jsonArr.count+3;
 }
 
 -(UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -357,112 +350,64 @@
         return cell;
     }
     else{
-        if ((row+4)%6==0) {
-            static NSString *cellIdentific = @"cell4";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
-            if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
-                cell.selectionStyle=UITableViewCellSelectionStyleNone;
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
-                line.image = [UIImage imageNamed:@"线"];
-                [cell.contentView addSubview:line];
-                [line release];
-                
-                UIImageView *works1 = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 90, 80)];
-                works1.image = [UIImage imageNamed:@"CAIliao_img3"];
-                works1.tag = 50;
-                [cell.contentView addSubview:works1];
-                [works1 release];
-                
-                UIImageView *works2 = [[UIImageView alloc] initWithFrame:CGRectMake(115, 10, 90, 80)];
-                works2.image = [UIImage imageNamed:@"CAIliao_img4"];
-                works2.tag = 51;
-                [cell.contentView addSubview:works2];
-                [works2 release];
-                
-                UIImageView *works3 = [[UIImageView alloc] initWithFrame:CGRectMake(220, 10, 90, 80)];
-                works3.image = [UIImage imageNamed:@"CAIliao_img5"];
-                works3.tag = 52;
-                [cell.contentView addSubview:works3];
-                [works3 release];
-                
-            }
-            UIImageView *works1Image = (UIImageView*)[cell.contentView viewWithTag:50];
-            UIImageView *works2Image = (UIImageView*)[cell.contentView viewWithTag:51];
-            UIImageView *works3Image = (UIImageView*)[cell.contentView viewWithTag:52];
-            NSString *imageurl1 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:0];
-            NSString *imageurl2=@"";
-            NSString *imageurl3=@"";
-            if ((row-3)/6*2+row-2 <= n_jsonArr.count-1) {
-                imageurl2 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-2)] objectAtIndex:0];
-            }
-            if ((row-3)/6*2+row-1 <= n_jsonArr.count-1) {
-                imageurl3 = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-1)] objectAtIndex:0];
-            }
-            [works1Image setImageWithURL:[NSURL URLWithString:imageurl1] placeholderImage:[UIImage imageNamed:@"CAIliao_img3"]];
-            [works2Image setImageWithURL:[NSURL URLWithString:imageurl2] placeholderImage:[UIImage imageNamed:@"CAIliao_img4"]];
-            [works3Image setImageWithURL:[NSURL URLWithString:imageurl3] placeholderImage:[UIImage imageNamed:@"CAIliao_img5"]];
-            return cell;
-        }else{
-            static NSString *cellIdentific = @"cell3";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
-            if (cell == nil) {
-                cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
-                cell.selectionStyle=UITableViewCellSelectionStyleGray;
-                
-                UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
-                line.image = [UIImage imageNamed:@"线"];
-                [cell.contentView addSubview:line];
-                [line release];
-                
-                UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 10, 110, 80)];
-                works.image = [UIImage imageNamed:@"CAIliao_img1"];
-                works.tag = 40;
-                [cell.contentView addSubview:works];
-                [works release];
-                
-                UILabel *m_title = [[UILabel alloc] initWithFrame:CGRectMake(130, 10, 180, 25)];
-                m_title.text = @"玉树临风--卓越威刚明珠";
-                m_title.font = font(15);
-                m_title.tag = 41;
-                m_title.textColor = [UIColor blackColor];
-                [cell.contentView addSubview:m_title];
-                [m_title release];
-                
-                UILabel *pinpai = [[UILabel alloc] initWithFrame:CGRectMake(130, 35, 180, 17)];
-                pinpai.font = font(12);
-                pinpai.tag = 42;
-                pinpai.textColor = [UIColor grayColor];
-                [cell.contentView addSubview:pinpai];
-                [pinpai release];
-                
-                UILabel *type = [[UILabel alloc] initWithFrame:CGRectMake(130, 52, 180, 17)];
-                type.font = font(12);
-                type.tag = 43;
-                type.textColor = [UIColor grayColor];
-                [cell.contentView addSubview:type];
-                [type release];
-                
-                UILabel *chandi = [[UILabel alloc] initWithFrame:CGRectMake(130, 69, 180, 17)];
-                chandi.font = font(12);
-                chandi.tag = 44;
-                chandi.textColor = [UIColor grayColor];
-                [cell.contentView addSubview:chandi];
-                [chandi release];
-            }
-            UIImageView *worksImage = (UIImageView*)[cell.contentView viewWithTag:40];
-            UILabel *l_title = (UILabel*)[cell.contentView viewWithTag:41];
-            UILabel *pinpai = (UILabel*)[cell.contentView viewWithTag:42];
-            UILabel *type = (UILabel*)[cell.contentView viewWithTag:43];
-            UILabel *chandi = (UILabel*)[cell.contentView viewWithTag:44];
-            NSString *imageurl = [[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)] objectAtIndex:0];
-            [worksImage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"CAIliao_img1"]];
-            l_title.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:2]];
-            pinpai.text = [NSString stringWithFormat:@"品牌：%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:3]];
-            type.text = [NSString stringWithFormat:@"类型：%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:4]];
-            chandi.text = [NSString stringWithFormat:@"产地：%@",[[n_jsonArr objectAtIndex:((row-3)/6*2+row-3)]  objectAtIndex:5]];
-            return cell;
+        static NSString *cellIdentific = @"cell3";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentific];
+        if (cell == nil) {
+            cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentific] autorelease];
+            cell.selectionStyle=UITableViewCellSelectionStyleGray;
+            
+            UIImageView *line = [[UIImageView alloc] initWithFrame:CGRectMake(10, 0, 300, 1)];
+            line.image = [UIImage imageNamed:@"线"];
+            [cell.contentView addSubview:line];
+            [line release];
+            
+            UIImageView *works = [[UIImageView alloc] initWithFrame:CGRectMake(10, 14, 78, 62)];
+            works.image = [UIImage imageNamed:@"CAIliao_img1"];
+            works.tag = 40;
+            [cell.contentView addSubview:works];
+            [works release];
+            
+            UILabel *m_title = [[UILabel alloc] initWithFrame:CGRectMake(110, 5, 200, 25)];
+            m_title.text = @"玉树临风--卓越威刚明珠";
+            m_title.font = font(15);
+            m_title.tag = 41;
+            m_title.textColor = [UIColor blackColor];
+            [cell.contentView addSubview:m_title];
+            [m_title release];
+            
+            UILabel *pinpai = [[UILabel alloc] initWithFrame:CGRectMake(110, 30, 200, 17)];
+            pinpai.font = font(12);
+            pinpai.tag = 42;
+            pinpai.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:pinpai];
+            [pinpai release];
+            
+            UILabel *type = [[UILabel alloc] initWithFrame:CGRectMake(110, 47, 200, 17)];
+            type.font = font(12);
+            type.tag = 43;
+            type.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:type];
+            [type release];
+            
+            UILabel *chandi = [[UILabel alloc] initWithFrame:CGRectMake(110, 64, 200, 17)];
+            chandi.font = font(12);
+            chandi.tag = 44;
+            chandi.textColor = [UIColor grayColor];
+            [cell.contentView addSubview:chandi];
+            [chandi release];
         }
+        UIImageView *worksImage = (UIImageView*)[cell.contentView viewWithTag:40];
+        UILabel *l_title = (UILabel*)[cell.contentView viewWithTag:41];
+        UILabel *pinpai = (UILabel*)[cell.contentView viewWithTag:42];
+        UILabel *type = (UILabel*)[cell.contentView viewWithTag:43];
+        UILabel *chandi = (UILabel*)[cell.contentView viewWithTag:44];
+        NSString *imageurl = [[n_jsonArr objectAtIndex:(row-3)] objectAtIndex:0];
+        [worksImage setImageWithURL:[NSURL URLWithString:imageurl] placeholderImage:[UIImage imageNamed:@"CAIliao_img1"]];
+        l_title.text = [NSString stringWithFormat:@"%@",[[n_jsonArr objectAtIndex:(row-3)]  objectAtIndex:2]];
+        pinpai.text = [NSString stringWithFormat:@"品牌：%@",[[n_jsonArr objectAtIndex:(row-3)]  objectAtIndex:3]];
+        type.text = [NSString stringWithFormat:@"类型：%@",[[n_jsonArr objectAtIndex:(row-3)]  objectAtIndex:4]];
+        chandi.text = [NSString stringWithFormat:@"产地：%@",[[n_jsonArr objectAtIndex:(row-3)]  objectAtIndex:5]];
+        return cell;
     }
     return nil;
 }
@@ -477,12 +422,7 @@
     }else if (row==2){
         return 95;
     }else{
-        if ((row+4)%6==0)
-        {
-            return 100;
-        }else{
-            return 100;
-        }
+        return 88;
     }
     return 0;
 }
@@ -492,23 +432,13 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     NSInteger row = indexPath.row;
     if (row>2) {
-        if ((row+4)%6==0) {
-            CailiaoDisplayController *display = [[CailiaoDisplayController alloc] init];
-            display.cailiaomerchantId = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:1]];
-            display.cailiaomerchant = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:2]];
-            display.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
-            display.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:display animated:YES];
-            [display release];
-        }else{
-            CailiaoDisplayController *display = [[CailiaoDisplayController alloc] init];
-            display.cailiaomerchantId = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:1]];
-            display.cailiaomerchant = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:2]];
-            display.m_array = [n_jsonArr objectAtIndex:((row-3)/6*2+row-3)];
-            display.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:display animated:YES];
-            [display release];
-        }
+        CailiaoDisplayController *display = [[CailiaoDisplayController alloc] init];
+        display.cailiaomerchantId = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:1]];
+        display.cailiaomerchant = [NSString stringWithFormat:@"%@",[self.m_array objectAtIndex:2]];
+        display.m_array = [n_jsonArr objectAtIndex:(row-3)];
+        display.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:display animated:YES];
+        [display release];
     }
 }
 
@@ -521,14 +451,7 @@
 
 -(CGFloat)tablewheight
 {
-    NSInteger n = n_jsonArr.count-1;
-    if (n%8==6) {
-        return (n/8*6+n%8)*100+195+[self cellHeight:0]+[self cellHeight:1];
-    }else if (n%8==7) {
-        return (n/8*6+n%8-1)*100+195+[self cellHeight:0]+[self cellHeight:1];
-    }else{
-        return (n/8*6+n%8+1)*100+195+[self cellHeight:0]+[self cellHeight:1];
-    }
+    return 88*n_jsonArr.count+195+[self cellHeight:0]+[self cellHeight:1];
 }
 
 - (void)FooterreloadFinish
