@@ -346,12 +346,14 @@
     NSInteger index = tap.view.tag;
     UIImageView *lbl = (UIImageView*)[myscrollView viewWithTag:index];
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
-    ImageLooker *imgLooker = [[ImageLooker alloc] initWithFrame:window.frame withImage:lbl.image];
+    
+    CGRect newFrame = [lbl convertRect:lbl.bounds toView:window];//关键代码，坐标系转换
+    
+    ImageLooker *imgLooker = [[ImageLooker alloc] initWithFrame:newFrame withImage:lbl.image];
     imgLooker.backgroundColor = [UIColor blackColor];
     [window addSubview:imgLooker];
-    imgLooker.transform = CGAffineTransformMakeScale(0, 0);
     [UIView animateWithDuration:0.35f animations:^{
-        imgLooker.transform = CGAffineTransformMakeScale(1, 1);
+        [imgLooker resizeTofullScreen];
     }];
     [imgLooker release];
 }

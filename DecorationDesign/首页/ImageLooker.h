@@ -11,7 +11,10 @@
 @interface ImageLooker : UIScrollView<UIScrollViewDelegate>
 {
     UIImageView *myImageView;
+    CGRect originRect;
+    UIImage *myimage;
 }
 @property(retain,nonatomic)UIImageView *myImageView;
 - (id)initWithFrame:(CGRect)frame withImage:(UIImage *)_image;
+-(void)resizeTofullScreen;
 @end

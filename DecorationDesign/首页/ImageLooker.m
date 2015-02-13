@@ -24,7 +24,8 @@
         UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(mytap:)];
         [self addGestureRecognizer:tap];
         [tap release];
-        
+        originRect = frame;
+        myimage = _image;
         CGFloat imageView_X = (_image.size.width > self.frame.size.width) ? self.frame.size.width : _image.size.width;
         CGFloat imageView_Y;
         CGFloat origin;
@@ -49,10 +50,29 @@
         //    [myImageView setFrame:CGRectMake(0, 0, _image.size.width, _image.size.height)];
         
         [self addSubview:self.myImageView];
-        
-        
     }
     return self;
+}
+
+-(void)resizeTofullScreen
+{
+    self.frame = CGRectMake(0, 0, applicationwidth, applicationheight+20);
+    CGFloat imageView_X = (myimage.size.width > applicationwidth) ? applicationwidth : myimage.size.width;
+    CGFloat imageView_Y;
+    CGFloat origin;
+    if(myimage.size.width > applicationwidth){
+        origin = applicationwidth/myimage.size.width;
+        imageView_Y = myimage.size.height*origin;
+    }else{
+        imageView_Y = myimage.size.height;
+    }
+    myImageView.frame = CGRectMake((applicationwidth-imageView_X)/2, (applicationheight-imageView_Y)/2, imageView_X, imageView_Y);
+    if(self.myImageView==nil)
+    {
+        UIImageView *imageView=[[UIImageView alloc] initWithFrame:CGRectMake((applicationwidth-imageView_X)/2, (applicationheight-imageView_Y)/2, imageView_X, imageView_Y)];
+        self.myImageView=imageView;
+        [imageView release];
+    }
 }
 
 //实现图片缩放
@@ -72,7 +92,7 @@
 -(void)mytap:(id)sender
 {
     [UIView animateWithDuration:0.35f animations:^{
-        self.transform = CGAffineTransformMakeScale(0, 0);
+        self.frame = originRect;
     } completion:^(BOOL flag){
         for(UIView *v in self.subviews)
             [v removeFromSuperview];
